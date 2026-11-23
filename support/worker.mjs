@@ -82,10 +82,11 @@ async function answer(text, history, env, locale) {
   if (human.test(text) || (trade.test(text) && !/区别|介绍|多厚|怎么选|以及|另外|比较|explain|difference|compare|\band\b/i.test(text))) return fallback(text,rows);
   const match = queryWindowFilms(lookup, history, knowledge.models, zh(text));
   if (match && !market) return match;
-  if (match && market && match.links?.length && !match.handoff && !/VLT|IRR|TSER|UV|transmission|heat rejection/i.test(lookup)) {
-    const entries = mentionedModels(match.links.map(link=>link.label).join(' / '),knowledge.models);
+  if (match && market && !match.handoff && !/VLT|IRR|TSER|UV|transmission|heat rejection/i.test(lookup)) {
+    // Some published models have specs but no individual table link. Include every model in the catalogue answer.
+    const entries = mentionedModels(match.answer, knowledge.models);
     if (entries.length) return {...match, answer:market.specs+' · '+entries.map(row=>row.model+' — '+row.mil+' mil, '+market.roll+' '+row.size).join(' / '),
-      links:match.links.map(link=>({...link,label:link.label.replace(/ model table$/, ' · '+market.table),url:link.url.replace('yunnianfilm.com/products/','yunnianfilm.com/'+locale+'/products/')}))};
+      links:(match.links || []).map(link=>({...link,label:link.label.replace(/ model table$/, ' · '+market.table),url:link.url.replace('yunnianfilm.com/products/','yunnianfilm.com/'+locale+'/products/')}))};
   }
   if (!env.GROQ_API_KEY) return backup('unconfigured');
   const sources = Object.fromEntries(Object.entries(knowledge.guide).map(([k,v])=>[k,v.sources]));
