@@ -1,6 +1,7 @@
 ---
+import {siteLanguage} from '../locales/languages';
 const official = Astro.site?.hostname === 'yunnianfilm.com';
 const endpoint = import.meta.env.PUBLIC_CUSTOMER_SERVICE_URL || (import.meta.env.DEV ? 'http://127.0.0.1:8787' : official ? '/support' : '');
-const lang = Astro.url.pathname.startsWith('/zh/') ? 'zh' : 'en';
+const lang = siteLanguage(Astro.url.pathname).id;
 ---
 {endpoint && <script is:inline src={endpoint + '/widget.js'} data-api={endpoint} data-lang={lang} defer></script>}

@@ -1,6 +1,7 @@
+import {pageLocale, localePrefix, ui} from '../../public/locales/runtime.js';
 const root=document.querySelector<HTMLElement>('[data-film-lab]');
 if(root){
- const z=root.dataset.lang==='zh';const L=(en:string,zh:string)=>z?zh:en;
+ const z=root.dataset.lang==='zh';const L=(en:string,zh:string)=>z?zh:ui(en);
  const modes=['tpu-color','ppf','window','pet-color'];const params=new URLSearchParams(location.search);
  const mode=modes.includes(params.get('lab')||'')?params.get('lab')!:root.dataset.initialMode||'tpu-color';
  const state={mode,card:/^[a-f0-9]{12}$/.test(params.get('card')||'')?params.get('card')!:'',color:'',finish:'gloss',explode:65,layer:2,uv:95,vlt:70,tser:45,rotate:false};
@@ -11,7 +12,7 @@ if(root){
  const materialStudio=root.querySelector<HTMLElement>('[data-material-workspace]')!;
  const tabs=[...root.querySelectorAll<HTMLButtonElement>('[data-lab-mode]')];
  function colorMode(){return state.mode==='tpu-color';}
- function studioUrl(){const q=new URLSearchParams({lang:z?'zh':'en'});if(state.card)q.set('card',state.card);return '/automotive-studio/viewer/?'+q;}
+ function studioUrl(){const q=new URLSearchParams({lang:pageLocale()});if(state.card)q.set('card',state.card);return '/automotive-studio/viewer/?'+q;}
  function updateUrl(){const u=new URL(location.href);u.searchParams.set('lab',state.mode);u.searchParams.delete('color');u.searchParams.delete('finish');if(colorMode()&&state.card)u.searchParams.set('card',state.card);else u.searchParams.delete('card');history.replaceState(null,'',u);document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach(a=>{const x=new URL(a.href);x.search=u.search;a.href=x.toString();});}
  function visibility(){const visible=inView&&!document.hidden;api?.visible(visible&&!colorMode()&&state.mode!=='pet-color');frame.contentWindow?.postMessage({type:'yunnian-studio-visibility',visible:visible&&colorMode()},location.origin);}
  function update(){
@@ -21,12 +22,12 @@ if(root){
   colorStudio.hidden=!colorMode();materialStudio.hidden=colorMode()||state.mode==='pet-color';root.querySelector<HTMLElement>('[data-pet-product]')!.hidden=state.mode!=='pet-color';
   (root.querySelector('[data-open-studio]') as HTMLAnchorElement).href=studioUrl();
   root.querySelectorAll<HTMLElement>('[data-lab-controls]').forEach(p=>p.hidden=p.dataset.labControls!==state.mode);
-  root.querySelector('[data-lab-scene-label]')!.textContent=state.mode==='window'?'PET / SOLAR CONTROL':'TPU / LAYERS';
+  root.querySelector('[data-lab-scene-label]')!.textContent=ui(state.mode==='window'?'PET / SOLAR CONTROL':'TPU / LAYERS');
   root.querySelector('[data-explode-output]')!.textContent=state.explode+'%';
   root.querySelectorAll<HTMLButtonElement>('[data-lab-layer]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.labLayer)===state.layer)));
   root.querySelectorAll<HTMLElement>('[data-lab-layer-note]').forEach(p=>p.hidden=Number(p.dataset.labLayerNote)!==state.layer);
   for(const k of ['uv','vlt','tser'] as const)root.querySelector(`[data-optical-output="${k}"]`)!.textContent=state[k]+'%';
-  root.querySelector('[data-uv-result]')!.textContent=L(`For every 100 UV units: ${state.uv} blocked, ${100-state.uv} transmitted.`,`每 100 份入射 UV：阻隔 ${state.uv} 份，透过 ${100-state.uv} 份。`);
+  root.querySelector('[data-uv-result]')!.textContent=z ? `每 100 份入射 UV：阻隔 ${state.uv} 份，透过 ${100-state.uv} 份。` : ui('For every 100 UV units: {blocked} blocked, {through} transmitted.',{blocked:state.uv,through:100-state.uv});
   root.querySelector('[data-lab-rotate]')!.setAttribute('aria-pressed',String(state.rotate));
   if(!colorMode())api?.update({...state,color:state.color||'#1d4038'});
   visibility();

@@ -166,9 +166,5 @@
 /account/* https://www.ynfilm.com/account/:splat 302
 /cart https://www.ynfilm.com/cart 302
 /checkout https://www.ynfilm.com/checkout 302
-/es https://www.ynfilm.com/es 302
-/es/* https://www.ynfilm.com/es/:splat 302
-/ar https://www.ynfilm.com/ar 302
-/ar/* https://www.ynfilm.com/ar/:splat 302
 /ru https://www.ynfilm.com/ru 302
 /ru/* https://www.ynfilm.com/ru/:splat 302

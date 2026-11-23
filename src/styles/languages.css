@@ -1,0 +1,16 @@
+.site-languages{position:relative;flex:none;z-index:5;font:600 .82rem/1.35 Arial,sans-serif;letter-spacing:normal;color:inherit}
+.site-languages summary{display:flex;align-items:center;justify-content:center;gap:.4rem;min-height:44px;padding:0 .4rem;list-style:none;cursor:pointer}
+.site-languages summary::-webkit-details-marker{display:none}
+.locale-chevron{width:6px;height:6px;border-inline-end:1px solid;border-bottom:1px solid;transform:rotate(45deg);margin:0 .15rem .18rem}
+.site-languages[open] .locale-chevron{transform:rotate(225deg);margin-block:.2rem 0}
+.locale-options{position:absolute;inset-block-start:100%;inset-inline-end:0;min-width:10rem;background:#fff;color:#151515;border:1px solid #d3d3d3;box-shadow:0 10px 24px #0002;padding:.25rem}
+.site-languages .locale-options a{display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;min-height:44px;padding:.5rem .8rem;color:#141414;text-decoration:none;text-transform:none;letter-spacing:normal;white-space:nowrap}
+.site-languages a:hover,.site-languages a:focus-visible,.site-languages a[aria-current]{background:#f3f2ef}
+.site-languages :focus-visible{outline:2px solid #d92945;outline-offset:1px}
+:lang(ar){letter-spacing:normal!important}
+html[dir=rtl] body{font-family:Arial,Tahoma,sans-serif}
+html[dir=rtl] :is(h1,h2,h3,h4,.eyebrow,button,.button){font-family:inherit;line-height:1.28}
+html[dir=rtl] :is(input[type=email],input[name=variant],.contact-email,.selected-reference,.color-card-meta>span:first-child,.product-model-code){direction:ltr;unicode-bidi:isolate}
+html[dir=rtl] :is(.color-product-card h2,.home-color-card h3){direction:ltr;unicode-bidi:isolate;text-align:start}
+html[dir=rtl] .reading-progress{transform-origin:right}
+@media(max-width:900px){.site-languages{margin-inline-start:auto}.site-languages summary{padding-inline:.38rem}}

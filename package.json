@@ -12,8 +12,9 @@
     "preview": "astro preview --host 127.0.0.1"
   },
   "dependencies": {
-    "astro": "7.4.7",
     "@tailwindcss/vite": "^4.1.0",
+    "astro": "7.4.7",
+    "parse5": "8.0.0",
     "tailwindcss": "^4.1.0",
     "three": "0.187.0"
   }

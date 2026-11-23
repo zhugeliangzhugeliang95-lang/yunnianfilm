@@ -1,6 +1,6 @@
 # YUNNIAN Film
 
-云辇汽车膜中英文官网源码。网站包含 53 个产品系列、404 张带固定编号的色卡、车型贴膜预览、型号规格表、技术文章、样品检测报告和采购询价入口。[中文官网](https://yunnianfilm.com/zh/) · [English website](https://yunnianfilm.com/)
+云辇汽车膜多语言官网源码。网站包含 53 个产品系列、404 张带固定编号的色卡、车型贴膜预览、型号规格表、技术文章、样品检测报告和采购询价入口。[中文官网](https://yunnianfilm.com/zh/) · [English website](https://yunnianfilm.com/)
 
 ## 本地运行
 
@@ -11,12 +11,13 @@ npm ci
 npm run dev
 ```
 
-终端会显示本地预览地址。英语入口为 `/`，简体中文入口为 `/zh/`。
+终端会显示本地预览地址。英语入口为 `/`，简体中文为 `/zh/`，西班牙语为 `/es/`，法语为 `/fr/`，阿拉伯语为 `/ar/`。页首可以切换当前页面的语言。
 
 ## 构建
 
 ```sh
 npm run build
+node scripts/check_locales.mjs
 npm run preview
 ```
 

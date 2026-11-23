@@ -26,10 +26,23 @@ export const products=sourceProducts.map(p=>{
 export const catalogMeta={...sourceMeta,previewCount:products.filter(p=>p.canPreview).length,colorMethod:'Original photo appearance profiles; not physically calibrated',catalogRevision:'2026-11-11-photo-reference'};
 export const normalize=text=>String(text||'').normalize('NFKC').toLowerCase().replace(/[\s\-_/]/g,'');
 const alias={绿:'green',绿色:'green',绿色系:'green',green:'green',greens:'green',蓝:'blue',蓝色:'blue',blue:'blue',红:'red',红色:'red',red:'red',粉:'pink',粉色:'pink',pink:'pink',紫:'purple',紫色:'purple',purple:'purple',黄:'yellow',黄色:'yellow',yellow:'yellow',橙:'orange',橙色:'orange',orange:'orange',金:'gold',金色:'gold',gold:'gold',银:'silver',银色:'silver',silver:'silver',灰:'gray',灰色:'gray',gray:'gray',grey:'gray',白:'white',白色:'white',white:'white',黑:'black',黑色:'black',black:'black',棕:'brown',棕色:'brown',brown:'brown'};
+const localizedFamilies = {
+ green:'verde verdes vert verts verte vertes أخضر اخضر خضراء الأخضر الاخضر', blue:'azul azules bleu bleue bleus أزرق ازرق زرقاء الأزرق',
+ red:'rojo roja rojos rouge rouges أحمر احمر حمراء الأحمر', pink:'rosa rosas rose roses وردي وردية زهري',
+ purple:'violeta morado púrpura violet violette mauve بنفسجي أرجواني', yellow:'amarillo amarilla jaune أصفر اصفر صفراء',
+ orange:'naranja anaranjado orangé برتقالي', gold:'dorado oro bronce doré bronze cuivre ذهبي برونزي نحاسي',
+ silver:'plata plateado argent argenté فضي', gray:'gris grise رمادي رصاصي',
+ white:'blanco blanca blanc blanche أبيض ابيض بيضاء', black:'negro negra noir noire أسود اسود سوداء',
+ brown:'marrón marron brun brune beige بني بيج',
+};
+for (const [family, words] of Object.entries(localizedFamilies)) {
+ for (const word of words.split(' ')) alias[normalize(word)] = family;
+}
 export function matchesProduct(p,query='',family=''){
  if(family&&!p.families.includes(family))return false;
  const q=normalize(query);if(!q)return true;
- if(alias[q])return p.families.includes(alias[q]);
+ const word=q.replace(/^ال(?=[\u0600-\u06ff])/u,'');
+ if(Object.hasOwn(alias,word))return p.families.includes(alias[word]);
  return normalize([p.reference,p.nameEn,p.name,p.sourceName].join(' ')).includes(q);
 }
 export const finishLabel=(p,lang='en')=>p.explicitFinish?({Gloss:['Gloss','亮面'],Matte:['Matte','哑面'],Satin:['Satin','缎面']}[p.explicitFinish][lang==='zh'?1:0]):(lang==='zh'?'以原图产品为准':'As Pictured');

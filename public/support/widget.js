@@ -2,9 +2,11 @@
   const script = document.currentScript;
   const endpoint = script.dataset.api || new URL(script.src).origin;
   const hosted = endpoint === '/support';
-  const chinese = (script.dataset.lang || document.documentElement.lang).startsWith('zh');
+  const lang = (script.dataset.lang || document.documentElement.lang || 'en').split('-')[0];
+  const chinese = lang === 'zh';
+  const label = (en,zh) => chinese ? zh : globalThis.YunnianWords?.[en] ?? en;
   const chatUrl = new URL(hosted ? '/support/chat/' : endpoint + '/chat', location.href);
-  chatUrl.searchParams.set('lang', chinese ? 'zh' : 'en');
+  chatUrl.searchParams.set('lang', lang);
 
   const host = document.createElement('div');
   const root = host.attachShadow({mode:'open'});
@@ -33,7 +35,7 @@
   launcher.type = 'button';
   launcher.className = 'button button-accent';
   launcher.slot = 'launch';
-  launcher.append(document.createTextNode(chinese ? '咨询云辇' : 'Ask YUNNIAN'));
+  launcher.append(document.createTextNode(label('Ask YUNNIAN','咨询云辇')));
   const arrow = document.createElement('span');
   arrow.setAttribute('aria-hidden','true');
   arrow.textContent = '↗';
@@ -43,10 +45,11 @@
   host.append(launcher);
   const panel = root.querySelector('.panel');
   const frame = root.querySelector('iframe');
+  frame.title = label('YUNNIAN AI support','云辇 AI 客服');
   const close = root.querySelector('.close');
   const slot = root.querySelector('slot');
-  panel.setAttribute('aria-label', chinese ? '云辇 AI 客服' : 'YUNNIAN AI support');
-  close.setAttribute('aria-label', chinese ? '关闭' : 'Close');
+  panel.setAttribute('aria-label', label('YUNNIAN AI support','云辇 AI 客服'));
+  close.setAttribute('aria-label', label('Close','关闭'));
 
   function sizePanel() {
     if (!window.visualViewport || panel.hidden) return;

@@ -13,27 +13,28 @@ import '../styles/refinement-v9.css';
 import '../styles/refinement-v10.css';
 import '../styles/color-catalog.css';
 import '../styles/selection-v16.css';
+import {languages, siteLanguage, pagePath, inLanguage} from '../locales/languages';
+import '../styles/languages.css';
 import SocialDock from '../components/SocialDock.astro';
 import CustomerService from '../components/CustomerService.astro';
 
 const {lang,t,path,company,products}=content(Astro.url);
 const {title='Automotive film, thoughtfully selected.',description='Explore YUNNIAN paint protection film, color PPF and automotive window film. Product selection, OEM cooperation and wholesale inquiries.',dark=false} = Astro.props;
-const current = Astro.url.pathname.replace(/^\/zh(?=\/)/, '');
-const counterpart = current === '/404/' || current === '/404.html' ? '/404.html' : current;
-const chinesePath = counterpart === '/404.html' ? '/zh/404/' : `/zh${counterpart}`;
-const canonicalPath = lang === 'zh' ? chinesePath : counterpart;
+const selected = siteLanguage(Astro.url.pathname);
+const current = pagePath(Astro.url.pathname);
+const canonicalPath = inLanguage(current, selected.id);
 ---
 <!doctype html>
-<html lang={lang==='zh'?'zh-CN':'en'}>
+<html lang={selected.tag} dir={selected.id==='ar'?'rtl':'ltr'}>
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{t(title)} | YUNNIAN</title><meta name="description" content={t(description)} />
     <link rel="canonical" href={new URL(canonicalPath, Astro.site)} /><meta property="og:image" content={new URL('/images/hero.webp', Astro.site)} />
-    <link rel="alternate" hreflang="en" href={new URL(counterpart, Astro.site)} />
-    <link rel="alternate" hreflang="zh-CN" href={new URL(chinesePath, Astro.site)} />
-    <link rel="alternate" hreflang="x-default" href={new URL(counterpart, Astro.site)} />
-    <meta property="og:locale" content={lang==='zh'?'zh_CN':'en_US'} />
-    <meta property="og:locale:alternate" content={lang==='zh'?'en_US':'zh_CN'} />
+    {languages.map(option => <link rel="alternate" hreflang={option.tag} href={new URL(inLanguage(current,option.id), Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(inLanguage(current,'en'), Astro.site)} />
+    <meta property="og:locale" content={selected.og} />
+    {languages.filter(option => option.id !== selected.id).map(option => <meta property="og:locale:alternate" content={option.og}/>)}
+    {['es','fr','ar'].includes(selected.id) && <script is:inline src={'/locales/'+selected.id+'.js'}></script>}
     <meta name="robots" content="noindex,nofollow" /><meta name="theme-color" content="#141615" />
     <meta property="og:title" content={`${t(title)} | YUNNIAN`} /><meta property="og:description" content={t(description)} /><meta property="og:type" content="website" />
     <link rel="icon" href="/yunnian-favicon-v10.webp" type="image/webp" />
@@ -57,26 +58,42 @@ const canonicalPath = lang === 'zh' ? chinesePath : counterpart;
         <a href={path("/oem/")} aria-current={current==='/oem/'?'page':undefined}>{t("OEM & partners")}</a>
         <a href={path("/color-studio/")} aria-current={current==='/color-studio/'?'page':undefined}>{lang==='zh'?'现有颜色':'Colors'}</a>
       </nav>
-      <div class="language-switch" role="group" aria-label={lang==='zh'?'选择语言':'Select language'}>
-        <a data-language-link href={counterpart} lang="en" hreflang="en" aria-current={lang==='en'?'true':undefined} aria-label="English">EN</a>
-        <span aria-hidden="true">/</span>
-        <a data-language-link href={chinesePath} lang="zh-CN" hreflang="zh-CN" aria-current={lang==='zh'?'true':undefined} aria-label="简体中文">中文</a>
-      </div>
+      <details class="site-languages">
+        <summary aria-label={lang==='zh'?'选择语言':'Select language'} title={selected.name}>
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
+          <span translate="no" lang={selected.tag}>{selected.short}</span><span class="locale-chevron" aria-hidden="true"></span>
+        </summary>
+        <div class="locale-options">
+          {languages.map(option=><a data-language-link href={inLanguage(current, option.id)} lang={option.tag} hreflang={option.tag} aria-current={selected.id===option.id?'page':undefined}><span dir="auto">{option.name}</span>{selected.id===option.id && <span aria-hidden="true">✓</span>}</a>)}
+        </div>
+      </details>
       <a class="header-cta" href={path("/contact/?intent=Sample%20request")}>{t("Request samples")} <span aria-hidden="true">↗</span></a>
       <button id="menu-toggle" class="menu-toggle" aria-label={t("Open menu")} aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
     </header>
     <main id="main"><slot /></main>
     <footer class="footer">
-      <div class="footer-top"><div class="footer-company"><a class="footer-logo" href={path('/')}><img src="/images/yunnian-logo-white.webp" width="220" height="55" alt="YUNNIAN"/></a><p class="footer-tagline">Making Every Sheet of Film More Valuable</p><p>{lang==='zh'?'云辇新材料科技（广州）有限公司，提供 TPU 漆面保护膜、改色膜、汽车窗膜及建筑膜，服务产品选型、批发采购与 OEM 合作。':'YUNNIAN New Material Technology (Guangzhou) Co., Ltd. offers TPU paint protection films, color wraps, window films and architectural films for wholesale and OEM projects.'}</p></div><div><h2>{lang==='zh'?'产品系列':'Our Products'}</h2>{categories.map(c=><a href={path(categoryUrl(c.key))}>{c[lang]}</a>)}</div><div><h2>{lang==='zh'?'了解云辇':'Explore YUNNIAN'}</h2><a href={path('/about/')}>{t('About us')}</a><a href={path('/film-lab/')}>{lang==='zh'?'3D 材料工作室':'3D Material Studio'}</a><a href={path('/blog/')}>{lang==='zh'?'云辇博客':'YUNNIAN Journal'}</a><a href={path('/oem/')}>{lang==='zh'?'OEM 与合作':'OEM & Partners'}</a><a href={path('/buyer-services/')}>{lang==='zh'?'采购与订单服务':'Buyer services'}</a><a href={path('/company-library/')}>{lang==='zh'?'工厂与产品影像':'Factory & film library'}</a><a href={path('/collections-guide/')}>{lang==='zh'?'系列索引':'Collection index'}</a><a href={path('/privacy/')}>{lang==='zh'?'隐私政策':'Privacy Policy'}</a></div><div><h2>{lang==='zh'?'联系我们':'Contact Us'}</h2><a href={'mailto:'+company.email}>{company.email}</a><a href={'https://wa.me/'+company.whatsapp} target="_blank" rel="noopener">WhatsApp · {company.phone}</a><p>{company.address}</p></div></div>
+      <div class="footer-top"><div class="footer-company"><a class="footer-logo" href={path('/')}><img src="/images/yunnian-logo-white.webp" width="220" height="55" alt="YUNNIAN"/></a><p class="footer-tagline">{lang==='zh'?'让每一卷膜更有价值':'Making Every Sheet of Film More Valuable'}</p><p>{lang==='zh'?'云辇新材料科技（广州）有限公司，提供 TPU 漆面保护膜、改色膜、汽车窗膜及建筑膜，服务产品选型、批发采购与 OEM 合作。':'YUNNIAN New Material Technology (Guangzhou) Co., Ltd. offers TPU paint protection films, color wraps, window films and architectural films for wholesale and OEM projects.'}</p></div><div><h2>{lang==='zh'?'产品系列':'Our Products'}</h2>{categories.map(c=><a href={path(categoryUrl(c.key))}>{c[lang]}</a>)}</div><div><h2>{lang==='zh'?'了解云辇':'Explore YUNNIAN'}</h2><a href={path('/about/')}>{t('About us')}</a><a href={path('/film-lab/')}>{lang==='zh'?'3D 材料工作室':'3D Material Studio'}</a><a href={path('/blog/')}>{lang==='zh'?'云辇博客':'YUNNIAN Journal'}</a><a href={path('/oem/')}>{lang==='zh'?'OEM 与合作':'OEM & Partners'}</a><a href={path('/buyer-services/')}>{lang==='zh'?'采购与订单服务':'Buyer services'}</a><a href={path('/company-library/')}>{lang==='zh'?'工厂与产品影像':'Factory & film library'}</a><a href={path('/collections-guide/')}>{lang==='zh'?'系列索引':'Collection index'}</a><a href={path('/privacy/')}>{lang==='zh'?'隐私政策':'Privacy Policy'}</a></div><div><h2>{lang==='zh'?'联系我们':'Contact Us'}</h2><a href={'mailto:'+company.email}>{company.email}</a><a href={'https://wa.me/'+company.whatsapp} target="_blank" rel="noopener">WhatsApp · {company.phone}</a><p>{company.address}</p></div></div>
       <div class="footer-bottom"><span>© {new Date().getFullYear()} YUNNIAN. {t('All rights reserved.')}</span><span>{lang==='zh'?'汽车膜 · 批发与 OEM':'Automotive Films · Wholesale & OEM'}</span><a href={path('/buyer-services/')}>{lang==='zh'?'采购与订单服务':'Buyer services'}</a><a href={path('/company-library/')}>{lang==='zh'?'工厂与产品影像':'Factory & film library'}</a><a href={path('/collections-guide/')}>{lang==='zh'?'系列索引':'Collection index'}</a><a href={path('/privacy/')}>{lang==='zh'?'隐私政策':'Privacy Policy'}</a></div>
     </footer>
     <SocialDock />
     <CustomerService />
     <script>
+      import {ui} from '../../public/locales/runtime.js';
       const chinese=document.documentElement.lang==='zh-CN';
-      const menuLabel=(open:boolean)=>chinese?(open?'关闭菜单':'打开菜单'):(open?'Close menu':'Open menu');
-      document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach(link=>{const url=new URL(link.href);url.search=location.search;url.hash=location.hash;link.href=url.toString();});
+      const menuLabel=(open:boolean)=>chinese?(open?'关闭菜单':'打开菜单'):ui(open?'Close menu':'Open menu');
+      document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach(link=>{const url=new URL(link.href);if(location.search)url.search=location.search;url.hash=location.hash;link.href=url.toString();});
+      window.addEventListener('hashchange',()=>{
+        document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach(link => {
+          const url = new URL(link.href);
+          url.hash = location.hash;
+          link.href = url.href;
+        });
+      });
       const toggle=document.querySelector<HTMLButtonElement>('#menu-toggle');
+      const languageMenu=document.querySelector<HTMLDetailsElement>('.site-languages');
+      languageMenu?.addEventListener('toggle',()=>{if(languageMenu.open)closeMenu();});
+      document.addEventListener('click',event=>{if(languageMenu && !languageMenu.contains(event.target as Node))languageMenu.open=false;});
+      document.addEventListener('keydown',event=>{if(event.key==='Escape' && languageMenu?.open){languageMenu.open=false;languageMenu.querySelector('summary')?.focus();}});
       function closeMenu(){document.querySelectorAll<HTMLDetailsElement>('.nav-explore').forEach(d=>d.removeAttribute('open'));toggle?.setAttribute('aria-expanded','false');toggle?.setAttribute('aria-label',menuLabel(false));document.body.classList.remove('menu-open');}
       toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',menuLabel(open));document.body.classList.toggle('menu-open',open);});
       document.addEventListener('click',e=>{document.querySelectorAll<HTMLDetailsElement>('.nav-explore').forEach(d=>{if(!d.contains(e.target as Node))d.removeAttribute('open');});});

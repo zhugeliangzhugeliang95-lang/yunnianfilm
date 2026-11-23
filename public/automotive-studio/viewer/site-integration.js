@@ -1,9 +1,12 @@
+import {ui, localeCode, localePrefix, loadInterface} from '../../locales/runtime.js';
 const params=new URLSearchParams(location.search);
-export const settings={view:params.get('view')||'car',lang:params.get('lang')==='en'?'en':'zh',pet:params.get('material')==='pet',card:/^[a-f0-9]{12}$/.test(params.get('card')||'')?params.get('card'):null};
-document.documentElement.lang=settings.lang==='en'?'en':'zh-CN';
+export const settings={view:params.get('view')||'car',lang:localeCode(params.get('lang') || 'zh'),pet:params.get('material')==='pet',card:/^[a-f0-9]{12}$/.test(params.get('card')||'')?params.get('card'):null};
+document.documentElement.lang=settings.lang==='zh'?'zh-CN':settings.lang;
+document.documentElement.dir=settings.lang==='ar'?'rtl':'ltr';
+await loadInterface(settings.lang);
 document.body.dataset.material=settings.pet?'pet':'tpu';document.body.classList.toggle('catalog-embed',params.get('embed')==='catalog');
-document.title=settings.lang==='en'?'YUNNIAN · Color Studio':'YUNNIAN · 色彩工作室';
-const base=settings.lang==='zh'?'/zh':'';
+document.title='YUNNIAN · '+(settings.lang==='zh'?'色彩工作室':ui('Color Studio'));
+const base=localePrefix(settings.lang);
 document.querySelector('.brand').href=base+'/';
 document.querySelector('.project').href=base+'/products/';
 if(settings.pet){document.body.hidden=true;location.replace(base+'/products/pet-tech-color-wrap/');}
@@ -59,11 +62,11 @@ const dictionary={
  '此款反光效果尚未匹配到模型，当前保留原图供查看。':'This reflective effect is not modeled. View the original image.'
 };
 export function t(text){
- if(settings.lang!=='en')return text;
- if(dictionary[text])return dictionary[text];
+ if(settings.lang==='zh')return text;
+ if(dictionary[text])return ui(dictionary[text]);
  let s=text;
- for(const key of Object.keys(dictionary).sort((a,b)=>b.length-a.length))if(s.includes(key))s=s.replaceAll(key,dictionary[key]);
- return s.replace(/(\d+) 张色卡/g,'$1 color cards').replace(/(\d+) 张可试基础色/g,'$1 base color previews').replace(/ · 可试色/g,' · preview available').replace(/ · 仅色卡/g,' · image only').replace(/继续浏览 · 已显示/g,'Load more · showing').replace(/Load more · 已显示/g,'Load more · showing').replace(/，应用基础色预览/g,', preview base color').replace(/，查看原始色卡/g,', view original').replace(/查看 (.+) 原始色卡/g,'View $1 original color card');
+ for(const key of Object.keys(dictionary).sort((a,b)=>b.length-a.length))if(s.includes(key))s=s.replaceAll(key,ui(dictionary[key]));
+ return ui(s).replace(/(\d+) 张色卡/g,(_,n)=>ui('{count} color cards',{count:n})).replace(/(\d+) 张可试基础色/g,(_,n)=>ui('{count} base color previews',{count:n})).replace(/ · 可试色/g,' · preview available').replace(/ · 仅色卡/g,' · image only').replace(/继续浏览 · 已显示/g,ui('Load more · showing')).replace(/Load more · 已显示/g,'Load more · showing').replace(/，应用基础色预览/g,', preview base color').replace(/，查看原始色卡/g,', view original').replace(/查看 (.+) 原始色卡/g,'View $1 original color card');
 }
 function translateNode(node){
  if(node.nodeType===Node.TEXT_NODE){if(['SCRIPT','STYLE','TEXTAREA'].includes(node.parentElement?.tagName))return;if(!settings.pet&&node.parentElement?.closest('.catalog-name,#card-title,#card-filename,#color-name,#look-name,#colors button span'))return;const raw=node.nodeValue;const trimmed=raw.trim();const result=t(trimmed);if(result!==trimmed)node.nodeValue=raw.replace(trimmed,result);return;}
@@ -73,7 +76,7 @@ function translateNode(node){
  for(const child of node.childNodes)translateNode(child);
 }
 export function translateUI(){
- if(settings.lang!=='en')return;
+ if(settings.lang==='zh')return;
  translateNode(document.body);
  new MutationObserver(mutations=>{for(const m of mutations){if(m.type==='characterData')translateNode(m.target);else if(m.type==='childList')for(const child of m.addedNodes)translateNode(child);else translateNode(m.target);}}).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-label','title','placeholder','alt']});
 }

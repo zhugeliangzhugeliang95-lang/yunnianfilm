@@ -46,6 +46,21 @@ def package_worker():
     )
 
 
+def write_legacy_redirects():
+    source = (ROOT / 'public' / '_redirects').read_text(encoding='utf-8').strip()
+    rules = [source]
+    for line in source.splitlines():
+        if not line.strip() or line.lstrip().startswith('#'):
+            continue
+        path, target, status = line.split()
+        for locale in ('es', 'ar'):
+            if target.startswith('/'):
+                rules.append(f'/{locale}{path} /{locale}{target} {status}')
+            elif path.startswith(('/account', '/cart', '/checkout')):
+                rules.append(f'/{locale}{path} https://www.ynfilm.com/{locale}{path.replace("*", ":splat")} {status}')
+    (OUTPUT / '_redirects').write_text('\n'.join(rules) + '\n', encoding='utf-8')
+
+
 def write_search_files(origin):
     urls = []
     for file in sorted(OUTPUT.rglob('*.html')):
@@ -77,4 +92,5 @@ if __name__ == '__main__':
     if not (OUTPUT / 'index.html').is_file():
         sys.exit('Build the site with npm run build before packaging.')
     package_worker()
+    write_legacy_redirects()
     write_search_files(os.environ.get('SITE_ORIGIN', 'https://yunnianfilm.com').rstrip('/'))

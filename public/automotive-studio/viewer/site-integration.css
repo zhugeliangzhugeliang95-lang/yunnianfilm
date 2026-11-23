@@ -41,3 +41,7 @@ body[data-model=sample] .stage-heading h1{font-size:clamp(44px,6vw,88px)}body[da
 /* Daylight remains readable while the original product photo stays alongside. */
 .lighting{padding-block:16px}.lighting .label{margin-bottom:11px}.lighting .light-angle{padding:13px 0 0}.lighting-modes button{font-size:12px;padding:12px 8px}
 body[data-env=day] .stage-shade{background:linear-gradient(180deg,#10141460,transparent 30%,transparent 74%,#0a1013a6)}
+
+html[dir="rtl"] body{font-family:Arial,Tahoma,sans-serif;letter-spacing:normal}
+html[dir="rtl"] :is(.stage-heading,.site-header,.inspector-head,.control-section,.inspector-bottom,.catalog-filters){letter-spacing:normal}
+html[dir="rtl"] :is(.brand,#card-title,#card-filename,.catalog-name,#color-name,#look-name){direction:ltr;unicode-bidi:isolate}

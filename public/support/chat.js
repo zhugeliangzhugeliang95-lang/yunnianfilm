@@ -1,10 +1,20 @@
+async function startChat() {
+const hostedSite = document.documentElement.dataset.hosted === 'true';
+const {localeCode,localePrefix,loadInterface,ui} = hostedSite ? await import('/locales/runtime.js') : {
+  localeCode: value => String(value).split('-')[0] === 'zh' ? 'zh' : 'en', localePrefix: lang => lang === 'zh' ? '/zh' : '',
+  loadInterface: async () => {}, ui: text => text,
+};
 const $ = selector => document.querySelector(selector);
 const hosted = document.documentElement.dataset.hosted === 'true';
 const embedded = window.parent !== window;
 const lang = new URLSearchParams(location.search).get('lang');
-const cn = lang ? lang === 'zh' : !hosted && navigator.language.startsWith('zh');
-const t = (english, chinese) => cn ? chinese : english;
-document.documentElement.lang = cn ? 'zh-CN' : 'en';
+const locale = localeCode(lang || (hosted ? 'en' : navigator.language));
+const cn = locale === 'zh';
+document.documentElement.lang = cn ? 'zh-CN' : locale;
+document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+await loadInterface(locale);
+const t = (english, chinese) => cn ? chinese : ui(english);
+document.title = t('Ask YUNNIAN', '咨询云辇');
 document.documentElement.classList.toggle('embedded', embedded);
 if (embedded) {
   // The production iframe shares an origin with the site. Standalone and local previews use the same defaults.
@@ -58,7 +68,7 @@ function updateNotice() {
     : t('Messages stay on this computer.', '对话仅在本机处理。');
   const link = $('#privacy-link');
   if (link) {
-    link.href = cn ? '/zh/privacy/' : '/privacy/';
+    link.href = localePrefix(locale) + '/privacy/';
     link.textContent = t('Privacy', '隐私说明');
   }
 }
@@ -97,7 +107,7 @@ function showReply(data) {
   for (const item of data.links || []) {
     let target;
     try { target = new URL(item.url); } catch { continue; }
-    if (target.origin !== 'https://yunnianfilm.com' || !/^\/(?:zh\/)?products\/[a-z0-9-]+\/$/.test(target.pathname)) continue;
+    if (target.origin !== 'https://yunnianfilm.com' || !/^\/(?:(?:zh|es|fr|ar)\/)?products\/[a-z0-9-]+\/$/.test(target.pathname)) continue;
     const link = document.createElement('a');
     link.className = 'model-link';
     link.href = target.href;
@@ -132,7 +142,7 @@ function showReply(data) {
 }
 async function submit(action, message) {
   const response = await fetch(base + '/api/' + action, {method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({session, message, ...(action === 'chat' ? {chat_provider:providerName()} : {})})});
+    body:JSON.stringify({session, message, locale, ...(action === 'chat' ? {chat_provider:providerName()} : {})})});
   if (!response.ok) throw new Error(response.status === 429 ? t('Please wait a minute and try again.', '请稍等一分钟再试。') :
     t('Could not submit. Please try again.', '提交未成功，请再试一次。'));
   const data = await response.json();
@@ -203,3 +213,6 @@ $('#contact-form').addEventListener('submit', async event => {
   }
 });
 updateControls();
+
+}
+startChat();

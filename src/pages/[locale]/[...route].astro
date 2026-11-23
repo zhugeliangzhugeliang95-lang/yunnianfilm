@@ -1,0 +1,12 @@
+---
+import {pages, translatedPaths} from '../../locales/routes';
+import {translatedLocales} from '../../locales/languages';
+export function getStaticPaths() {
+  return translatedLocales.flatMap(locale => translatedPaths().map(({path, props}) => ({
+    params: {locale, route: path}, props,
+  })));
+}
+const {template, data} = Astro.props;
+const Page = pages[template].default;
+---
+<Page {...data} />

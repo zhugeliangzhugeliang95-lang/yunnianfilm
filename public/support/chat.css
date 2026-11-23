@@ -88,3 +88,7 @@ textarea { display: block; width: 100%; color: var(--ink); font-size: 16px; line
   .msg { animation: arrive 150ms ease-out; }
   @keyframes arrive { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
 }
+
+html[dir=rtl] :is(.chat,h2,button,textarea){letter-spacing:normal;font-family:Arial,Tahoma,sans-serif}
+html[dir=rtl] .masthead{padding-inline:3.5rem 1rem}
+html[dir=rtl] :is(textarea,.message){text-align:start}

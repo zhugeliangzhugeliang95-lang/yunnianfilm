@@ -54,12 +54,39 @@ function fallback(text, rows) {
   return {answer:cn?'AI 暂时无法连接，请稍后再试。急需跟进的话，可以在下方留下需求。':'I’m having trouble connecting. Try again shortly, or leave a message for the team below.',sources:[],handoff:false,mode:'knowledge_fallback'};
 }
 
-async function answer(text, history, env) {
-  const rows=modelRows(text, history);
-  const backup = reason => ({...fallback(text, rows), engine_status:reason});
+const marketSupport = {
+  es: {name:'Spanish', table:'Tabla de modelos', specs:'Medidas publicadas', roll:'rollo', retry:'No se ha podido obtener una respuesta. Inténtalo de nuevo o deja una consulta para el equipo.', handoff:'Nuestro equipo revisará tu consulta. Puedes dejar tu correo electrónico a continuación.'},
+  fr: {name:'French', table:'Tableau des modèles', specs:'Dimensions publiées', roll:'rouleau', retry:'La réponse est momentanément indisponible. Réessayez ou laissez un message à notre équipe.', handoff:'Notre équipe examinera votre demande. Vous pouvez laisser votre adresse e-mail ci-dessous.'},
+  ar: {name:'Arabic', table:'جدول الموديلات', specs:'المقاسات المنشورة', roll:'اللفة', retry:'تعذر جلب الرد الآن. أعد المحاولة أو اترك استفسارك للفريق.', handoff:'سيُراجع فريقنا طلبك. يمكنك ترك بريدك الإلكتروني أدناه للتواصل معك.'},
+};
+
+function marketLookup(text) {
+  return text.replace(/اعرض لي فيلمين للنوافذ/gi,'show me two window films')
+    .replace(/nitruro de titanio|nitrure de titane|نتريد التيتانيوم/gi,'titanium nitride')
+    .replace(/carburo de titanio|carbure de titane|كربيد التيتانيوم/gi,'titanium carbide')
+    .replace(/láminas? (?:para|de) cristales|films? pour vitrages?|أفلام النوافذ|فيلم نوافذ|فيلمين للنوافذ/gi,'window film')
+    .replace(/muéstrame dos|montrez-moi deux|اعرض لي فيلمين/gi,'show me two')
+    .replace(/compara(?:r)?|comparez|قارن/gi,' compare ')
+    .replace(/espesor|épaisseurs?|épais|grosor|سماكة|سماك[ةت]ه/gi,' thickness ')
+    .replace(/cotizaci[oó]n|presupuesto|devis|عرض سعر|تسعير/gi,' quotation ')
+    .replace(/hablar con (?:una persona|un agente)|parler à (?:une personne|un conseiller)|التحدث (?:إلى|مع) موظف/gi,' talk to a person ');
+}
+
+async function answer(text, history, env, locale) {
+  const market = Object.hasOwn(marketSupport,locale) ? marketSupport[locale] : null;
+  const lookup = market ? marketLookup(text) : text;
+  const rows=modelRows(lookup, history);
+  const offerHandoff=market && (trade.test(lookup) || human.test(lookup));
+  if (offerHandoff) return {answer:market.handoff,sources:[],handoff:true,mode:'knowledge_direct'};
+  const backup = reason => ({...(market ? {answer:market.retry,sources:[],handoff:false,mode:'knowledge_fallback'} : fallback(text, rows)), engine_status:reason});
   if (human.test(text) || (trade.test(text) && !/区别|介绍|多厚|怎么选|以及|另外|比较|explain|difference|compare|\band\b/i.test(text))) return fallback(text,rows);
-  const match = queryWindowFilms(text, history, knowledge.models, zh(text));
-  if (match) return match;
+  const match = queryWindowFilms(lookup, history, knowledge.models, zh(text));
+  if (match && !market) return match;
+  if (match && market && match.links?.length && !match.handoff && !/VLT|IRR|TSER|UV|transmission|heat rejection/i.test(lookup)) {
+    const entries = mentionedModels(match.links.map(link=>link.label).join(' / '),knowledge.models);
+    if (entries.length) return {...match, answer:market.specs+' · '+entries.map(row=>row.model+' — '+row.mil+' mil, '+market.roll+' '+row.size).join(' / '),
+      links:match.links.map(link=>({...link,label:link.label.replace(/ model table$/, ' · '+market.table),url:link.url.replace('yunnianfilm.com/products/','yunnianfilm.com/'+locale+'/products/')}))};
+  }
   if (!env.GROQ_API_KEY) return backup('unconfigured');
   const sources = Object.fromEntries(Object.entries(knowledge.guide).map(([k,v])=>[k,v.sources]));
   for (const row of rows) sources[row.id]=[row.source];
@@ -76,7 +103,7 @@ async function answer(text, history, env) {
     const response=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',signal:AbortSignal.timeout(18000),
       headers:{Authorization:'Bearer '+env.GROQ_API_KEY,'Content-Type':'application/json','User-Agent':'YunnianCustomerService/1.0'},
       body:JSON.stringify({model:knowledge.model,reasoning_effort:'low',max_completion_tokens:1000,response_format:responseFormat,
-        messages:[{role:'system',content:knowledge.prompt+'\nProducts offered: '+knowledge.range+'.\nPublic sources: '+JSON.stringify(context)},...turns,{role:'user',content:redact(text)}]})});
+        messages:[{role:'system',content:knowledge.prompt+(market?'\nThe selected website language is '+market.name+'. Reply in this language unless the visitor requests another language. Preserve product codes and units.':'')+'\nProducts offered: '+knowledge.range+'.\nPublic sources: '+JSON.stringify(context)},...turns,{role:'user',content:redact(text)}]})});
     if (!response.ok) {
       const err = await response.json().catch(()=>({}));
       const code = String(err?.error?.code || '').replace(/[^a-z0-9_]/gi,'').slice(0,50);
@@ -131,7 +158,7 @@ async function handle(request,env,ctx) {
   if(!await withinLimit(db,request.headers.get('CF-Connecting-IP')||'visitor',now)) return json({error:'Please wait a minute before sending another message.'},429);
   const previous=await db.prepare('SELECT question,answer FROM chat_turn WHERE session=? AND created>=? ORDER BY id DESC LIMIT 6').bind(session,now-30*86400).all();
   const history=previous.results.reverse();
-  const result=action==='chat'?await answer(message, history, env):null;
+  const result=action==='chat'?await answer(message, history, env, data.locale):null;
   const writes=[];
   if(result) writes.push(db.prepare('INSERT INTO chat_turn(session,question,answer,created) VALUES(?,?,?,?)').bind(session,redact(message),result.answer,now));
   let ticket;
