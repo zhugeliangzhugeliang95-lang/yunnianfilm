@@ -1,0 +1,47 @@
+---
+import { content } from '../data/i18n';
+import { editorial } from '../data/editorial';
+const { lang, path } = content(Astro.url);
+const { L, families, colors } = editorial(lang);
+---
+<section id="collections" class="film-explorer section container" aria-labelledby="collection-title">
+  <div class="chapter-line"><span class="eyebrow">01 / {L('THE FILM COLLECTION', '产品系列')}</span><a href={path('/products/')} class="text-link">{L('View all films', '查看全部产品')} <span aria-hidden="true">↗</span></a></div>
+  <div class="explorer-grid">
+    <div class="explorer-menu">
+      <h2 id="collection-title">{L('One surface.', '同一表面。')}<br /><span>{L('More possibilities.', '更多可能。')}</span></h2>
+      <p>{L('Find the film that fits your vision.', '找到与您的想法契合的汽车膜。')}</p>
+      <div class="family-tabs" role="tablist" aria-label={L('Explore film families', '探索产品系列')} aria-orientation="vertical">
+        {families.map((f,i)=><button type="button" role="tab" id={`family-tab-${f.id}`} aria-selected={i===0?'true':'false'} aria-controls={`family-${f.id}`} tabindex={i===0?0:-1} data-family={f.id}><span class="family-number">{f.number}</span><span><strong>{f.title}</strong><small>{f.short}</small></span><span class="family-arrow" aria-hidden="true">↗</span></button>)}
+      </div>
+      <a class="explorer-guide" href={path('/film-guide/')}>{L('Not sure where to start? Read the film guide.', '还不确定如何选？查看汽车膜选型指南。')} <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="family-panels">
+      {families.map((f,i)=><article id={`family-${f.id}`} class={`family-panel family-panel-${f.id}`} role="tabpanel" aria-labelledby={`family-tab-${f.id}`} tabindex="0" hidden={i!==0}>
+        <div class="family-visual"><img src={`/images/${f.image}`} alt={f.alt} width="1600" height="1067" loading="lazy"/><span class="family-visual-number" aria-hidden="true">{f.number}</span><span class="family-visual-label">{f.title}</span></div>
+        <div class="family-caption"><span>{f.note}</span><span>YUNNIAN / {f.number}</span></div>
+        <div class="family-description"><h3>{f.name}</h3><p>{f.description}</p></div>
+        <div class="material-tags">{f.tags.map(tag=><span>{tag}</span>)}</div>
+        {f.id==='color' && <div class="color-selection"><span class="eyebrow">{L('A STARTING PALETTE', '从喜欢的颜色开始')}</span><div class="color-options" role="group" aria-label={L('Select a sample color', '选择样品颜色')}>{colors.map((c,n)=><button type="button" class="color-swatch" style={`--swatch:${c.hex}`} aria-label={c.name} title={c.name} aria-pressed={n===0?'true':'false'} data-color={c.value} data-color-name={c.name}><span></span></button>)}</div><p id="color-name" aria-live="polite">{colors[0].name}</p><small>{L('Screen colors are indicative. Always confirm with physical swatches.', '屏幕色块仅供选色参考，请以实物色卡为准。')}</small><a id="color-sample-link" class="text-link" data-contact-path={path('/contact/')} href={path('/contact/?product=Classic%20Color%20PPF&intent=Sample%20request&variant=Metallic%20Dark%20Green')}>{L('Request this color sample', '咨询该颜色样品')} <span aria-hidden="true">↗</span></a></div>}
+        <a class="text-link family-product-link" href={path(f.destination)}>{f.action} <span aria-hidden="true">↗</span></a>
+      </article>)}
+    </div>
+  </div>
+  <noscript><p>{L('Explore all film families in the product collection.', '请在产品中心查看全部产品系列。')} <a href={path('/products/')}>{L('View products', '查看产品')} ↗</a></p></noscript>
+</section>
+<script>
+  const tabs=Array.from(document.querySelectorAll<HTMLButtonElement>('[data-family]'));
+  function activateFamily(tab:HTMLButtonElement,focus=false){
+    tabs.forEach(t=>{const active=t===tab;t.setAttribute('aria-selected',String(active));t.tabIndex=active?0:-1;const panel=document.getElementById(t.getAttribute('aria-controls')!);if(panel)panel.hidden=!active;});
+    if(focus)tab.focus();
+  }
+  tabs.forEach((tab,index)=>{
+    tab.addEventListener('click',()=>activateFamily(tab));
+    tab.addEventListener('keydown',e=>{let next=index;if(e.key==='ArrowDown'||e.key==='ArrowRight')next=(index+1)%tabs.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')next=(index-1+tabs.length)%tabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=tabs.length-1;else return;e.preventDefault();activateFamily(tabs[next],true);});
+  });
+  document.querySelectorAll<HTMLButtonElement>('[data-color]').forEach(button=>button.addEventListener('click',()=>{
+    document.querySelectorAll('[data-color]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    document.querySelector('#color-name')!.textContent=button.dataset.colorName!;
+    const link=document.querySelector<HTMLAnchorElement>('#color-sample-link')!;
+    link.href=link.dataset.contactPath+'?'+new URLSearchParams({product:'Classic Color PPF',intent:'Sample request',variant:button.dataset.color!}).toString();
+  }));
+</script>

@@ -1,0 +1,5 @@
+---
+import {content} from '../data/i18n';import {categories,categoryUrl} from '../data/categories';
+const {lang,path,products}=content(Astro.url);const z=lang==='zh';
+---
+<section class="container category-directory section" id="film-directory"><div class="section-heading"><div><span class="eyebrow">{z?'产品目录 / 按用途找膜':'FILM DIRECTORY / CHOOSE BY APPLICATION'}</span><h2>{z?'按用途寻找合适的膜。':'Find a film for your application.'}</h2></div><p class="heading-description">{z?'先选用途，再比较系列，最后确认颜色与规格。':'Start with the application, compare series, then choose colors and specifications.'}</p></div><div class="category-directory-list">{categories.map(c=><a href={path(categoryUrl(c.key))}><span class="directory-number">{c.code}</span><div><h3>{c[lang]}</h3><p>{c.summary[z?1:0]}</p></div><span class="directory-count">{products.filter(p=>p.category===c.key).length} {z?'系列':'series'} <span aria-hidden="true">↗</span></span></a>)}</div></section>

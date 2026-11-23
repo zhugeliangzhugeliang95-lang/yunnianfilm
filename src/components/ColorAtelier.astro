@@ -1,0 +1,22 @@
+---
+import { content } from '../data/i18n';import { editorial } from '../data/editorial';
+const {lang,path}=content(Astro.url);const {L,colors}=editorial(lang);
+---
+<section class="color-atelier container" aria-label={L('Interactive color study','交互色彩工作台')}>
+ <div class="atelier-stage" id="atelier-stage" style={`--sample-color:${colors[0].hex};--light:35%;--tilt-x:8deg;--tilt-y:-18deg`}>
+  <div class="atelier-grid" aria-hidden="true"></div><span class="atelier-coordinate">Y / 01</span><span class="atelier-coordinate second">COLOR / STUDY</span>
+  <div class="sample-shadow" aria-hidden="true"></div><div class="sample-object" aria-hidden="true"><div class="sample-sheet"><span class="sheet-signature">YUNNIAN</span><span class="sheet-number">COLOR / PPF</span></div><div class="sample-sheet-back"></div></div>
+  <p class="atelier-hint">{L('Move over the surface. Adjust the light below.','移动指针探索表面，或在下方调节光线。')}</p><p class="atelier-disclaimer">{L('Concept color study · not a product photograph','概念色板示意 · 非产品实拍')}</p>
+ </div>
+ <div class="atelier-controls"><span class="eyebrow">01 / {L('FIND YOUR EXPRESSION','找到您的色彩表达')}</span><h2 id="atelier-color-name" aria-live="polite">{colors[0].name}</h2><p>{L('A starting palette from the Classic Color PPF series. Explore a mood here, then evaluate the real finish with a physical swatch.','从经典原厂色系列中挑选一组起始配色。在这里探索色彩印象，再通过实物色卡确认真实质感。')}</p><div class="atelier-swatches" role="group" aria-label={L('Choose a color','选择颜色')}>{colors.map((c,i)=><button type="button" class="atelier-swatch" data-atelier-color={c.value} data-label={c.name} data-hex={c.hex} aria-pressed={i===0?'true':'false'}><span style={`--swatch:${c.hex}`}></span><strong>{c.name}</strong><span class="swatch-selected" aria-hidden="true">↗</span></button>)}</div><label class="light-control" for="light-angle"><span>{L('Explore the reflection','探索光线反射')}</span><span aria-hidden="true">−　 +</span><input id="light-angle" type="range" min="0" max="100" value="35" aria-label={L('Light reflection position','光线反射位置')}/></label><p class="small-note">{L('Screen color, lighting and the concept shape are illustrative. Actual color and finish must be confirmed with samples.','屏幕颜色、光线与造型均为示意，实际颜色和质感请以样品为准。')}</p><a id="atelier-inquiry" class="button button-accent" data-contact-path={path('/contact/')} href={path('/contact/?product=Classic%20Color%20PPF&variant=Metallic%20Dark%20Green&intent=Sample%20request')}>{L('Request a physical sample','咨询实物样品')} <span aria-hidden="true">↗</span></a></div>
+</section>
+<script>
+ const stage=document.querySelector<HTMLElement>('#atelier-stage');
+ const light=document.querySelector<HTMLInputElement>('#light-angle');
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ document.querySelectorAll<HTMLButtonElement>('[data-atelier-color]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-atelier-color]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));stage?.style.setProperty('--sample-color',button.dataset.hex!);document.querySelector('#atelier-color-name')!.textContent=button.dataset.label!;const link=document.querySelector<HTMLAnchorElement>('#atelier-inquiry')!;link.href=link.dataset.contactPath+'?'+new URLSearchParams({product:'Classic Color PPF',variant:button.dataset.atelierColor!,intent:'Sample request'}).toString();}));
+ light?.addEventListener('input',()=>stage?.style.setProperty('--light',light.value+'%'));
+ let frame=0;
+ stage?.addEventListener('pointermove',e=>{if(reduced.matches||e.pointerType!=='mouse')return;cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{const box=stage.getBoundingClientRect();const x=(e.clientX-box.left)/box.width;const y=(e.clientY-box.top)/box.height;stage.style.setProperty('--tilt-y',`${(x-.5)*32-10}deg`);stage.style.setProperty('--tilt-x',`${(.5-y)*20+8}deg`);});});
+ stage?.addEventListener('pointerleave',()=>{cancelAnimationFrame(frame);stage.style.setProperty('--tilt-y','-18deg');stage.style.setProperty('--tilt-x','8deg');});
+</script>

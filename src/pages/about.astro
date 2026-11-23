@@ -1,0 +1,15 @@
+---
+import { content } from '../data/i18n';
+import { editorial } from '../data/editorial';
+
+import Layout from '../layouts/Layout.astro';import CTA from '../components/CTA.astro';
+const {lang,t,path,company}=content(Astro.url);
+const {L}=editorial(lang);
+---
+<Layout title={t("About YUNNIAN")}>
+  <section class="container page-intro"><span class="eyebrow">{t("MEET YUNNIAN")}</span><h1>{t("Focused on film.")}<br />{t("Connected to your business.")}</h1><p>{t("Automotive film solutions from Guangzhou, China.")}</p></section>
+  <div class="container wide-image"><img src="/images/factory.webp" alt={t("Facility aerial photograph published on the YUNNIAN website")} width="1980" height="1114"/></div>
+  <section class="section container story"><span class="eyebrow">{t("MATERIALS. MANUFACTURING. TRADE.")}</span><div><h2>{t("A film partner,")}<br />{t("from selection onward.")}</h2><p>{company.name} {t("brings manufacturing and trade together across automotive film applications.")}</p><p>{t("Our portfolio includes clear TPU paint protection film, TPU color PPF, PET color wraps, window and headlight films, architectural films and professional installation tools.")}</p><p>{t("We work with brand owners, distributors and installers to discuss product selection, samples and OEM / ODM requirements.")}</p><a class="text-link" href={path("/products/")}>{t("Explore the collection ↗")}</a></div></section>
+  <section class="brand-library container"><div class="library-photo"><img src="/images/color-library.webp" width="1600" height="1600" alt={L('YUNNIAN color film samples from official product imagery','云辇官方产品资料中的彩色膜样板')} loading="lazy"/><span>{L('A WORLD OF FINISHES','在色彩与质感之间')}</span></div><div><span class="eyebrow">{L('MORE THAN A COLOR CHART','从色卡，走向您的产品组合')}</span><h2>{L('A shared eye','共同发现，')}<br />{L('for possibility.','更多可能。')}</h2><p>{L('Every project starts with a conversation. A finish to evaluate, a material to compare, a range to develop. We bring those decisions together with you.','每个项目，都从一次沟通开始：一种需要评估的质感，一份需要比较的材料，一个正在规划的产品系列。我们与您一起，把这些选择逐步落实。')}</p><a class="text-link" href={path('/contact/?intent=Sample%20request')}>{L('Explore the samples','了解样品选择')} ↗</a></div></section>
+  <section class="container company-address"><div><span class="eyebrow">{t("GUANGZHOU, GUANGDONG, CHINA")}</span><h3>{company.name}</h3></div><p>{company.address}</p><a class="text-link" href={path("/contact/")}>{t("Get in touch ↗")}</a></section><div class="container"><a class="button button-dark" href={path('/company-library/')}>{L('View factory and product media','查看工厂与产品影像')} ↗</a></div><CTA />
+</Layout>

@@ -1,0 +1,4 @@
+---
+import {content} from '../data/i18n';import {categories,categoryUrl} from '../data/categories';const {lang,path,products}=content(Astro.url);const z=lang==='zh';
+---
+<section class="container section home-collections" id="collections"><div class="section-heading"><div><span class="eyebrow">01 / {z?'产品分类':'THE COLLECTIONS'}</span><h2>{z?'从需求出发，找到好材料。':'Your application. Your material.'}</h2></div><a class="text-link" href={path('/products/')}>{z?`查看全部 ${products.length} 个系列`:`Explore all ${products.length} series`} ↗</a></div><div class="home-category-grid">{categories.map((c,i)=><a class="home-category" href={path(categoryUrl(c.key))}><div class="home-category-image"><img src={'/images/'+c.image} alt={c[lang]} width="800" height="560" loading="lazy"/></div><div class="home-category-text"><h3>{c[lang]}</h3><span>{products.filter(p=>p.category===c.key).length} {z?'系列':'series'}</span></div><p>{c.summary[z?1:0]}</p></a>)}</div></section>

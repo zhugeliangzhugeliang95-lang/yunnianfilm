@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111515">
+<meta name="robots" content="noindex,nofollow"><title>YUNNIAN · 现有产品颜色</title><link rel="icon" href="/yunnian-favicon-v10.webp"><link rel="preload" href="fonts/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="style-v6.css"><link rel="stylesheet" href="site-integration.css">
+<script type="importmap">{"imports":{"three":"./three.module.js","three/addons/":"./"}}</script>
+</head>
+<body data-env="day">
+<svg class="icon-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
+<symbol id="i-rotate" viewBox="0 0 24 24"><path d="M18 7c-1.5-1-3.6-1.5-6-1.5-5 0-9 2.6-9 6s4 6 9 6 9-2.6 9-6M14 3l4 4-4 3"/><path d="M12 9v5"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+<symbol id="i-studio" viewBox="0 0 24 24"><path d="M5 4h14v10H5zM12 14v7m-5 0h10M8 7h8"/></symbol>
+</defs></svg>
+<header class="site-header">
+ <a class="brand" href="/zh/" target="_top" aria-label="YUNNIAN 首页"><img src="/images/yunnian-logo-white.webp" width="400" height="100" alt="YUNNIAN"></a>
+ <nav class="workspace-nav" aria-label="展示方式"><button data-model="car" aria-pressed="true">整车预览</button><button data-model="sample" aria-pressed="false">膜材样片</button></nav>
+ <div class="header-right"><span class="edition">COLOR STUDIO <b>15</b></span><a class="project" href="/zh/products/" target="_top">产品中心 <span>↗</span></a></div>
+</header>
+<main>
+ <section class="stage" aria-label="三维模型展示区">
+  <div id="viewport" tabindex="0" aria-label="三维车衣预览，可拖动旋转和滚轮缩放"><div id="loading" role="status"><span class="loader-ring"></span><span>正在准备你的色彩空间<small>载入车辆与光线</small></span></div></div>
+  <div class="stage-shade" aria-hidden="true"></div>
+  <div class="stage-heading"><span class="eyebrow">LAMBORGHINI / 兰博基尼</span><h1>AVENTADOR</h1><p>Making Every Sheet of Film More Valuable</p></div>
+  <div class="stage-actions"><button id="focus-view" aria-pressed="false" aria-label="进入专注看车模式"><svg class="icon"><use href="#i-expand"/></svg><span>专注看车</span></button></div>
+  <div class="stage-side"><span class="live-dot"></span><span>LIVE / 360°</span></div>
+  <div class="zoom-tools" aria-label="视图控制"><button id="zoom-in" aria-label="放大">＋</button><button id="zoom-out" aria-label="缩小">−</button><span></span><button id="reset" aria-label="复位视角" title="复位视角"><svg class="icon"><use href="#i-reset"/></svg></button></div>
+  <div class="stage-bottom">
+   <div class="view-bar"><nav class="camera-views" aria-label="预设观察角度"><button data-view="front" aria-pressed="true"><span>01</span>前侧</button><button data-view="side" aria-pressed="false"><span>02</span>侧面</button><button data-view="rear" aria-pressed="false"><span>03</span>后侧</button><button data-view="detail" aria-pressed="false"><span>04</span>漆面细节</button></nav><button id="rotate" aria-pressed="false"><svg class="icon"><use href="#i-rotate"/></svg><span>自动旋转</span></button></div>
+   <div class="stage-caption"><div class="current-look"><span class="look-dot"></span><span id="look-name">酸橙绿</span><i>/</i><span id="look-finish">亮面</span></div><span class="gesture" id="preview-note">图片取色 · 未实物校准</span><span class="scene-number">01 — 03</span></div>
+  </div>
+ </section>
+ <aside aria-label="车衣配置">
+  <div class="inspector-scroll">
+   <div class="inspector-head"><span class="eyebrow">EXISTING PRODUCT COLORS</span><span class="badge">云辇官方色卡</span></div>
+   <label class="vehicle-choice" for="vehicle-model"><span>选择车型</span><select id="vehicle-model" disabled><option value="car">Lamborghini Aventador</option><option value="coupe">Concept Coupe</option></select></label><div class="selected"><div><span id="color-en">LIME GREEN</span><h2 id="color-name">酸橙绿</h2><p id="finish-caption">基础色预览</p><button id="view-source" class="view-source">查看原始色卡 ↗</button></div></div><div class="photo-comparison"><span id="photo-compare-label">原图对照</span><button id="open-reference-photo" type="button" aria-label="放大原图"><img id="selected-card-photo" class="selected-card-photo" alt="" width="424" height="240"></button></div>
+   <section class="control-section lighting"><div class="label"><span><b>01</b>观察光线</span><span>LIGHTING</span></div><div class="lighting-modes"><button data-env="studio" aria-pressed="false"><svg class="icon"><use href="#i-studio"/></svg>摄影棚</button><button data-env="day" aria-pressed="true"><svg class="icon"><use href="#i-sun"/></svg>户外日光</button></div><label class="light-angle" for="light-angle"><span>高光方向</span><input type="range" id="light-angle" min="-180" max="180" value="0" step="1" aria-label="灯光角度"><output id="light-value">0°</output></label></section>
+   <section class="control-section color-section"><div class="label"><span><b>02</b>车衣颜色</span><span id="product-reference"></span></div><button id="open-catalog" class="open-catalog" aria-haspopup="dialog" aria-controls="catalog-dialog"><span>浏览完整色卡 <b id="catalog-total">404</b></span><span>↗</span></button><p class="quick-label">最近查看</p><div id="colors" class="swatches"></div></section>
+
+
+  </div>
+  <div class="inspector-bottom"><a id="studio-inquiry" class="inquiry" target="_top" href="/zh/contact/">咨询购买这款颜色 <span>↗</span></a><button id="save" class="save"><span>保存该款预览</span><svg class="icon"><use href="#i-download"/></svg></button><p id="status" class="status" role="status" aria-live="polite"></p><p class="footnote">颜色取自色卡照片，质感为模拟；请以实物为准。</p></div>
+ </aside>
+</main>
+<footer class="site-footer"><span>YUNNIAN <i>/</i> COLOR & MATERIAL</span><span id="library-summary">404 张云辇色卡</span><a href="../CREDITS.txt" target="_blank" rel="noopener" aria-label="模型来源与说明">素材与色彩说明 ↗</a></footer>
+<dialog id="catalog-dialog" aria-labelledby="catalog-title">
+ <div class="catalog-top"><div><span class="eyebrow">YUNNIAN / THE COLOR LIBRARY</span><h2 id="catalog-title">完整色卡<span id="catalog-count">404 张色卡</span></h2></div><button class="catalog-close" data-close-dialog="catalog-dialog" aria-label="关闭色库">×</button></div>
+ <div class="catalog-filters"><label class="catalog-search"><span>⌕</span><input id="catalog-search" type="search" placeholder="搜索颜色、编号或英文名称" aria-label="搜索色卡名称" autocomplete="off"></label><select id="catalog-effect" aria-label="按效果筛选"><option value="">全部效果</option></select><select id="catalog-family" aria-label="按色系筛选"><option value="">全部色系</option></select></div>
+ <div class="catalog-content"><div id="catalog-grid"></div><div id="catalog-empty" class="catalog-empty" hidden><p>没有找到匹配的色卡</p><button id="catalog-reset">清除筛选，查看全部</button></div><button id="catalog-more" class="catalog-more">继续浏览</button></div>
+ <div class="catalog-bottom"><span>图片取色预览，特殊光学与纹理效果未完整复现。</span><a href="https://wtuce.com/u/YUNNIAN/" target="_blank" rel="noopener">原始色卡目录 ↗</a></div>
+</dialog>
+<dialog id="card-dialog" aria-labelledby="card-title">
+ <div class="card-top"><div><span id="card-tag" class="eyebrow">原始色卡</span><h2 id="card-title"></h2></div><button class="catalog-close" data-close-dialog="card-dialog" aria-label="关闭原始色卡">×</button></div>
+ <img id="card-image" alt="原始色卡"><div class="card-meta"><span id="card-filename"></span><a id="card-origin" href="https://wtuce.com/u/YUNNIAN/" target="_blank" rel="noopener">打开来源图片 ↗</a></div><p id="card-note"></p><a id="card-order" class="save" target="_top" href="/zh/contact/">咨询购买这款颜色</a><button id="card-apply" class="save">查看车身示意</button>
+</dialog>
+<script type="module" src="app-v6.js"></script>
+</body></html>

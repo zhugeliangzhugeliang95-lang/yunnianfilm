@@ -1,0 +1,110 @@
+{
+ "architectural-safety-films": {
+  "title": "Architectural Films",
+  "zh": "建筑与安全膜",
+  "intro": "根据项目玻璃类型、安装位置和光学需求询样。",
+  "body": "\n    High-quality films for building glass and industrial applications, providing solar control and safety enhancement.\n  ",
+  "members": [],
+  "category": "Architectural film"
+ },
+ "headlight-specialty-films": {
+  "title": "Headlight Films",
+  "zh": "车灯专用膜",
+  "intro": "结合灯罩材质、效果与施工方式选型。",
+  "body": "\n    Protective and decorative films specifically designed for automotive lighting and specialty accents.\n  ",
+  "members": [
+   "photochromic-headlight-film"
+  ],
+  "category": "Headlight films"
+ },
+ "nano-ceramic-window-tint": {
+  "title": "Automotive Window Film",
+  "zh": "汽车隔热窗膜",
+  "intro": "按色深、具体型号和测试条件比较窗膜。",
+  "body": "\n    Advanced automotive window films with high heat rejection, UV400 protection, and superior clarity.\n  ",
+  "members": [
+   "ir-5g-tin-2mil",
+   "windshield-protection-film",
+   "chameleon-aurora-window-film",
+   "tpu-sunroof-ice-film",
+   "s99-ceramic-carbide",
+   "jr-coextruded-window-film",
+   "constant-color-tin",
+   "hs-ceramic-tin",
+   "cm-harmony-tin",
+   "ir-5g-tin-4mil",
+   "v-magnetron-tin",
+   "vk-safety-tin",
+   "top-pro-tin",
+   "top-uv-tin",
+   "magnetron-sputtered-tin"
+  ],
+  "category": "Window film"
+ },
+ "pet-color-change-wrap": {
+  "title": "Pet Color Change Wrap",
+  "zh": "PET 改色膜",
+  "intro": "查阅原厂色名称、YC 对照表与产品实拍。",
+  "body": "\n    <p>PET color-changing film: offers better value for money and is ideal for car owners who frequently change their car’s color within a year</p>\n  ",
+  "members": [
+   "pet-special-oem-wrap"
+  ],
+  "category": "PET color wraps"
+ },
+ "phosphorescent-film": {
+  "title": "Phosphorescent film",
+  "zh": "蓄光膜",
+  "intro": "老站介绍了采用蓄光材料的薄膜类别，可按发光颜色、余辉时间与施工基面咨询样品。",
+  "body": "\n    <p>YUNNIAN&#x27;s phosphorescent film uses rare earth extracts as its phosphorescent material and is non-toxic, non-radioactive, and chemically stable.</p>\n  ",
+  "members": [],
+  "category": ""
+ },
+ "professional-tools": {
+  "title": "Professional tools",
+  "zh": "专业施工工具",
+  "intro": "老站收录施工、检测和演示工具类别，具体品项可按作业需求询价。",
+  "body": "\n    <p>including, but not limited to, tools for construction, testing, and demonstration</p>\n  ",
+  "members": [],
+  "category": ""
+ },
+ "reflective-film": {
+  "title": "Reflective film",
+  "zh": "反光膜",
+  "intro": "目录提及 H5500 钻石级反光膜、双色警示膜、反光喷绘布和晶格反光贴，可按场景咨询对应型号。",
+  "body": "\n    <p><strong>H5500 Diamond Grade: </strong>Top-of-the-line series featuring an acrylic surface layer, available in highly visible colors such as white, fluorescent yellow-green, and fluorescent orange, designed for use on high-grade highway signage.<br><strong>Two-Tone Warning Film: </strong>Red-and-white or yellow-and-black diagonal/straight-striped reflective film, specifically designed for collision warning at toll booths, tunnel pillars, and railroad crossing posts.<br><strong>Reflective Flex Banner:</strong> Fabric-based material suitable for large-scale outdoor advertising prints.<br><strong>Crystal Grid Reflective Tape: </strong>PVC material compatible with UV printing, commonly used for vehicle reflective decals and temporary construction signs.</p>\n  ",
+  "members": [],
+  "category": ""
+ },
+ "tpu-color-ppf-color-change-wrap": {
+  "title": "TPU Color PPF",
+  "zh": "TPU 彩色车衣",
+  "intro": "从原厂色、液态金属、珠光、水晶和纹理中选择现成颜色。",
+  "body": "\n    Transformative vehicle wraps combining the protection of PPF with high-end liquid metal, matte, and gloss color finishes.\n  ",
+  "members": [
+   "solar-eclipse-tpu",
+   "liquid-metal-color-ppf",
+   "magic-pearl-color-ppf",
+   "diamond-laser-tpu",
+   "diamond-crystal-color-ppf",
+   "glossy-crystal-color-ppf",
+   "classic-color-ppf",
+   "carbon-fiber-ppf"
+  ],
+  "category": "Color PPF"
+ },
+ "tpu-paint-protection-film-ppf-2": {
+  "title": "TPU Paint Protection Film",
+  "zh": "漆面保护膜",
+  "intro": "按基材、卷材规格与应用区分透明车衣、APC 车衣和两轮车用膜。",
+  "body": "\n    High-performance aliphatic TPU films (Lubrizol/Covestro substrate) for ultimate invisible vehicle protection. Self-healing and anti-yellowing.\n  ",
+  "members": [
+   "motorcycle-ebike-protective-film",
+   "space-armor-apc-ppf",
+   "embedded-coating-tpu-ppf",
+   "lubrizol-sm301-ppf",
+   "basf-elastollan-ppf",
+   "covestro-ppf"
+  ],
+  "category": "Clear PPF"
+ }
+}

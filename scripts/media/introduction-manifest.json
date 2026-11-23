@@ -1,0 +1,127 @@
+{
+  "title": "YUNNIAN — Film in focus",
+  "style": "Quiet editorial product imagery",
+  "width": 1280,
+  "height": 720,
+  "fps": 24,
+  "authored_duration_seconds": 22,
+  "audio": "Intentionally silent; no audio stream",
+  "sources": [
+    {
+      "id": "brand",
+      "image": "color-library.webp",
+      "duration": 5.5,
+      "crop": [
+        0.0,
+        0.0,
+        1.0,
+        0.5625
+      ],
+      "zoom": [
+        1.015,
+        1.055
+      ],
+      "focus": [
+        0.52,
+        0.1,
+        0.48,
+        0.12
+      ],
+      "role": "YUNNIAN branded color sample wall",
+      "source": "https://www.ynfilm.com/",
+      "source_dimensions": [
+        1600,
+        1600
+      ],
+      "sha256": "8016d5987ca030f56863613ef47ca44f58c43b0438dbf3749960274c4dcb463d"
+    },
+    {
+      "id": "clear",
+      "image": "clear-ppf-application.webp",
+      "duration": 5.0,
+      "crop": [
+        0.0,
+        0.19,
+        1.0,
+        0.94
+      ],
+      "zoom": [
+        1.025,
+        1.075
+      ],
+      "focus": [
+        0.46,
+        0.48,
+        0.54,
+        0.55
+      ],
+      "role": "Existing TPU paint-protection application photo",
+      "source": "https://www.ynfilm.com/products/yunnian-premium-tpu-ppf-lubrizol-sm301-substrate",
+      "source_dimensions": [
+        1000,
+        1000
+      ],
+      "sha256": "503d2fb33daf1485717fafd31f6be79fa03b458baa17ab960e50222f47c87451"
+    },
+    {
+      "id": "color",
+      "image": "green-ppf.webp",
+      "duration": 5.5,
+      "crop": [
+        0.675,
+        0.266,
+        0.982,
+        0.604
+      ],
+      "zoom": [
+        1.015,
+        1.045
+      ],
+      "focus": [
+        0.5,
+        0.47,
+        0.54,
+        0.53
+      ],
+      "role": "Metallic Dark Green vehicle-panel detail cropped from existing product sheet",
+      "source": "https://www.ynfilm.com/products/tpu-color-ppf-classic-oem-color-series",
+      "source_dimensions": [
+        1763,
+        991
+      ],
+      "sha256": "17bf6dd4b2408ee53f30b725c9992ac407ecc67d5e3121e8546ab681cecbc6a5"
+    },
+    {
+      "id": "window",
+      "image": "window-film.webp",
+      "duration": 6.0,
+      "crop": [
+        0.0,
+        0.25,
+        1.0,
+        1.0
+      ],
+      "zoom": [
+        1.015,
+        1.06
+      ],
+      "focus": [
+        0.54,
+        0.5,
+        0.48,
+        0.53
+      ],
+      "role": "Existing Chameleon Aurora window-film product image; no UV or heat claim",
+      "source": "https://www.ynfilm.com/products/chameleon-aurora-series-window-film-dynamic-color-shift-high-heat-rejection",
+      "source_dimensions": [
+        840,
+        840
+      ],
+      "sha256": "9e06f82c4d789efd14897f9599c34b29761cb07efc2c2ec497b3fa84e8476840"
+    }
+  ],
+  "transition": "0.8-second smooth image dissolves; periodic return to opening",
+  "source_scope": "Existing YUNNIAN product images; not location footage and not a test demonstration",
+  "overlays": "None; localized brand and product copy is supplied by the homepage HTML",
+  "render_command": "python3 scripts/media/render-intro.py"
+}

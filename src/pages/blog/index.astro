@@ -1,0 +1,4 @@
+---
+import Layout from '../../layouts/Layout.astro';import BlogPreview from '../../components/BlogPreview.astro';import CTA from '../../components/CTA.astro';import {content} from '../../data/i18n';const {lang}=content(Astro.url);const z=lang==='zh';
+---
+<Layout title={z?'云辇博客与材料指南':'YUNNIAN journal & material guides'}><section class="container page-intro journal-intro"><span class="eyebrow">YUNNIAN / JOURNAL</span><h1>{z?'技术文章与材料指南':'The YUNNIAN Journal'}</h1><p>{z?'从材料结构到光学参数，从实物选色到施工养护。':'From film construction and optical data to sample selection and aftercare.'}</p></section><BlogPreview all/><CTA/></Layout>

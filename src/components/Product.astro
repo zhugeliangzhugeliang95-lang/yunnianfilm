@@ -1,0 +1,19 @@
+---
+import { content } from '../data/i18n';
+import SeriesPanel from './SeriesPanel.astro';
+import { catalogMeta } from '../data/catalog';
+
+const {lang,t,path,products}=content(Astro.url);
+const {product:p,index=0,compare=false}=Astro.props;
+const baseMeta=catalogMeta[p.slug];
+const finishText=p.specs.filter(([key])=>[t('Finishes'),t('Finish'),t('Topcoat')].includes(key)).map(([,v])=>v).join(' ');
+const familyFinishes=['gloss','matte','satin'].filter((f,i)=>new RegExp([f,['亮面','哑光','缎面'][i]].join('|'),'i').test(finishText));
+const thickness=p.specs.find(([k])=>[t('Thickness'),t('Listed thickness')].includes(k))?.[1].match(/\d+(?:\.\d+)?/g)||baseMeta?.thickness||[];
+const meta={finishes:familyFinishes,thickness};
+---
+<article class="product" data-slug={p.slug} data-finishes={meta?.finishes.join(' ')} data-thickness={meta?.thickness.join(' ')} data-category={p.category} data-search={`${p.name} ${p.materials} ${p.category} ${t(p.category)} ${p.originalName} ${p.searchTerms} ${p.options.join(' ')} ${p.optionLabels.join(' ')} ${p.specs.flat().join(' ')}`.toLowerCase()}>
+  <a class="product-image" href={path(`/products/${p.slug}/`)} aria-label={lang==='zh'?`了解${p.name}`:`Explore ${p.name}`}>{p.image ? <img src={`/images/${p.image}`} alt={lang==='zh'?`${p.name}产品展示`:`YUNNIAN ${p.name} product presentation`} loading="lazy" width="800" height="800" /> : <SeriesPanel product={p} compact/>}</a>
+  <div class="product-heading"><div><span class="eyebrow">{p.label}</span><h3><a href={path(`/products/${p.slug}/`)}>{p.name}</a></h3></div></div>
+  <p>{p.materials}</p><div class="product-quick-specs">{p.specs.filter(([key])=>[t('Thickness'),t('Listed thickness'),t('Roll size')].includes(key)).slice(0,2).map(([key,value])=><span><small>{key}</small>{value}</span>)}</div>
+  {compare && <button type="button" class="compare-toggle" data-compare={p.slug} aria-pressed="false" aria-label={lang==='zh'?`将${p.name}加入对比`:`Add ${p.name} to comparison`}><span aria-hidden="true">＋</span><span data-compare-label>{lang==='zh'?'加入对比':'Compare film'}</span></button>}
+</article>

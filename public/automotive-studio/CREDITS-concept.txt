@@ -1,0 +1,43 @@
+CONCEPT COUPE — V9 WEBSITE ASSET
+Prepared 2026-11-09.
+
+Website name: Concept Coupe / 概念轿跑
+This is a concept vehicle used for illustrative film-color and finish previews.
+It is not represented as a production vehicle from any automotive brand.
+
+BASE MODEL AND TEXTURES
+Car Concept / CarConcept
+Artist: Eric Chadwick
+Copyright (c) 2024 Darmstadt Graphics Group GmbH
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+License: https://creativecommons.org/licenses/by/4.0/
+Legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+Source: https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/CarConcept
+Asset license: https://github.com/KhronosGroup/glTF-Sample-Assets/blob/main/Models/CarConcept/LICENSE.md
+Attribution metadata: https://github.com/KhronosGroup/glTF-Sample-Assets/blob/main/Models/CarConcept/metadata.json
+Earlier model lineage: Unity Fan, free-concept-car-004, public domain CC0, as documented in the upstream README.
+
+MODIFICATIONS AND THIS WEBSITE COPY
+The existing YUNNIAN Surface Lab V1 adaptation removed original material-variant
+bindings, replaced paint and interior accent materials, removed the steering
+emblem and visible logo material assignments, normalized the model, and organized
+mesh collections. This website copies that existing adaptation byte for byte as
+models/yunnian-concept-coupe.glb; only the filename changes in this asset task.
+Source SHA-256 and website-copy SHA-256:
+8cc15b6d03de0d52930fa8f287a5a3ff6ef0d1d5a7684b9c123dc13ef6cf96b0
+
+The base vehicle geometry is not an original vehicle design by YUNNIAN.
+No endorsement by Eric Chadwick, Darmstadt Graphics Group GmbH, Unity Fan,
+Khronos, or any automotive brand is implied.
+
+LOGOS AND TRADEMARKS
+The upstream source contains separate Khronos and 3D Commerce logo notices.
+CC BY 4.0 for the model does not grant separate trademark rights.
+https://github.com/KhronosGroup/glTF-Sample-Assets/blob/main/LICENSES/LicenseRef-LegalMark-Khronos.txt
+The existing adaptation's visible logo material assignments were removed;
+original assets and notices remain preserved outside the hosted website.
+
+PREVIEW LIMITATIONS
+The model supports visual material studies. Color, gloss and finish previews are
+uncalibrated and do not establish measured film performance, exact product color,
+vehicle compatibility, a real customer installation, or vehicle specifications.

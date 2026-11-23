@@ -1,0 +1,710 @@
+[
+ {
+  "slug": "pet-special-oem-wrap",
+  "category": "PET color wraps",
+  "name": "Special OEM Color Wrap",
+  "label": "PET COLOR WRAPS",
+  "image": "legacy/4fa0c822fbdfe059.webp",
+  "materials": "PET-series body wrap",
+  "description": "The Special OEM reference chart pairs 26 named finishes with YC codes. Use the physical color catalog to choose a current sample for a vehicle wrap.",
+  "options": [
+   "Midnight Blue",
+   "Midnight British Green",
+   "Dorota Purple",
+   "Rosemary Purple",
+   "Galaxy Flash Purple",
+   "Super Glossy Flame Orange",
+   "Havana Black",
+   "Negroni Purple",
+   "Midsummer Purple",
+   "Twilight Purple",
+   "Vector Silver",
+   "Eve Purple",
+   "X Green",
+   "Water Gloss Purple (Flowing Purple)",
+   "Lucia Purple",
+   "Velvet Flower Purple",
+   "Lion Green",
+   "Rubellite Purple",
+   "Glazed Tower Red",
+   "Victoria Purple",
+   "Heavy Metal Graphite Black Gloss",
+   "Heavy Metal Graphite Gray Gloss",
+   "Francesca Green (Ferrari)",
+   "Interstellar Green (XPeng P7)",
+   "Guanshan Green (Buick)",
+   "Soul Red (Mazda)"
+  ],
+  "specs": [],
+  "source": "https://www.ynfilm.com/products/pet-oem-color-series-wrap"
+ },
+ {
+  "slug": "motorcycle-ebike-protective-film",
+  "category": "Two-wheel protection",
+  "name": "Motorcycle & E-Bike Protective Film",
+  "label": "TWO-WHEEL PROTECTION",
+  "image": "legacy/0be7c6eed748f801.webp",
+  "materials": "Two-wheel protective film rolls",
+  "description": "Four 0.6 m protective rolls for motorcycle and e-bike panels. Compare roll length, liner, adhesive coating and roll weight by model.",
+  "options": [
+   "YN15D8",
+   "YN10D-M",
+   "YN10T0",
+   "YN10D0"
+  ],
+  "specs": [
+   [
+    "Roll size",
+    "0.6 m × 50 m / 0.6 m × 100 m"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/motorcycle-ebike-protective-film"
+ },
+ {
+  "slug": "space-armor-apc-ppf",
+  "category": "Specialty PPF",
+  "name": "Space Armor APC PPF",
+  "label": "SPECIALTY PPF",
+  "image": "legacy/c7786134990a97a8.webp",
+  "materials": "Aliphatic polycarbonate (APC)",
+  "description": "Compare the Space Armor U75 and U90 by thickness. The source identifies an aliphatic polycarbonate substrate for both versions.",
+  "options": [
+   "Space Armor U75 - 7.5mil",
+   "Space Armor U90 - 9.0mil"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "7.5 / 9 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/space-armor-series-aliphatic-polycarbonate-apc-ppf"
+ },
+ {
+  "slug": "embedded-coating-tpu-ppf",
+  "category": "Clear PPF",
+  "name": "Integrated Coating TPU PPF",
+  "label": "CLEAR PPF",
+  "image": "legacy/23a11dd9c73d97fa.webp",
+  "materials": "Covestro aliphatic TPU",
+  "description": "The coating is integrated with the film in this co-extruded TPU series. Compare the two listed thicknesses and the roll specification.",
+  "options": [
+   "7.5mil",
+   "8.5mil"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "7.5 / 8.5 mil"
+   ],
+   [
+    "Roll size",
+    "1.52 m × 15 m"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/tpu-ppf-integrated-embedded-coating-series"
+ },
+ {
+  "slug": "solar-eclipse-tpu",
+  "category": "Color PPF",
+  "name": "Solar Eclipse White-to-Black TPU",
+  "label": "COLOR PPF",
+  "image": "legacy/344d2656772d4509.webp",
+  "materials": "Aliphatic TPU color film",
+  "description": "See the white-to-black appearance in the product gallery. Evaluate the transition on a physical film sample before specifying a full wrap.",
+  "options": [
+   "Request a series sample"
+  ],
+  "specs": [
+   [
+    "Roll size",
+    "1.52 m × 15 m"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/tpu-solar-eclipse-white-to-black"
+ },
+ {
+  "slug": "m60-carbide",
+  "category": "Window film",
+  "name": "M60 Ceramic Metal Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/55c50e184bdb3417.webp",
+  "materials": "Titanium carbide window film",
+  "description": "M60 Ceramic Metal includes 6 listed shades or models. Compare M7560HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "M7560HD",
+   "M5060HD",
+   "M3560HD",
+   "M2560HD",
+   "M1580HD",
+   "M0585HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/m60-nano-ceramic-metal-film-window-film-titanium-carbide"
+ },
+ {
+  "slug": "a95-magnetron-carbide",
+  "category": "Window film",
+  "name": "A95 Magnetron Metal Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/72bce9ee2b1ed375.webp",
+  "materials": "Titanium carbide window film",
+  "description": "A95 Magnetron Metal includes 6 listed shades or models. Compare AV70HD-CR and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "AV70HD-CR",
+   "AV50HD-CR",
+   "AV35HD-CR",
+   "AV25HD-CR",
+   "AV15HD-CR",
+   "AV05HD-CR"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/a95-nano-ceramic-magnetron-metal-window-film-titanium-carbide"
+ },
+ {
+  "slug": "s99-magnetron-carbide",
+  "category": "Window film",
+  "name": "S99 Magnetron Metal Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/4116548fae0c3242.webp",
+  "materials": "Titanium carbide window film",
+  "description": "S99 Magnetron Metal includes 6 listed shades or models. Compare S60100HD-CR and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "S60100HD-CR",
+   "S50100HD-CR",
+   "S35100HD-CR",
+   "S25100HD-CR",
+   "S15100HD-CR",
+   "S05100HD-CR"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/s99-nano-ceramic-magnetron-metal-window-film-titanium-carbide"
+ },
+ {
+  "slug": "c90-carbide",
+  "category": "Window film",
+  "name": "C90 Nano Ceramic Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/1bc8baba4c9a0c04.webp",
+  "materials": "Titanium carbide window film",
+  "description": "C90 Nano Ceramic includes 7 listed shades or models. Compare C7590 and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "C7590",
+   "C7090",
+   "C5090",
+   "C3590",
+   "C2590",
+   "C1590",
+   "C0590"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/c90-nano-ceramic-titanium-carbide-window-film-titanium-carbide"
+ },
+ {
+  "slug": "t90-carbide",
+  "category": "Window film",
+  "name": "T90 Nano Ceramic Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/af26643fbc12225a.webp",
+  "materials": "Titanium carbide window film",
+  "description": "T90 Nano Ceramic includes 9 listed shades or models. Compare T7090 and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "T7090",
+   "T6090",
+   "T5090",
+   "T3590",
+   "T2590",
+   "T1890",
+   "T1590",
+   "T0890",
+   "T0590"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/t90-nano-ceramic-titanium-carbide-window-film-titanium-carbide"
+ },
+ {
+  "slug": "m90-carbide",
+  "category": "Window film",
+  "name": "M90 Nano Ceramic Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/e3f227507a83d389.webp",
+  "materials": "Titanium carbide window film",
+  "description": "M90 Nano Ceramic includes 7 listed shades or models. Compare M7590HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "M7590HD",
+   "M7090HD",
+   "M5090HD",
+   "M3590HD",
+   "M2590HD",
+   "M1590HD",
+   "M0590HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/m90-nano-ceramic-titanium-carbide-window-film-titanium-carbide"
+ },
+ {
+  "slug": "a95-ceramic-carbide",
+  "category": "Window film",
+  "name": "A95 Nano Ceramic Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/5c1d273438de8e43.webp",
+  "materials": "Titanium carbide window film",
+  "description": "A95 Nano Ceramic includes 6 listed shades or models. Compare A7095HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "A7095HD",
+   "A5095HD",
+   "A3595HD",
+   "A2595HD",
+   "A1595HD",
+   "A0595HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/a95-nano-ceramic-titanium-carbide-window-film-titanium-carbide"
+ },
+ {
+  "slug": "s99-ceramic-carbide",
+  "category": "Window film",
+  "name": "S99 Nano Ceramic Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/ef8589c2dfef26bd.webp",
+  "materials": "Titanium carbide window film",
+  "description": "S99 Nano Ceramic includes 7 listed shades or models. Compare S70100HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "S70100HD",
+   "S60100HD",
+   "S50100HD",
+   "S35100HD",
+   "S25100HD",
+   "S15100HD",
+   "S05100HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/s99-nano-ceramic-titanium-carbide-window-film-titanium-carbide"
+ },
+ {
+  "slug": "jr-coextruded-window-film",
+  "category": "Window film",
+  "name": "JR Multilayer Co-Extrusion Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/d5ebf14fa2274a88.webp",
+  "materials": "Titanium nitride window film",
+  "description": "JR Multilayer Co-Extrusion includes 4 listed shades or models. Compare JR90 and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "JR90",
+   "JR70",
+   "JR40",
+   "JR20"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/jr-multi-layer-co-extrusion-chromic-refraction-window-film"
+ },
+ {
+  "slug": "constant-color-tin",
+  "category": "Window film",
+  "name": "Constant Color Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/bc39289cf444b97a.webp",
+  "materials": "Titanium nitride window film",
+  "description": "Constant Color includes 5 listed shades or models. Compare 9980恒色风光 and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "9980恒色风光",
+   "9902蓝色魔力",
+   "8035魅力沙龙",
+   "9920黑衣骑士",
+   "9921黑马王子"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/constant-color-series-tin-window-film"
+ },
+ {
+  "slug": "hs-ceramic-tin",
+  "category": "Window film",
+  "name": "HS Inorganic Nano Ceramic Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/afed5b2954c13b17.webp",
+  "materials": "Titanium nitride window film",
+  "description": "HS Inorganic Nano Ceramic includes 6 listed shades or models. Compare HS8080HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "HS8080HD",
+   "HS7590HD",
+   "HS4590HD",
+   "HS3590HD",
+   "HS1590HD",
+   "HS0590HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/hs-inorganic-nano-ceramic-tin-window-film"
+ },
+ {
+  "slug": "cm-harmony-tin",
+  "category": "Window film",
+  "name": "CM Harmony Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/1d1c413b32ee5eba.webp",
+  "materials": "Titanium nitride window film",
+  "description": "CM Harmony includes 7 listed shades or models. Compare GF-JR70 and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "GF-JR70",
+   "CM70",
+   "CM50",
+   "CM35",
+   "CM25",
+   "CM15",
+   "CM05"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/cm-harmony-series-nano-ceramic-window-film"
+ },
+ {
+  "slug": "ir-5g-tin-4mil",
+  "category": "Window film",
+  "name": "IR Ultra HD 5G · 4 mil Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/642e6f3a4e402d94.webp",
+  "materials": "Titanium nitride window film",
+  "description": "IR Ultra HD 5G · 4 mil includes 6 listed shades or models. Compare IR7595HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "IR7595HD",
+   "IR6595HD",
+   "IR5095HD",
+   "IR3595HD",
+   "IR1595HD",
+   "IR0595HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "4 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/ir-ultra-hd-tin-ceramic-window-film-5g-4mil"
+ },
+ {
+  "slug": "ir-5g-tin-2mil",
+  "category": "Window film",
+  "name": "IR Ultra HD 5G · 2 mil Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/d8b10046d5e2864e.webp",
+  "materials": "Titanium nitride window film",
+  "description": "IR Ultra HD 5G · 2 mil includes 6 listed shades or models. Compare IR7595HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "IR7595HD",
+   "IR6595HD",
+   "IR5095HD",
+   "IR3595HD",
+   "IR1595HD",
+   "IR0595HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/ir-ultra-hd-tin-ceramic-window-film-5g-2mil"
+ },
+ {
+  "slug": "v-magnetron-tin",
+  "category": "Window film",
+  "name": "V Magnetron · 2 mil Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/33bc4aae71f89f66.webp",
+  "materials": "Titanium nitride window film",
+  "description": "V Magnetron · 2 mil includes 6 listed shades or models. Compare V98HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "V98HD",
+   "V7095HD",
+   "V5095HD",
+   "V3595HD",
+   "V2095HD",
+   "V0595HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/v-series-ultra-hd-tin-magnetron-window-film-2mil"
+ },
+ {
+  "slug": "vk-safety-tin",
+  "category": "Window film",
+  "name": "VK Safety · 4 mil Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/7645ed6d4d15aadf.webp",
+  "materials": "Titanium nitride window film",
+  "description": "VK Safety · 4 mil includes 5 listed shades or models. Compare VK7095HD and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "VK7095HD",
+   "VK5095HD",
+   "VK3595HD",
+   "VK2095HD",
+   "VK0595HD"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "4 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/vk-ultra-hd-safety-tin-window-film-4mil"
+ },
+ {
+  "slug": "top-pro-tin",
+  "category": "Window film",
+  "name": "TOP-PRO Ceramic Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/d0c4b9818dff8a2a.webp",
+  "materials": "Titanium nitride window film",
+  "description": "TOP-PRO Ceramic includes 4 listed shades or models. Compare TOP70PRO and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "TOP70PRO",
+   "TOP40PRO",
+   "TOP20PRO",
+   "TOP10PRO"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/top-pro-heat-insulation-king-tin-window-film"
+ },
+ {
+  "slug": "top-uv-tin",
+  "category": "Window film",
+  "name": "TOP-UV Ceramic Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/8a5d071c7d8bc126.webp",
+  "materials": "Titanium nitride window film",
+  "description": "TOP-UV Ceramic includes 6 listed shades or models. Compare TOP-UV70 and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "TOP-UV70",
+   "TOP-UV50",
+   "TOP-UV30",
+   "TOP-UV25",
+   "TOP-UV15",
+   "TOP-UV05"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/top-uv-skin-care-nano-ceramic-window-film"
+ },
+ {
+  "slug": "magnetron-sputtered-tin",
+  "category": "Window film",
+  "name": "Magnetron Sputtered Window Film",
+  "label": "WINDOW FILM",
+  "image": "legacy/f99ffe3e71206047.webp",
+  "materials": "Titanium nitride window film",
+  "description": "Magnetron Sputtered includes 8 listed shades or models. Compare Three Silver Xuanyuan Purple 7295 and the other entries by visible light transmission, solar rejection and haze in the model table.",
+  "options": [
+   "Three Silver Xuanyuan Purple 7295",
+   "Three Silver Emperor Purple 7094",
+   "Three Silver Emperor Blue 5890",
+   "LX70",
+   "LX40",
+   "LX20",
+   "X40",
+   "V70"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "2 / 3 mil"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/magnetron-sputtering-tin-window-film"
+ },
+ {
+  "slug": "diamond-laser-tpu",
+  "category": "Color PPF",
+  "name": "Diamond Laser TPU Color PPF",
+  "label": "COLOR PPF",
+  "image": "legacy/b193725168f8d2fa.webp",
+  "materials": "Aliphatic TPU color film",
+  "description": "A diamond-laser appearance in the catalog’s white, silver and black references. View the material photos before requesting a physical color card.",
+  "options": [
+   "Diamond Laser White",
+   "Diamond Laser Silver",
+   "Diamond Laser Black"
+  ],
+  "specs": [
+   [
+    "Thickness",
+    "7.5 mil"
+   ],
+   [
+    "Roll size",
+    "1.52 m × 15 m"
+   ]
+  ],
+  "source": "https://www.ynfilm.com/products/tpu-color-ppf-diamond-laser-series"
+ },
+ {
+  "slug": "ultra-gloss-metallic-tpu",
+  "category": "Color PPF",
+  "name": "Ultra Gloss Metallic TPU Color PPF",
+  "label": "COLOR PPF",
+  "image": "",
+  "materials": "TPU color film",
+  "description": "A gloss metallic TPU series for full-body color changes. Use a physical card to identify the color and surface effect for your wrap.",
+  "options": [
+   "Request a series sample"
+  ],
+  "specs": [
+   [
+    "Application",
+    "Vehicle body panels"
+   ]
+  ],
+  "source": "https://yunnianfilms.1688.com/",
+  "storeTitle": "TPU汽车改色膜超亮金属系列亮面改色膜全车贴膜跨境直销工厂批发"
+ },
+ {
+  "slug": "quick-repair-hydrophobic-ppf",
+  "category": "Clear PPF",
+  "name": "Quick-Repair Hydrophobic TPU PPF",
+  "label": "CLEAR PPF",
+  "image": "",
+  "materials": "Clear TPU paint protection film",
+  "description": "A hydrophobic clear TPU range listed under quick-repair films. Ask for the selected sample’s repair conditions and coating specification.",
+  "options": [
+   "Request a series sample"
+  ],
+  "specs": [
+   [
+    "Application",
+    "Vehicle body panels"
+   ]
+  ],
+  "source": "https://yunnianfilms.1688.com/",
+  "storeTitle": "隐形车衣TPU快修秒修疏水漆面保护膜汽车防刮蹭厂家直销跨境批发"
+ },
+ {
+  "slug": "dream-series-tpu",
+  "category": "Color PPF",
+  "name": "Dream Series TPU Color PPF",
+  "label": "COLOR PPF",
+  "image": "",
+  "materials": "TPU color film",
+  "description": "This color-change series is listed for full-body wraps. Compare the actual card in daylight to choose the visual effect for your vehicle.",
+  "options": [
+   "Request a series sample"
+  ],
+  "specs": [
+   [
+    "Application",
+    "Vehicle body panels"
+   ]
+  ],
+  "source": "https://yunnianfilms.1688.com/",
+  "storeTitle": "TPU汽车改色膜梦幻系列改色车衣DIY个性全车贴膜工厂批发跨境直销"
+ },
+ {
+  "slug": "thermal-repair-hydrophobic-ppf",
+  "category": "Clear PPF",
+  "name": "Heat-Repair Hydrophobic TPU PPF",
+  "label": "CLEAR PPF",
+  "image": "",
+  "materials": "Clear TPU paint protection film",
+  "description": "A clear TPU series with a hydrophobic surface, listed for heat-assisted repair. Request the sample’s temperature conditions and aftercare instructions.",
+  "options": [
+   "Request a series sample"
+  ],
+  "specs": [
+   [
+    "Application",
+    "Vehicle body panels"
+   ]
+  ],
+  "source": "https://yunnianfilms.1688.com/",
+  "storeTitle": "TPU隐形车衣PPF增亮疏水热修复漆面保护膜厂家直销批发"
+ },
+ {
+  "slug": "wet-dry-install-tpu",
+  "category": "Color PPF",
+  "name": "Wet / Dry Installation TPU Color Film",
+  "label": "COLOR PPF",
+  "image": "",
+  "materials": "TPU color film",
+  "description": "A TPU color series listed for wet and dry application. Confirm the surface preparation and installation instructions with the selected sample.",
+  "options": [
+   "Request a series sample"
+  ],
+  "specs": [
+   [
+    "Application",
+    "Vehicle body panels"
+   ]
+  ],
+  "source": "https://yunnianfilms.1688.com/",
+  "storeTitle": "TPU汽车改色膜干湿两贴改色个性贴纸全车贴膜工厂批发跨境直销"
+ }
+]

@@ -1,0 +1,81 @@
+YUNNIAN — Lamborghini Aventador wrap study V2
+Prepared 2026-11-07 in Blender 4.5.9 LTS.
+
+VEHICLE SOURCE
+Model retrieved from:
+https://github.com/rendercodeninja/automotive-configurator
+File: src/static/assets/aventador/model.glb
+Repository author: Sethu / RendercodeNinja. Repository software license: MIT, copyright 2018 Sethu (see source/REPOSITORY-LICENSE.txt).
+The repository README states that vehicle models were downloaded from tf3dm.com and optimized in Blender, and describes the project as a demo. The original model author and separate commercial model license are not established by that README. The repository code license is not treated as proof of independent commercial vehicle-asset rights.
+
+This delivery is a local prototype for model/material evaluation. Commercial website publication has not been performed; the original model rights need verification before commercial publication. Lamborghini names, emblems and vehicle design are not original YUNNIAN work; no affiliation or endorsement is implied.
+
+CHANGES
+Converted and organized in Blender; normalized orientation/scale; removed redundant alternate rims and baked shadow plane; rebuilt body wrap materials, dark glazing, graphite wheels, studio lighting, cameras and alternative material scenes. The underlying Aventador geometry was reused, not modeled from scratch.
+The curved sample panel, demonstration materials and viewer interface were authored for this task.
+The V2–V5 website and Blender project use 8 colors x 3 finishes as demonstration presets. These are not measured product colors or evidence of physical PPF performance. Website V6 uses the supplied catalogue described below.
+
+VIEWER
+Three.js 0.180.0 — MIT License, see viewer/THREE-LICENSE.txt.
+The viewer renders exported GLB files; it does not stream Blender. Native Cycles and browser images can differ.
+
+V3 REFINEMENT — 2026-11-07
+Continuous body surface normals were rebuilt after welding coincident export vertices while preserving UVs and hard creases. Original interior maps were restored. Window transmission, separate coating response, neutral studio lighting, contact shadows and GTAO were added. Vehicle geometry remains based on the original asset.
+
+HDR ENVIRONMENT
+Studio Small 09 — Sergej Majboroda / Poly Haven
+https://polyhaven.com/a/studio_small_09
+License: CC0, verified at https://polyhaven.com/license
+2K HDR downloaded from Poly Haven; packed into the V3 Blender project and served locally by the viewer.
+
+REALTIME RENDERING
+Three.js r180 HDRLoader, EffectComposer, GTAOPass, OutputPass and supporting modules — MIT. Contact-shadow implementation adapted from the official Three.js example:
+https://github.com/mrdoob/three.js/blob/r180/examples/webgl_shadow_contact.html
+Realtime screen-space transmission/occlusion approximates optical effects; it is not equivalent to the native Cycles path-traced render. Neither view is product-color calibrated.
+
+V4 SURFACE REFINEMENT — 2026-11-07
+Authored procedural physical-scale surface normals/roughness and separate clearcoat response; added rectangular softbox lights, continuous cyclorama, blurred low-opacity planar floor reflection, close-up camera and lighting-direction control. Native Blender adds coating micro-bump to 24 material presets and two close-up scenes (7 scenes total). Existing V3 vehicle geometry is reused.
+Three.js r180 RectAreaLightUniformsLib, RectAreaLightTexturesLib, Reflector and FXAAShader are vendored from official Three.js sources under the existing MIT license. Planar floor reflection is a real-time approximation.
+The experimental browser path tracer is archived under revisions/v4-research and is not used in the delivered viewer.
+
+V5 WEBSITE DESIGN — 2026-11-07
+Redesigned typography, layout, swatches, material controls, lighting contrast, focus view and responsive mobile workspace. The source vehicle remains unchanged, and the native downloadable project remains Blender V4.
+Display font: Barlow Condensed SemiBold, Jeremy Tribby / Barlow Project. SIL Open Font License 1.1; see viewer/fonts/OFL.txt.
+Font source: https://github.com/google/fonts/tree/main/ofl/barlowcondensed
+
+
+V6 YUNNIAN CATALOGUE — 2026-11-07
+User-supplied source: https://wtuce.com/u/YUNNIAN/
+Page title: 云辇TPU电子色卡 - 微图册.
+Imported all 404 visible JPEG colour-card files in the supplied directory. This is a file count, not a verified count of unique product colours or current stock. Variant markers and source filenames are preserved. Hidden folders were not imported. Original photos and thumbnails are served locally; source URLs remain available from each card.
+
+The 390 enabled base-colour previews use an uncalibrated RGB estimate sampled from the wrap roll in each source photograph. No spectrophotometer, measured spectral data, physical sample matching or camera/light colour calibration was available. A single RGB value does not reproduce multi-angle colour shift, pearl flakes, texture or retroreflection. The 11 carbon/texture and 3 reflective entries remain original-image-only in this version. Chrome and metallic parameters are approximate preview choices. Effect and finish groups are inferred from filenames for browsing, not a verified manufacturer taxonomy. Unmarked finishes default to a gloss simulation; manual finish controls are exploratory and do not establish product availability.
+
+The downloadable native Blender project remains V4 with its previous demonstration materials; the catalogue integration is currently in the website only. Source metadata and the importer report are saved under source/yunnian-catalog/.
+
+WEBSITE INTEGRATION — 2026-11-09
+The user requested integration of this existing viewer into the YUNNIAN website. The model geometry is unchanged. Added English interface, enquiry links, viewport-aware rendering, independent PET concept-color mode, WebP color cards and WebP screenshot export. Original source attribution and the unverified vehicle-asset rights status above are retained; no affiliation or endorsement is claimed.
+
+V9 additional vehicle: Concept Coupe. See CREDITS-concept.txt for CC-BY 4.0 attribution and changes.
+
+V14 WEBSITE MATERIAL STUDY — 2026-11-12
+The website now has 404 fixed catalog references and 402 enabled previews; no free color or finish combinations are offered. The thin flexible sample and release liner are newly authored parametric meshes, replacing the previous curved sample panel in the current viewer. The PPF layers use separate thin curved sheets as a generic, not-to-scale diagram, with alpha transparency for legibility rather than measured transmission. Their displayed thicknesses and pattern scales are illustrative.
+The body keeps its existing geometry/normals. Carbon uses source-photo patterns with smoothly blended world-space projection. The default neutral appearance lighting and alternate HDR observation mode are display approximations; RGB references remain uncalibrated source-photo estimates. No exact multi-angle color-shift or retroreflection measurement is claimed. The downloadable native Blender project remains V4.
+
+V15 OUTDOOR LIGHTING — 2026-11-12
+Rooftop Day HDRI — Greg Zaal / Poly Haven, CC0.
+https://polyhaven.com/a/rooftop_day ; https://polyhaven.com/license
+4K on desktop, 2K on small screens. These are linear-radiance lighting data,
+not ordinary product images; product photos and exported looks remain WebP.
+Three.js r180 GroundedSkybox.js is vendored from the official MIT source.
+The captured world supplies the backdrop and all material reflections. Bright
+sun radiance is separated from the IBL into a shadow-casting directional light.
+HDR ground projection and realtime shadows are approximations, not a full 3D
+reconstruction of the location. No Forza code, shaders, assets or trademarks
+are included in the website. Playground's public lighting/material talks were
+used as research references, not a claim of game-engine parity.
+Body-panel normals are area-weighted with a crease threshold; the hood receives
+bounded cubic surface interpolation while its boundary edges remain intact.
+The original car asset, product colors, catalogue references and finish choices
+are retained. Metallic grain is illustrative, not measured flake geometry.
+The downloadable native Blender project remains V4.

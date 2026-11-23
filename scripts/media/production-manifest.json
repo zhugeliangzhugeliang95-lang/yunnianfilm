@@ -1,0 +1,71 @@
+{
+  "title": "YUNNIAN user-supplied presentation video",
+  "source": {
+    "source_type": "Video supplied by the user for their website",
+    "duration_seconds": 14.048005,
+    "unchanged": true
+  },
+  "provenance_note": "The user supplied this recording. Its use does not independently establish factory ownership, production capacity, certifications or performance.",
+  "editing": {
+    "full_film": "Lossless stream copy of complete original video and original audio, with fast-start MP4 metadata",
+    "background": "Complete original video bitstream, no audio stream, fast-start MP4; no speed change, trim, crop, color change or synthetic scene",
+    "loop_note": "Prepared for repeated homepage playback. The original end-to-start edit is retained; no claim of a seamless visual loop."
+  },
+  "outputs": [
+    {
+      "path": "public/videos/yunnian-production-film.mp4",
+      "size_bytes": 2962454,
+      "duration_seconds": 14.048005,
+      "video_duration_seconds": 14.033333,
+      "width": 1280,
+      "height": 720,
+      "fps": "30/1",
+      "video_codec": "h264",
+      "pixel_format": "yuv420p",
+      "video_frames": 421,
+      "audio_streams": 1,
+      "audio_codec": "aac",
+      "audio_sample_rate": 44100,
+      "audio_channels": 2,
+      "audio_duration_seconds": 14.048005,
+      "faststart": true
+    },
+    {
+      "path": "public/videos/yunnian-production-loop.mp4",
+      "size_bytes": 2824180,
+      "duration_seconds": 14.033333,
+      "video_duration_seconds": 14.033333,
+      "width": 1280,
+      "height": 720,
+      "fps": "30/1",
+      "video_codec": "h264",
+      "pixel_format": "yuv420p",
+      "video_frames": 421,
+      "audio_streams": 0,
+      "audio_codec": null,
+      "audio_sample_rate": null,
+      "audio_channels": 0,
+      "audio_duration_seconds": null,
+      "faststart": true
+    }
+  ],
+  "poster": {
+    "path": "public/videos/yunnian-production-poster.webp",
+    "source_time_seconds": 2.0,
+    "width": 1280,
+    "height": 720,
+    "format": "WebP",
+    "size_bytes": 59260,
+    "description": "Equipment scene extracted from the supplied recording"
+  },
+  "validation": {
+    "full_decode": "Both MP4 files passed complete decode without errors",
+    "decoded_video_sha256_equal_to_source": true,
+    "full_film_decoded_audio_sha256_equal_to_source": true,
+    "original_sha256_unchanged": true,
+    "poster_review": "Inspected 1.5, 1.8 and 2.0 s source frames; 2.0 s selected for the equipment view",
+    "listening_review": "Not performed; audio preserved without modification. Decoding and hashes are technical checks, not listening approval.",
+    "continuous_playback_review": "Not performed by this resource-preparation task; final homepage playback remains the integration check."
+  },
+  "reproduce": "python3 scripts/media/prepare-production-film.py --source /path/to/the/supplied-video.mp4"
+}

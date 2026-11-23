@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SourceText from '../components/SourceText.astro';
+import {content} from '../data/i18n';
+import archive from '../data/company-archive.json';
+import details from '../data/source-product-details.json';
+import '../styles/source-library.css';
+const {lang,path}=content(Astro.url),z=lang==='zh';
+const sections=[
+ ['shipping-policy','Shipping & tracking','运输与跟踪','The original shop describes preparation, carrier charges, tracking and import duties. Wholesale freight is quoted by destination.','原商城说明备货、承运费用、包裹追踪与进口税费。批发运费按目的地另行报价。'],
+ ['refund-policy','Returns & refunds','退货与退款','The original store describes a seven-day return request, the condition of the item and how to contact the team.','原商城列明收货后七天内提出退货申请，并说明商品状态、凭证及联系流程。'],
+ ['terms-of-service','Original store terms','原商城服务条款','Review the terms for orders placed through the original store, including ordering, payment and fulfillment.','可查阅原商城下单时适用的条款，涵盖订单、支付与履约。'],
+ ['privacy-policy','Original store privacy policy','原商城隐私政策','Read how the original Shopify store describes the use of account, order and browsing information.','查阅原 Shopify 商城关于账户、订单及浏览信息的处理说明。'],
+ ['contact-information','Merchant contact details','商家联系信息','Find the original store’s business contact details.','查看原商城公布的商家联系方式。']
+];
+const docs=Array.from(new Map(Object.values(details).flat(2).flatMap(r=>r.documents).map(d=>[d.path,d])).values());
+const faqTopics=['包装方式','付款条件','交货条款','备货时间','样册与快递','出货检测','长期合作','产品与销售市场'];
+const faqZh=['原商城介绍使用品牌定制纸箱。','原商城列示确认订单后以电汇预付。','原商城列示 EXW、FOB、CFR、CIF 和 DDU 等交货方式。','原商城列示一般在收到预付款后 3 至 5 个工作日内备货，实际时间随品项与数量而变。','原商城提及样册及由客户承担的快递费用。','原商城描述了出货前检测安排。可向业务团队确认本次订单的验收项目。','原商城介绍了与采购客户长期合作的原则。','原商城介绍了公司的出口业务和客户服务。'];
+const labelReport=(p:string)=>p.includes('PET-WINDOW')?(z?'PET 窗膜':'PET window film'):p.includes('COLOR')?(z?'TPU 彩色车衣':'TPU color PPF'):(z?'TPU 漆面保护膜':'TPU paint protection film');
+---
+<Layout title={z?'采购、检测报告与原商城订单':'Buyer services, test reports & original store orders'}>
+ <header class="container page-intro"><span class="eyebrow">YUNNIAN / SERVICE</span><h1>{z?'采购与订单服务':'Buyer services'}</h1><p>{z?'为选材、索样和旧订单找到对应资料。本次批发采购的供货、交期和售后，以双方确认的书面报价为准。':'Find sample reports, ordering information and support for purchases from our original store. The written quotation sets the terms for each new wholesale order.'}</p></header>
+ <section class="container source-section"><div class="library-title"><h2 id="reports">{z?'样品检测报告':'Sample test reports'}</h2></div><p class="source-intro">{z?'按样品类别和报告编号查阅原件。每份 PDF 列有送检样品、检测日期和适用范围。':'Choose the material and report number. Each PDF identifies the sample submitted, its test date and scope.'}</p><ul class="source-list">{docs.map(doc=><li><a href={doc.path} target="_blank" rel="noopener">{labelReport(doc.path)} · {doc.path.includes('REACH')?'REACH':'RoHS'} ↗</a><p>{doc.path.match(/(?:CAN|TSN)AUTO\d+/)?.[0]} · PDF</p></li>)}</ul></section>
+ <section class="container source-section"><div class="library-title"><h2>{z?'原商城购买说明':'Original store policies'}</h2></div>{sections.map(([key,en,zh,desc,descZh])=><div id={key} class="service-policy"><h3>{z?zh:en}</h3><p class="library-note">{z?descZh:desc}</p><details class="library-fold"><summary>{z?'阅读原版英文条款':'Read full store policy'}</summary><div lang="en"><SourceText html={archive.policies[key]}/></div></details></div>)}
+ <div id="privacy-choices"><h3>{z?'隐私选择':'Privacy choices'}</h3><div class="service-links"><a href={path('/privacy/')}>{z?'本网站的隐私说明':'This website’s privacy policy'}</a><a href="https://www.ynfilm.com/pages/data-sharing-opt-out">{z?'原商城隐私选择':'Original store privacy choices'} ↗</a></div></div></section>
+ <section class="container source-section"><div class="library-title"><h2>{z?'原商城采购问答':'Ordering questions'}</h2></div>{archive.faq.map(([q,a],i)=><details class="library-fold"><summary>{z?faqTopics[i]:q}</summary><p>{z?faqZh[i]:a}</p>{z&&<p lang="en">{a}</p>}</details>)}</section>
+ <section class="container source-section" id="past-orders"><div class="library-title"><h2>{z?'查找以往订单':'Find a previous order'}</h2></div><p class="source-intro">{z?'曾在原商城下单的客户，可通过原账户查询订单。如需跟进以往报价，请准备询价编号或产品型号。':'Use your original customer account for orders placed through our previous store. For a quotation follow-up, have your quote reference or film model ready.'}</p><div class="service-links"><a href="https://www.ynfilm.com/account">{z?'原商城客户账户':'Original store account'} ↗</a><a href="https://www.ynfilm.com/pages/quotes-history">{z?'原商城报价记录入口':'Original quote history'} ↗</a><a href={path('/contact/')}>{z?'联系采购团队':'Contact our team'} ↗</a></div></section>
+</Layout>
+<style>.service-policy{margin-bottom:1.8rem}.service-policy h3,#privacy-choices h3{font-size:1.35rem;line-height:1.3}</style>

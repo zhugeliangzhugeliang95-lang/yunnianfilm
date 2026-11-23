@@ -1,0 +1,13 @@
+---
+import {content} from '../data/i18n';
+import Layout from '../layouts/Layout.astro';
+import VideoHero from '../components/VideoHero.astro';
+import HomeCollections from '../components/HomeCollections.astro';
+import HomeColors from '../components/HomeColors.astro';
+import FilmLab from '../components/FilmLab.astro';
+import SampleJourney from '../components/SampleJourney.astro';
+import BlogPreview from '../components/BlogPreview.astro';
+import CTA from '../components/CTA.astro';
+const {t}=content(Astro.url);
+---
+<Layout dark title={t('Paint protection & automotive film')}><VideoHero/><HomeCollections/><HomeColors/><FilmLab/><SampleJourney/><BlogPreview/><CTA/></Layout>

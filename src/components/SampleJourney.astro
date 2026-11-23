@@ -1,0 +1,16 @@
+---
+import { content } from '../data/i18n';
+import { editorial } from '../data/editorial';
+const { lang,path }=content(Astro.url);
+const { L }=editorial(lang);
+const steps=[
+  [L('Choose your direction', '明确产品方向'), L('Choose an application and shortlist existing colors or the specifications you need.', '先确定应用场景，再挑选现有颜色或所需规格，整理成一份清晰的需求。')],
+  [L('Feel the material', '亲手评估材料'), L('Review physical swatches and film samples with your installation team.', '与施工团队一起检查实物色卡，并开展样品评估。')],
+  [L('Build the next step', '确认合作细节'), L('Confirm specifications, packaging and quotation before placing an order.', '确认产品规格、包装与报价，再推进采购。')],
+];
+---
+<section class="sample-journey section container">
+  <div class="section-heading"><div><span class="eyebrow">04 / {L('FROM FIRST SAMPLE TO NEXT ORDER', '从一份样品，到下一次合作')}</span><h2>{L('Start small.', '从样品开始。')}<br />{L('Get it right.', '把细节做好。')}</h2></div><a class="button button-dark" href={path('/contact/?intent=Sample%20request')}>{L('Build your sample request', '准备样品询价')} <span aria-hidden="true">↗</span></a></div>
+  <ol class="sample-steps">{steps.map(([title,description],i)=><li><span class="sample-step-index">0{i+1}</span><div><h3>{title}</h3><p>{description}</p></div><span class="step-mark" aria-hidden="true">{i===2?'↗':'→'}</span></li>)}</ol>
+  <div class="sample-footnote"><span>{L('Sample availability, charges and courier costs are confirmed before dispatch.', '样品供应、费用及快递费用将在寄出前确认。')}</span><a href={path('/oem/')}>{L('Your brand. Our cooperation.', '您的品牌，我们共同打造。')} ↗</a></div>
+</section>

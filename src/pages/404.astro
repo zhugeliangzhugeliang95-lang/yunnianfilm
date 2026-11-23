@@ -1,0 +1,7 @@
+---
+import { content } from '../data/i18n';
+
+import Layout from '../layouts/Layout.astro';
+const {t,path,products}=content(Astro.url);
+---
+<Layout title={t("Page not found")}><section class="container page-intro missing"><span class="eyebrow">{t("404 / A DIFFERENT DIRECTION")}</span><h1>{t("Let’s get you")}<br />{t("back on track.")}</h1><p>{t("This page could not be found.")}</p><a href={path("/products/")} class="button button-accent">{t("Explore our films ↗")}</a></section></Layout>

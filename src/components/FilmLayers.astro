@@ -1,0 +1,16 @@
+---
+import {content} from '../data/i18n';import {editorial} from '../data/editorial';
+const {lang}=content(Astro.url);const {L}=editorial(lang);
+const layers=[
+ {title:L('Protective cap','表面保护膜'),small:L('HANDLING','运输与施工准备'),body:L('Some constructions include a removable surface film. Ask whether it is included and when the product instructions require it to be removed.','部分结构会带有可移除的表面保护膜。请确认所选产品是否包含这一层，以及施工说明要求的移除时机。')},
+ {title:L('Functional topcoat','功能涂层'),small:L('THE SURFACE','表面特性'),body:L('The outer functional coating is part of the finish specification. Confirm the coating type and the care instructions for the selected variant.','外侧功能涂层是表面规格的一部分。选型时应确认具体涂层类型及该型号的养护说明。')},
+ {title:L('TPU film','TPU 基膜'),small:L('THE CORE','主体材料'),body:L('The TPU film forms the main body of this type of PPF. Compare the named substrate, thickness definition and the product-specific technical data.','TPU 基膜构成此类车衣的主体。请比较明确的基材型号、厚度口径及对应产品的技术资料。')},
+ {title:L('Adhesive','胶粘层'),small:L('THE BOND','与表面贴合'),body:L('The adhesive connects the film to the intended surface. Check surface compatibility, preparation and application instructions before installation.','胶粘层使膜材与目标表面贴合。施工前应确认表面适配、准备步骤和对应的施工说明。')},
+ {title:L('Release liner','离型膜'),small:L('BEFORE APPLICATION','贴合之前'),body:L('The liner covers the adhesive before application. It is removed as directed during installation and is not part of the final installed film.','离型膜在贴合前覆盖胶面，施工时按说明移除，不属于最终保留在车身上的膜层。')}
+];
+---
+<section class="container section film-layers" aria-labelledby="layers-title"><div class="section-heading"><div><span class="eyebrow">03 / {L('UNDERSTAND THE LAYERS','走近膜层结构')}</span><h2 id="layers-title">{L('More than','不止是一张膜。')}<br />{L('a single layer.','每一层，各司其职。')}</h2></div><p class="heading-description">{L('Select a layer to understand the questions behind the material.','点击一个膜层，了解材料背后值得确认的问题。')}</p></div><div class="layers-layout"><div class="layers-stack" role="group" aria-label={L('Select a PPF layer','选择车衣膜层')}>{layers.map((layer,i)=><button class:list={['layer-plane',`layer-plane-${i}`]} type="button" data-film-layer={i} style={`--layer:${i}`} aria-controls={`layer-note-${i}`} aria-pressed={i===2?'true':'false'}><span>0{i+1}</span><strong>{layer.title}</strong><span aria-hidden="true">↗</span></button>)}</div><div class="layers-explanation" aria-live="polite">{layers.map((layer,i)=><div id={`layer-note-${i}`} class="layer-note" hidden={i!==2}><span class="eyebrow">0{i+1} / {layer.small}</span><h3>{layer.title}</h3><p>{layer.body}</p></div>)}<p class="layer-footnote">{L('Simplified structure for general understanding. Layer composition, order and thickness depend on the exact product. Diagram is not to scale.','通用结构简图，帮助理解材料。具体膜层组成、顺序与厚度以所选产品资料为准，示意图不按比例绘制。')}</p></div></div></section>
+<script>
+ const layerButtons=document.querySelectorAll<HTMLButtonElement>('[data-film-layer]');
+ layerButtons.forEach(button=>button.addEventListener('click',()=>{const current=button.dataset.filmLayer;layerButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));document.querySelectorAll<HTMLElement>('.layer-note').forEach((note,i)=>note.hidden=String(i)!==current);}));
+</script>

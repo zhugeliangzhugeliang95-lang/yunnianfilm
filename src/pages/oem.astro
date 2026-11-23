@@ -1,0 +1,13 @@
+---
+import { content } from '../data/i18n';
+
+import Layout from '../layouts/Layout.astro';import CTA from '../components/CTA.astro';
+import SampleJourney from '../components/SampleJourney.astro';
+const {t,path}=content(Astro.url);
+---
+<Layout title={t("OEM & distribution partnerships")}>
+  <section class="container page-intro"><span class="eyebrow">{t("OEM / ODM & TRADE COOPERATION")}</span><h1>{t("Your name.")}<br />{t("Your next chapter.")}</h1><p>{t("Build a film range around your customers.")}<br />{t("Let’s discuss materials, branding and the details that matter.")}</p></section>
+  <section class="container editorial-split"><img src="/images/install.webp" alt={t("Film manufacturing equipment presented by YUNNIAN")} width="800" height="533"/><div><span class="eyebrow">{t("FOR BRAND OWNERS & DISTRIBUTORS")}</span><h2>{t("Start with the")}<br />{t("right conversation.")}</h2><p>{t("Whether you are expanding an installation business or developing your own film brand, a clear brief helps us make a relevant proposal.")}</p><a class="button button-accent" href={path("/contact/?intent=OEM%20cooperation")}>{t("Discuss your project ↗")}</a></div></section>
+  <section class="section container"><div class="steps"><div><span>{t("01 / MATERIAL")}</span><h3>{t("Define the range")}</h3><p>{t("Tell us your application, substrate preference, thickness, finishes and target market.")}</p></div><div><span>{t("02 / IDENTITY")}</span><h3>{t("Discuss your brand")}</h3><p>{t("Share your logo and packaging requirements. We will confirm the available customization options.")}</p></div><div><span>{t("03 / SUPPLY")}</span><h3>{t("Confirm the details")}</h3><p>{t("Evaluate samples and agree on quantities, specifications, pricing, lead times and shipping terms.")}</p></div></div></section>
+  <section class="container brief-section"><span class="eyebrow">{t("YOUR PROJECT BRIEF")}</span><h2>{t("Help us understand")}<br />{t("what you are building.")}</h2><div class="brief-grid"><p>{t("01 — Country and customer type")}</p><p>{t("02 — Film categories and finishes")}</p><p>{t("03 — Estimated order quantity")}</p><p>{t("04 — Packaging and branding needs")}</p><p>{t("05 — Sample evaluation requirements")}</p><p>{t("06 — Delivery destination and timing")}</p></div><p class="small-note">{t("MOQ, customization availability and lead times are quoted for each project.")}</p></section><SampleJourney /><CTA />
+</Layout>

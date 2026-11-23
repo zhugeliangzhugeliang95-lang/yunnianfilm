@@ -1,0 +1,94 @@
+---
+import { content } from '../data/i18n';
+import {categories,categoryUrl} from '../data/categories';
+
+import '../styles/global.css';
+import '../styles/design-v3.css';
+import '../styles/innovation.css';
+import '../styles/density-v4.css';
+import '../styles/catalog-v5.css';
+import '../styles/categories-v6.css';
+import '../styles/experience-v7.css';
+import '../styles/refinement-v9.css';
+import '../styles/refinement-v10.css';
+import '../styles/color-catalog.css';
+import '../styles/selection-v16.css';
+import SocialDock from '../components/SocialDock.astro';
+import CustomerService from '../components/CustomerService.astro';
+
+const {lang,t,path,company,products}=content(Astro.url);
+const {title='Automotive film, thoughtfully selected.',description='Explore YUNNIAN paint protection film, color PPF and automotive window film. Product selection, OEM cooperation and wholesale inquiries.',dark=false} = Astro.props;
+const current = Astro.url.pathname.replace(/^\/zh(?=\/)/, '');
+const counterpart = current === '/404/' || current === '/404.html' ? '/404.html' : current;
+const chinesePath = counterpart === '/404.html' ? '/zh/404/' : `/zh${counterpart}`;
+const canonicalPath = lang === 'zh' ? chinesePath : counterpart;
+---
+<!doctype html>
+<html lang={lang==='zh'?'zh-CN':'en'}>
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t(title)} | YUNNIAN</title><meta name="description" content={t(description)} />
+    <link rel="canonical" href={new URL(canonicalPath, Astro.site)} /><meta property="og:image" content={new URL('/images/hero.webp', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(counterpart, Astro.site)} />
+    <link rel="alternate" hreflang="zh-CN" href={new URL(chinesePath, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(counterpart, Astro.site)} />
+    <meta property="og:locale" content={lang==='zh'?'zh_CN':'en_US'} />
+    <meta property="og:locale:alternate" content={lang==='zh'?'en_US':'zh_CN'} />
+    <meta name="robots" content="noindex,nofollow" /><meta name="theme-color" content="#141615" />
+    <meta property="og:title" content={`${t(title)} | YUNNIAN`} /><meta property="og:description" content={t(description)} /><meta property="og:type" content="website" />
+    <link rel="icon" href="/yunnian-favicon-v10.webp" type="image/webp" />
+    {current==='/' && <link rel="preload" as="image" href="/videos/yunnian-production-poster.webp" />}
+  </head>
+  <body class:list={[dark && 'dark-header']}>
+    <div class="reading-progress" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">{t("Skip to content")}</a>
+    <header class="header">
+      <a class="logo" href={path('/')} aria-label={t('YUNNIAN home')}><img class="brand-always-white" src="/images/yunnian-logo-white.webp" width="200" height="50" alt="YUNNIAN"/></a>
+      <nav id="navigation" aria-label={t("Main navigation")}>
+        <details class="nav-explore nav-films"><summary aria-current={current.startsWith('/products')?'page':undefined}>{t("Our films")} <span aria-hidden="true">+</span></summary><div class="nav-explore-panel"><a href={path('/products/')}>{lang==='zh'?'全部产品':'All films'} <span aria-hidden="true">↗</span></a>{categories.map(c=><a href={path(categoryUrl(c.key))}>{c[lang]} <small>{products.filter(p=>p.category===c.key).length}</small></a>)}</div></details>
+        <details class="nav-explore"><summary aria-current={['/film-guide/','/color-studio/','/applications/','/resources/','/film-lab/','/blog/'].includes(current)?'page':undefined}>{lang==='zh'?'探索更多':'Explore'} <span aria-hidden="true">+</span></summary><div class="nav-explore-panel">
+          <a href={path('/film-lab/')}>{lang==='zh'?'3D 材料工作室':'3D material studio'} <span aria-hidden="true">↗</span></a>
+          <a href={path('/blog/')}>{lang==='zh'?'博客与指南':'Journal & guides'} <span aria-hidden="true">↗</span></a>
+          <a href={path('/film-guide/')}>{lang==='zh'?'选型指南':'Film guide'} <span aria-hidden="true">↗</span></a>
+          <a href={path('/color-studio/')}>{lang==='zh'?'现有颜色目录':'Product Color Catalog'} <span aria-hidden="true">↗</span></a>
+          <a href={path('/applications/')}>{lang==='zh'?'应用场景':'Applications'} <span aria-hidden="true">↗</span></a>
+          <a href={path('/about/')}>{t('About YUNNIAN')} <span aria-hidden="true">↗</span></a><a href={path('/resources/')}>{lang==='zh'?'资料与采购指南':'Resources & buying guide'} <span aria-hidden="true">↗</span></a>
+        </div></details>
+        <a href={path("/oem/")} aria-current={current==='/oem/'?'page':undefined}>{t("OEM & partners")}</a>
+        <a href={path("/color-studio/")} aria-current={current==='/color-studio/'?'page':undefined}>{lang==='zh'?'现有颜色':'Colors'}</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label={lang==='zh'?'选择语言':'Select language'}>
+        <a data-language-link href={counterpart} lang="en" hreflang="en" aria-current={lang==='en'?'true':undefined} aria-label="English">EN</a>
+        <span aria-hidden="true">/</span>
+        <a data-language-link href={chinesePath} lang="zh-CN" hreflang="zh-CN" aria-current={lang==='zh'?'true':undefined} aria-label="简体中文">中文</a>
+      </div>
+      <a class="header-cta" href={path("/contact/?intent=Sample%20request")}>{t("Request samples")} <span aria-hidden="true">↗</span></a>
+      <button id="menu-toggle" class="menu-toggle" aria-label={t("Open menu")} aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="footer">
+      <div class="footer-top"><div class="footer-company"><a class="footer-logo" href={path('/')}><img src="/images/yunnian-logo-white.webp" width="220" height="55" alt="YUNNIAN"/></a><p class="footer-tagline">Making Every Sheet of Film More Valuable</p><p>{lang==='zh'?'云辇新材料科技（广州）有限公司，提供 TPU 漆面保护膜、改色膜、汽车窗膜及建筑膜，服务产品选型、批发采购与 OEM 合作。':'YUNNIAN New Material Technology (Guangzhou) Co., Ltd. offers TPU paint protection films, color wraps, window films and architectural films for wholesale and OEM projects.'}</p></div><div><h2>{lang==='zh'?'产品系列':'Our Products'}</h2>{categories.map(c=><a href={path(categoryUrl(c.key))}>{c[lang]}</a>)}</div><div><h2>{lang==='zh'?'了解云辇':'Explore YUNNIAN'}</h2><a href={path('/about/')}>{t('About us')}</a><a href={path('/film-lab/')}>{lang==='zh'?'3D 材料工作室':'3D Material Studio'}</a><a href={path('/blog/')}>{lang==='zh'?'云辇博客':'YUNNIAN Journal'}</a><a href={path('/oem/')}>{lang==='zh'?'OEM 与合作':'OEM & Partners'}</a><a href={path('/buyer-services/')}>{lang==='zh'?'采购与订单服务':'Buyer services'}</a><a href={path('/company-library/')}>{lang==='zh'?'工厂与产品影像':'Factory & film library'}</a><a href={path('/collections-guide/')}>{lang==='zh'?'系列索引':'Collection index'}</a><a href={path('/privacy/')}>{lang==='zh'?'隐私政策':'Privacy Policy'}</a></div><div><h2>{lang==='zh'?'联系我们':'Contact Us'}</h2><a href={'mailto:'+company.email}>{company.email}</a><a href={'https://wa.me/'+company.whatsapp} target="_blank" rel="noopener">WhatsApp · {company.phone}</a><p>{company.address}</p></div></div>
+      <div class="footer-bottom"><span>© {new Date().getFullYear()} YUNNIAN. {t('All rights reserved.')}</span><span>{lang==='zh'?'汽车膜 · 批发与 OEM':'Automotive Films · Wholesale & OEM'}</span><a href={path('/buyer-services/')}>{lang==='zh'?'采购与订单服务':'Buyer services'}</a><a href={path('/company-library/')}>{lang==='zh'?'工厂与产品影像':'Factory & film library'}</a><a href={path('/collections-guide/')}>{lang==='zh'?'系列索引':'Collection index'}</a><a href={path('/privacy/')}>{lang==='zh'?'隐私政策':'Privacy Policy'}</a></div>
+    </footer>
+    <SocialDock />
+    <CustomerService />
+    <script>
+      const chinese=document.documentElement.lang==='zh-CN';
+      const menuLabel=(open:boolean)=>chinese?(open?'关闭菜单':'打开菜单'):(open?'Close menu':'Open menu');
+      document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach(link=>{const url=new URL(link.href);url.search=location.search;url.hash=location.hash;link.href=url.toString();});
+      const toggle=document.querySelector<HTMLButtonElement>('#menu-toggle');
+      function closeMenu(){document.querySelectorAll<HTMLDetailsElement>('.nav-explore').forEach(d=>d.removeAttribute('open'));toggle?.setAttribute('aria-expanded','false');toggle?.setAttribute('aria-label',menuLabel(false));document.body.classList.remove('menu-open');}
+      toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',menuLabel(open));document.body.classList.toggle('menu-open',open);});
+      document.addEventListener('click',e=>{document.querySelectorAll<HTMLDetailsElement>('.nav-explore').forEach(d=>{if(!d.contains(e.target as Node))d.removeAttribute('open');});});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+      document.querySelectorAll('#navigation a').forEach(a=>a.addEventListener('click',closeMenu));
+      matchMedia('(min-width: 901px)').addEventListener('change',closeMenu);
+      const progress=document.querySelector<HTMLElement>('.reading-progress');
+      let scrollFrame=false;
+      function updateScroll(){const range=document.documentElement.scrollHeight-innerHeight;document.body.classList.toggle('is-scrolled',scrollY>40);if(progress)progress.style.transform=`scaleX(${range>0?Math.min(1,Math.max(0,scrollY/range)):0})`;scrollFrame=false;}
+      addEventListener('scroll',()=>{if(!scrollFrame){scrollFrame=true;requestAnimationFrame(updateScroll);}},{passive:true});
+      addEventListener('resize',updateScroll);updateScroll();
+      if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');observer.unobserve(e.target);}}),{threshold:.07});document.querySelectorAll('.reveal').forEach(el=>{el.classList.add('will-reveal');observer.observe(el);});}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+---
+import { content } from '../data/i18n';
+
+const {t,path}=content(Astro.url);
+const {href=path('/contact/'),title='Find the right film.\nBuild what’s next.',text='Tell us about your market, your customers and your next project.'}=Astro.props;
+---
+<section class="cta-section"><div class="container cta-inner"><div><span class="eyebrow">{t("YOUR NEXT MOVE")}</span><h2>{t(title).split('\n').map(line=><>{line}<br /></>)}</h2><p>{t(text)}</p></div><a class="button button-light" href={href}>{t("Start a conversation")} <span>↗</span></a></div></section>

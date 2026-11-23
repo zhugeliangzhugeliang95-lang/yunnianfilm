@@ -1,0 +1,20 @@
+{
+  "name": "yunnian-film-b2b",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "python3 scripts/studio_asset.py",
+    "dev": "astro dev --host 127.0.0.1",
+    "prebuild": "python3 scripts/studio_asset.py",
+    "build": "astro build",
+    "postbuild": "python3 scripts/package_site.py",
+    "preview": "astro preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "astro": "7.4.7",
+    "@tailwindcss/vite": "^4.1.0",
+    "tailwindcss": "^4.1.0",
+    "three": "0.187.0"
+  }
+}

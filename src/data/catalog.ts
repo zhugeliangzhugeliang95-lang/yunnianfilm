@@ -1,0 +1,20 @@
+export const catalogMeta: Record<string,{finishes:string[];thickness:string[]}> = {
+  'pet-tech-color-wrap': {finishes:[],thickness:[]},
+  'laser-color-ppf': {finishes:['laser'],thickness:[]},
+  'chrome-color-ppf': {finishes:['chrome','metallic'],thickness:[]},
+  'light-cured-window-film': {finishes:[],thickness:[]},
+  'core-color-window-film': {finishes:[],thickness:[]},
+  'lubrizol-sm301-ppf': {finishes:['clear'],thickness:['6.5','7.5','8.5','9.5']},
+  'basf-elastollan-ppf': {finishes:['clear'],thickness:['6.5','7.5','8.5']},
+  'covestro-ppf': {finishes:['clear'],thickness:['7.5','8.5','9.5']},
+  'classic-color-ppf': {finishes:['solid','metallic'],thickness:['7.5']},
+  'liquid-metal-color-ppf': {finishes:['metallic'],thickness:['7.5']},
+  'magic-pearl-color-ppf': {finishes:['pearl','shifting'],thickness:['7.5']},
+  'diamond-crystal-color-ppf': {finishes:['sparkle'],thickness:['7.5']},
+  'glossy-crystal-color-ppf': {finishes:['solid'],thickness:['7.5']},
+  'carbon-fiber-ppf': {finishes:['carbon'],thickness:['7.5']},
+  'chameleon-aurora-window-film': {finishes:['shifting'],thickness:[]},
+  'photochromic-headlight-film': {finishes:['shifting'],thickness:['7.5']},
+  'windshield-protection-film': {finishes:['clear','shifting'],thickness:['7.0']},
+};
+export const finishes=[['gloss','Gloss','亮面'],['matte','Matte','哑面']];

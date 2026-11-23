@@ -1,0 +1,40 @@
+---
+import details from '../data/source-product-details.json';
+import originals from '../data/journal-originals.json';
+import {blogPosts} from '../data/blog';
+import {content} from '../data/i18n';
+import SourceText from './SourceText.astro';
+import '../styles/source-library.css';
+const {product}=Astro.props;
+const {lang,path,t,products}=content(Astro.url);
+const z=lang==='zh';
+const records=details[product.slug as keyof typeof details] ?? [];
+const photos=Array.from(new Map(records.flatMap(r=>r.images).map(photo=>[photo.src,photo])).values());
+const reports=Array.from(new Map(records.flatMap(r=>r.documents).map(doc=>[doc.path,doc])).values());
+const tables=Array.from(new Map(records.flatMap(r=>r.tables.map(rows=>[JSON.stringify(rows),{rows,title:r.title}]))).values());
+const isWindow=product.category==='Window film';
+const displayTables=tables.map(({rows,title})=>{
+ const hasHeaders=['Model','Specification','Technical Data','Color code','Color Name','Feature'].includes(rows[0]?.[0]);
+ return {columns:hasHeaders?rows[0]:['Field','Published detail'],rows:hasHeaders?rows.slice(1):rows,title};
+});
+const articles=blogPosts.filter(post=>originals[post.slug as keyof typeof originals]?.related===product.slug);
+const children=product.slug==='titanium-carbide-window-film'||product.slug==='titanium-nitride-window-film' ? products.filter(p=>p.slug!==product.slug && (details[p.slug as keyof typeof details]?.some(r=>r.title.toLowerCase().includes(product.slug.includes('carbide')?'titanium carbide':'titanium nitride')))) : [];
+const titles:Record<string,string>={'Model':'型号','Color code':'原厂色号','Color name':'英文色名','Color Name':'英文色名','Specification':'规格','Thickness':'厚度','Roll size':'卷材尺寸','Technical Data':'技术项目','Performance':'资料值','Feature':'项目','Data':'资料值','Haze':'雾度','Key Application':'用途'};
+Object.assign(titles,{"Technical Data": "技术项目", "Product designation": "产品名称", "Release liner": "离型膜", "Installed film layer": "安装后保留的膜层", "Removable protective cover": "可移除保护层", "Adhesive grade": "胶黏剂牌号", "Adhesive coating thickness": "涂胶厚度", "Dry adhesive weight": "干胶重量", "Weight per roll": "每卷重量", "Base Material": "基材", "Adhesive": "胶黏剂", "Country of Origin": "产地", "Elongation": "伸长率", "Finish": "表面质感", "HS Code": "海关编码", "Heat Rejection (IRR)": "红外阻隔率（IRR）", "Infrared Rejection (IRR)": "红外阻隔率（IRR）", "Material": "材料", "Operating Temp": "工作温度", "Roll Size": "卷材尺寸", "Size": "尺寸", "Tensile Strength": "拉伸强度", "UV Block (UVR)": "紫外线阻隔率（UVR）", "UV Rejection (UVR)": "紫外线阻隔率（UVR）", "Visible Light Transmission": "可见光透过率", "Warranty": "原资料质保说明", "Weight": "重量", "Film Type": "膜材类型", "Technology": "工艺", "Integrated Co-Extruded Embedded Coating": "一体共挤内嵌涂层", "Premium Aliphatic TPU": "脂肪族 TPU", "TPU (Thermoplastic Polyurethane)": "TPU（热塑性聚氨酯）", "50 µm double-matte PET clear film": "50 µm 双哑透明 PET 膜", "50 µm double-matte PET, suitable for fine matte spray coating": "50 µm 双哑 PET，适用于细哑光喷涂", "50 µm clear PET clear film": "50 µm 透明 PET 膜", "50 µm double-matte PET release liner": "50 µm 双哑 PET 离型膜", "50 µm clear PET release liner": "50 µm 透明 PET 离型膜", "0.15 mm (150 µm) water-clear PVC": "0.15 mm（150 µm）高透明 PVC", "0.10 mm (100 µm) water-clear PVC": "0.10 mm（100 µm）高透明 PVC", "0.10 mm (100 µm) clear double-matte film": "0.10 mm（100 µm）双哑透明膜", "60 µm low-tack PVC protective cover": "60 µm 低黏 PVC 保护层", "23 µm low-tack PE protective cover": "23 µm 低黏 PE 保护层", "None": "无", "2.8 tiao": "2.8 条（原表单位）", "2.5 tiao": "2.5 条（原表单位）", "Field": "项目", "Published detail": "原资料值"});
+function heading(cell:string,rows:string[][],index:number){
+ const raw=rows.some(row=>/^0\.\d+$/.test(row[index]?.trim()||''));
+ if(raw && /TSER|UV%|IRR/.test(cell))return cell.replace(/%/g,'')+(z?'（原值）':' (as listed)');
+ return z?titles[cell]||cell:cell;
+}
+---
+{records.length>0&&<section class="container source-section" aria-labelledby="model-library">
+ <div class="library-title"><div><span class="eyebrow">{z?'产品资料':'PRODUCT DOCUMENTATION'}</span><h2 id="model-library">{z?'型号与技术资料':'Models & technical data'}</h2></div></div>
+ {displayTables.map(({columns,rows,title})=><div class="model-table-block">{tables.length>1&&<h3>{title}</h3>}<div class="source-table" tabindex="0" role="region" aria-label={z?'型号规格表，可横向滚动':'Model specifications, scroll horizontally'}><table><thead><tr>{columns.map((c,i)=><th scope="col">{heading(c,rows,i)}</th>)}</tr></thead><tbody>{rows.map(row=><tr>{row.map((c,i)=>i===0?<th scope="row">{z?titles[c]||c:c}</th>:<td>{z?titles[c]||c:c}</td>)}</tr>)}</tbody></table></div></div>)}
+ {isWindow&&tables.length>0&&<p class="library-note">{z?'数据按原型号表展示。带 % 的数值为原表百分数，纯小数保留原值。比较前请核对测试波段、玻璃组合与厚度。':'Figures retain the published notation, including literal decimals and percentages. Check the wavelength, glazing and thickness before comparing models.'}</p>}
+ {photos.length>0&&<details class="library-fold"><summary>{z?'产品图册':'Product gallery'} <small>{photos.length}</small></summary><div class="reference-gallery">{photos.map((im,i)=><a href={im.src} target="_blank" rel="noopener" aria-label={(z?'查看大图':'Open image')+' '+(i+1)}><img src={im.src} width="420" height="340" loading="lazy" decoding="async" alt={im.caption}/>{im.variants.length>0&&<span>{im.variants.map(t).join(' / ')}</span>}</a>)}</div></details>}
+ {reports.length>0&&<details class="library-fold"><summary>{z?'送检样品报告':'Submitted sample reports'} <small>PDF</small></summary><p>{z?'下列报告对应文件内注明的送检样品及测试范围。采购时可核对样品名称、报告编号及出货型号。':'Each report identifies the submitted sample and test scope. Match the sample, report number and ordered model when reviewing it.'}</p><ul class="document-links">{reports.map(doc=><li><a href={doc.path} target="_blank" rel="noopener">{doc.label.replace('YUNNIAN-SGS-','SGS · ').replace(/-/g,' ')} ↗</a></li>)}</ul></details>}
+ {Array.from(new Map(records.map(r=>[r.body,r])).values()).map(r=><details class="library-fold"><summary>{z?'查看原版英文产品说明':'Original product description'}{records.length>1&&<small>{r.title}</small>}</summary><p class="library-note">{z?'以下保留该型号发布时的产品资料。供货、质保与测试适用范围以本次报价及书面文件为准。':'This is the original model literature. Confirm supply, warranty and test applicability in the current written quotation.'}</p><div lang="en"><SourceText html={r.body}/></div></details>)}
+ <div class="service-links">{records.map(r=><a href={'https://www.ynfilm.com/products/'+r.handle}>{z?'原商城商品页':'Original store listing'}{records.length>1?' · '+r.title:''} ↗</a>)}</div>
+ {articles.length>0&&<div class="model-guides">{articles.map(a=><a class="text-link" href={path('/blog/'+a.slug+'/')}>{a.title[lang]} ↗</a>)}</div>}
+</section>}
+{children.length>0&&<section class="container source-section"><div class="library-title"><h2>{z?'该材料下的窗膜系列':'Series in this material'}</h2></div><div class="model-guides">{children.map(c=><a href={path('/products/'+c.slug+'/')}>{c.name} ↗</a>)}</div></section>}

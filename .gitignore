@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.astro/
+work/
+output/
+.playwright-cli/
+.wrangler/
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+*.sqlite
+*.sqlite3
+*.db
+.DS_Store
+__pycache__/
+public/automotive-studio/models/yunnian-aventador-v3.glb

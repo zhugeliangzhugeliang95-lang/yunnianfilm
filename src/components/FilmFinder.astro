@@ -1,0 +1,16 @@
+---
+import { content } from '../data/i18n';
+import { editorial } from '../data/editorial';
+const { lang,path }=content(Astro.url);
+const { L,families }=editorial(lang);
+const choices=[L('Keep the original paint appearance', '保留原车漆面外观'),L('Change the color and finish', '改变车身颜色与质感'),L('Explore a different glass appearance', '探索玻璃外观效果')];
+---
+<section class="film-finder container section" aria-labelledby="finder-title">
+  <div class="finder-intro"><span class="eyebrow">01 / {L('YOUR STARTING POINT', '先找到您的方向')}</span><h2 id="finder-title">{L('What are you', '这一次，')}<br />{L('working on?', '您想做什么？')}</h2><p>{L('Choose a starting point. Then review the actual specification and sample.', '先选择一个方向，再通过具体规格与样品确认。')}</p></div>
+  <div class="finder-controls"><fieldset><legend class="sr-only">{L('Your project goal', '您的项目需求')}</legend>{choices.map((choice,i)=><label class="finder-choice"><input type="radio" name="film-goal" value={families[i].id} checked={i===0}/><span class="choice-index">0{i+1}</span><span>{choice}</span><span class="choice-check" aria-hidden="true">↗</span></label>)}</fieldset>
+  {families.map((f,i)=><div class="finder-result" id={`recommend-${f.id}`} hidden={i!==0}><span class="eyebrow">{L('EXPLORE THIS FAMILY', '建议从这个系列了解')}</span><h3>{f.title}</h3><p>{f.description}</p><a class="text-link" href={path(f.destination)}>{f.action} <span aria-hidden="true">↗</span></a></div>)}
+  <noscript><p>{L('All three film families are listed below.', '您可继续查看下方三个产品系列的对比。')}</p></noscript></div>
+</section>
+<script>
+  document.querySelectorAll<HTMLInputElement>('input[name="film-goal"]').forEach(input=>input.addEventListener('change',()=>{document.querySelectorAll<HTMLElement>('.finder-result').forEach(result=>result.hidden=result.id!==`recommend-${input.value}`);}));
+</script>

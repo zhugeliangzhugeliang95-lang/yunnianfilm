@@ -1,0 +1,22 @@
+---
+import {content} from '../data/i18n';
+const {lang}=content(Astro.url);const {product:p,compact=false}=Astro.props;
+const marks:Record<string,string[]>={
+ 'ultra-gloss-metallic-tpu':['TPU','ULTRA GLOSS'],
+ 'quick-repair-hydrophobic-ppf':['CLEAR TPU','QUICK REPAIR'],
+ 'dream-series-tpu':['TPU','DREAM SERIES'],
+ 'thermal-repair-hydrophobic-ppf':['CLEAR TPU','HEAT REPAIR'],
+ 'wet-dry-install-tpu':['TPU','WET / DRY'],
+ 'pet-tech-color-wrap':['PET / PVC','TECH COLOR'],
+ 'laser-color-ppf':['TPU','LASER'],
+ 'chrome-color-ppf':['TPU','CHROME'],
+ 'light-cured-window-film':['GLASS','LIGHT CURED'],
+ 'core-color-window-film':['GLASS','CORE COLOR'],
+};
+const marksForProduct=marks[p.slug]||['YUNNIAN','FILM'];
+---
+<div class:list={['series-panel',compact&&'series-panel-compact']} data-series={p.slug}>
+ <span class="series-panel-top">YUNNIAN <span>FILM COLLECTION</span></span>
+ <div><span class="series-panel-material">{marksForProduct[0]}</span><strong>{marksForProduct[1]}</strong></div>
+ <span class="series-panel-bottom">{lang==='zh'?'系列资料 · 可咨询色卡与样品':'SERIES PROFILE · SWATCHES ON REQUEST'} <span aria-hidden="true">↗</span></span>
+</div>

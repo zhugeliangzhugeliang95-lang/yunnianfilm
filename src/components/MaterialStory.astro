@@ -1,0 +1,44 @@
+---
+import { content } from '../data/i18n';
+import { editorial } from '../data/editorial';
+const {lang,path}=content(Astro.url);const {L}=editorial(lang);
+const chapters=[
+ {label:L('The substrate','从基材开始'),title:[L('Every layer.','每一层，'),L('A considered choice.','都有考量。')],body:L('Lubrizol® SM301, BASF Elastollan® and Covestro™ TPU. Start with a substrate range, then explore its available specifications.','从路博润 Lubrizol® SM301、巴斯夫 BASF Elastollan® 到科思创 Covestro™ TPU，先明确基材系列，再比较可选规格。')},
+ {label:L('The specification','把规格看清'),title:[L('Look beyond','不止看表面，'),L('the finish.','更要看细节。')],body:L('Thickness. Coating. Roll dimensions. Confirm the exact combination for your application, rather than choosing by appearance alone.','厚度、涂层、卷材尺寸。结合应用场景确认具体组合，让外观与施工需求共同决定选择。')},
+ {label:L('Your evaluation','交给实际评估'),title:[L('From a surface.','从一种材料，'),L('To your standard.','到您的标准。')],body:L('Review a sample with your own team. Evaluate the finish and installation process, then confirm the product data and written terms.','将样品交给您的团队，评估质感与施工流程，再核对产品资料和书面条款。')},
+];
+---
+<section class="surface-story" id="surface-story" aria-label={L('A closer look at film selection','从材料到选型的三个视角')}>
+  <div class="story-frame"><div class="story-image"><img src="/images/film-craft-v3.webp" width="1600" height="1067" loading="lazy" alt={L('Illustrative macro view of transparent film above automotive paint','透明膜覆于汽车漆面上方的微距场景示意')}/></div><div class="story-shade"></div><div class="film-peel" aria-hidden="true"></div>
+    <div class="story-top"><span class="eyebrow">03 / {L('SURFACE INTO SUBSTANCE','从表面，看到材料')}</span><span>{L('SCROLL TO DISCOVER','随滚动，走近材料')} ↓</span></div>
+    <div class="story-content">{chapters.map((c,i)=><article class:list={['story-chapter',i===0&&'is-current']} data-chapter={i}><span class="story-chapter-number">0{i+1}</span><h2>{c.title[0]}<br /><span>{c.title[1]}</span></h2><p>{c.body}</p></article>)}<a class="text-link" href={path('/film-guide/')}>{L('Explore the material guide','探索材料选型指南')} <span aria-hidden="true">↗</span></a></div>
+    <div class="story-navigation" role="group" aria-label={L('Material story chapters','材料故事章节')}>{chapters.map((c,i)=><button type="button" data-story-step={i} aria-pressed={i===0?'true':'false'}><span>0{i+1}</span>{c.label}<span class="story-step-progress" aria-hidden="true"></span></button>)}</div>
+    <span class="story-image-note">{L('Illustrative application scene','应用场景示意')}</span>
+  </div>
+</section>
+<script>
+  const story=document.querySelector<HTMLElement>('.surface-story');
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  if(story){
+    const chapters=Array.from(story.querySelectorAll<HTMLElement>('[data-chapter]'));
+    const buttons=Array.from(story.querySelectorAll<HTMLButtonElement>('[data-story-step]'));
+    let queued=false,visible=false;
+    function render(){
+      if(!story)return;queued=false;
+      if(reduced.matches){story.classList.remove('story-ready');chapters.forEach(c=>c.removeAttribute('aria-hidden'));return;}
+      story.classList.add('story-ready');
+      const rect=story.getBoundingClientRect();const top=innerWidth<=640?72:innerWidth<=900?76:90;
+      const distance=Math.max(1,story.offsetHeight-(innerHeight-top));
+      const progress=Math.max(0,Math.min(1,(top-rect.top)/distance));
+      const active=Math.min(2,Math.floor(progress*3));
+      story.style.setProperty('--story-progress',String(progress));
+      chapters.forEach((c,i)=>{c.classList.toggle('is-current',i===active);c.setAttribute('aria-hidden',String(i!==active));});
+      buttons.forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===active));b.style.setProperty('--step-progress',String(Math.max(0,Math.min(1,progress*3-i))));});
+    }
+    function queue(){if(!queued&&visible){queued=true;requestAnimationFrame(render);}}
+    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)render();},{rootMargin:'150px'});observer.observe(story);
+    story.classList.toggle('story-ready',!reduced.matches);render();
+    addEventListener('scroll',queue,{passive:true});addEventListener('resize',render);reduced.addEventListener('change',render);
+    buttons.forEach((b,i)=>b.addEventListener('click',()=>{if(reduced.matches)return;const top=innerWidth<=640?72:innerWidth<=900?76:90;const distance=story.offsetHeight-(innerHeight-top);scrollTo({top:scrollY+story.getBoundingClientRect().top-top+distance*((i+.2)/3),behavior:'smooth'});}));
+  }
+</script>

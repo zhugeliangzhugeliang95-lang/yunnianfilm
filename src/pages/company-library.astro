@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SourceText from '../components/SourceText.astro';
+import archive from '../data/company-archive.json';
+import {content} from '../data/i18n';
+import '../styles/source-library.css';
+const {lang,path}=content(Astro.url),z=lang==='zh';
+---
+<Layout title={z?'工厂与产品影像':'Factory & film library'}>
+ <header class="container page-intro"><span class="eyebrow">YUNNIAN / GUANGZHOU</span><h1>{z?'工厂与产品影像':'Factory & film library'}</h1><p>{z?'从广州的卷材与施工画面开始，了解云辇的产品、生产与批发服务。':'See the rolls, applications and product films from YUNNIAN’s original Guangzhou company portfolio.'}</p></header>
+ <section class="container source-section"><div class="library-title"><h2>{z?'品牌短片':'Company films'}</h2></div><div class="company-video-grid">{[1,2].map((n)=><figure><video controls playsinline preload="none" poster={'/videos/film-archive-'+n+'.webp'} aria-label={z?'原官网品牌短片 '+n:'Original company film '+n}><source src={'/videos/film-archive-'+n+'.mp4'} type="video/mp4"/></video><figcaption>{n===1?(z?'原官网品牌片 · 桌面版':'Original homepage film · desktop edition'):(z?'原官网品牌片 · 移动版':'Original homepage film · mobile edition')}</figcaption></figure>)}</div></section>
+ <section class="container source-section" id="field"><div class="library-title"><h2>{z?'产品与应用图集':'Films in application'}</h2></div><div class="company-images">{[...new Set([archive.aboutPhoto,...archive.photos])].map((u,i)=><a href={u} target="_blank" rel="noopener"><img src={u} alt={(z?'云辇原官网图集，图片 ':'YUNNIAN company and application archive, photograph ')+(i+1)} width="600" height="460" loading="lazy"/></a>)}</div></section>
+ <section class="container source-section"><div class="library-title"><h2>{z?'关于云辇':'About YUNNIAN'}</h2></div><p class="source-intro">{z?'云辇新材料科技（广州）有限公司面向批发与 OEM 客户提供漆面保护膜、改色膜、汽车玻璃膜、建筑膜及专业施工配套。':'Yunnian New Material Technology (Guangzhou) Co., Ltd. supplies paint protection film, color wraps, glass films and installation products for wholesale and OEM projects.'}</p><details class="library-fold"><summary>{z?'原官网公司介绍与联系资料（英文）':'Original company profile & contact information'}</summary><div lang="en"><SourceText html={archive.about}/>{archive.highlights.map(([heading,paragraph])=><div class="source-copy"><h3>{heading}</h3><p>{paragraph}</p></div>)}<SourceText html={archive.contact}/></div></details><div class="service-links"><a href={path('/oem/')}>OEM / ODM ↗</a><a href={path('/contact/')}>{z?'联系团队':'Contact the team'} ↗</a></div></section>
+</Layout>

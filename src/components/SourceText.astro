@@ -1,0 +1,7 @@
+---
+import {language} from '../data/i18n';
+const {html}=Astro.props;
+// Only content already stripped to document markup by the import is supplied here.
+const localized=language(Astro.url)==='zh' ? html.replace(/href="\/(?!images\/|downloads\/|videos\/|zh\/)/g,'href="/zh/') : html;
+---
+<div class="source-copy" set:html={localized} />

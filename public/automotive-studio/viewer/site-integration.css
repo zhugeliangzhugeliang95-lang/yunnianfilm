@@ -1,0 +1,43 @@
+[hidden]{display:none!important}
+.inquiry{display:flex;align-items:center;justify-content:space-between;gap:20px;border:1px solid #64764e;color:#d8edc7;padding:12px 16px;font-size:12px;margin-bottom:10px}
+.inquiry:hover{border-color:var(--accent);color:var(--accent)}
+body[data-material=pet] #open-catalog,body[data-material=pet] #view-source,body[data-material=pet] #library-summary,body[data-material=pet] .quick-label{display:none}
+body[data-material=pet] .swatches{row-gap:16px}
+body[data-material=pet] .selected h2{font-size:28px}
+.site-footer a{max-width:280px;text-align:right}
+html[lang=en] .workspace-nav{gap:18px;margin-left:10px}
+html[lang=en] .stage-heading p{letter-spacing:.04em}
+html[lang=en] .finish button{gap:6px}
+html[lang=en] .finish small{display:none}
+html[lang=en] .selected h2{font-size:23px}
+@media(max-width:800px){.inquiry{font-size:11px;padding:9px 12px;margin-bottom:7px}.inspector-bottom .save{padding-block:10px}.footnote{margin-top:6px}.stage{min-height:300px;height:44%}html[lang=en] .brand>span{font-size:15px}html[lang=en] .workspace-nav button{font-size:9px}html[lang=en] .workspace-nav{gap:11px}.inspector-scroll{overscroll-behavior:contain}.stage-heading p{max-width:75%;line-height:1.6}}
+
+/* V9: supplied brand, two finishes and an expandable vehicle selector. */
+:root{--accent:#fff;--text:#f5f5f3;--muted:#b9bdbb}
+.brand img{width:180px;height:auto;display:block}.brand{gap:0}.finish{grid-template-columns:repeat(2,1fr)}
+.vehicle-choice{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px;font-size:14px;color:#e6e6e6;margin:22px 0}
+.vehicle-choice select{min-width:0;width:100%;padding:12px;background:#222726;border:1px solid #4c5350;color:#fff;font:inherit;border-radius:0}
+.vehicle-choice select:disabled{opacity:.5}.selected h2,html[lang=en] .selected h2{font-size:clamp(22px,2vw,32px);line-height:1.15;overflow-wrap:anywhere}
+.stage-heading p{font-size:14px;letter-spacing:.02em;max-width:450px;line-height:1.5}
+.inquiry{color:#fff;border-color:#757e79}.save{color:#111}.swatches button span{font-size:12px;line-height:1.3}.footnote{color:#c1c6c3;font-size:12px;line-height:1.6}
+.catalog-name{font-size:16px}.catalog-kind{font-size:12px}.catalog-item{min-width:0}.catalog-name{overflow-wrap:anywhere}
+@media(max-width:800px){.brand img{width:110px}.vehicle-choice{font-size:12px;margin:12px 0}.vehicle-choice select{padding:9px}.stage-heading p{font-size:10px;max-width:80%}.selected h2,html[lang=en] .selected h2{font-size:23px}.footnote{font-size:10px}.swatches button span{font-size:11px}.stage-heading h1{font-size:clamp(44px,12vw,70px)}}
+
+.selected-card-photo{width:132px;max-width:38%;height:auto;object-fit:contain}.swatches button img{width:100%;height:auto;aspect-ratio:424/240;object-fit:cover;border:1px solid transparent}.swatches button[aria-pressed=true] img{border-color:#fff}.swatches button span{font-size:11px}.catalog-filters{grid-template-columns:1fr 180px 160px}#card-order{display:flex;align-items:center;justify-content:center;text-decoration:none;margin-bottom:12px}.selected h2{font-size:25px}.selected{gap:16px}
+@media(max-width:800px){.selected-card-photo{width:110px}.catalog-filters{grid-template-columns:1fr 1fr}.catalog-search{grid-column:1/-1}.swatches button span{font-size:10px}}
+
+/* Reference image stays beside the selected vehicle, with product finish locked. */
+.photo-comparison{margin:20px 0 26px}.photo-comparison>span{display:block;font-size:12px;letter-spacing:.08em;margin-bottom:10px;color:#bac2bb}.photo-comparison button{display:block;width:100%;padding:0;border:1px solid #46514a;background:none;cursor:zoom-in}.photo-comparison .selected-card-photo{display:block;width:100%;max-width:none;height:auto;aspect-ratio:1272/720;object-fit:contain;border:0;border-radius:0;transform:none}.appearance-modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.appearance-modes button{padding:14px 8px;border:1px solid #414a43;background:transparent;color:#d3d9d1;font:inherit;font-size:13px;cursor:pointer}.appearance-modes button[aria-pressed=true]{border-color:#bdf06a;color:#d9ff9e;background:#243021}.appearance-note{font-size:12px;line-height:1.65;color:#99a69b;margin-top:12px}.catalog-embed .site-header,.catalog-embed .site-footer{display:none}.catalog-embed main{min-height:100svh;height:100svh}.catalog-embed .stage-heading h1{font-size:clamp(42px,6vw,100px)}.catalog-embed .stage-heading p{display:none}.catalog-embed .stage-heading{top:25px}.catalog-embed .stage-side{display:none}.catalog-embed .inspector-scroll{padding-top:24px}.catalog-embed aside{height:100svh}.catalog-embed .selected h2{font-size:clamp(25px,2.6vw,37px)}
+@media(max-width:800px){.catalog-embed main{height:100svh;min-height:0}.catalog-embed .stage{height:45svh;min-height:230px}.catalog-embed aside{height:auto;min-height:0;flex:1}.photo-comparison{max-width:520px}.catalog-embed .stage-heading h1{font-size:50px}.catalog-embed .stage-heading{top:18px}}
+
+body[data-appearance=reference] .stage-shade{background:none}.photo-comparison+section{padding-top:12px}
+
+.appearance-modes button:disabled{opacity:.35;cursor:not-allowed}
+
+body[data-env=day] .stage-heading h1{color:#f1f1e9}body[data-env=day] .stage-heading .eyebrow,body[data-env=day] .stage-heading p,body[data-env=day] .stage-side{color:#aab1ad}body[data-env=day] .stage-actions button{color:#d8ded9;background:#11181844}
+
+body[data-model=sample] .stage-heading h1{font-size:clamp(44px,6vw,88px)}body[data-model=sample] .stage-heading p{max-width:240px;font-size:13px;line-height:1.6}
+
+/* Daylight remains readable while the original product photo stays alongside. */
+.lighting{padding-block:16px}.lighting .label{margin-bottom:11px}.lighting .light-angle{padding:13px 0 0}.lighting-modes button{font-size:12px;padding:12px 8px}
+body[data-env=day] .stage-shade{background:linear-gradient(180deg,#10141460,transparent 30%,transparent 74%,#0a1013a6)}

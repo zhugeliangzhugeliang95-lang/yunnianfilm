@@ -1,0 +1,4 @@
+---
+import Layout from '../layouts/Layout.astro';import FilmLab from '../components/FilmLab.astro';import CTA from '../components/CTA.astro';import {content} from '../data/i18n';const {lang}=content(Astro.url);
+---
+<Layout title={lang==='zh'?'3D 材料互动工作室':'Interactive 3D material studio'}><FilmLab standalone/><CTA/></Layout>

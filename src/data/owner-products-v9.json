@@ -1,0 +1,175 @@
+[
+  {
+    "slug": "wanhua-tpu-ppf",
+    "name": "Wanhua TPU PPF",
+    "category": "Clear PPF",
+    "label": "CLEAR PPF",
+    "image": "tpu-ppf-category.webp",
+    "description": "A Wanhua TPU substrate range with clear gloss or matte appearance and four thickness choices.",
+    "materials": "Wanhua TPU",
+    "options": [
+      "6.5 mil",
+      "7.5 mil",
+      "8.5 mil",
+      "9.5 mil"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "Clear PPF"
+      ],
+      [
+        "Thickness",
+        "6.5 / 7.5 / 8.5 / 9.5 mil"
+      ],
+      [
+        "Application",
+        "Vehicle paint protection"
+      ]
+    ],
+    "source": "Owner-supplied product brief · 2026-11-09",
+    "categoryArtwork": true
+  },
+  {
+    "slug": "titanium-nitride-window-film",
+    "name": "Titanium Nitride Window Film",
+    "category": "Window film",
+    "label": "WINDOW FILM",
+    "image": "window-film-category.webp",
+    "description": "A PET window-film series focused on solar protection and heat control. Request VLT, UV and TSER data for the selected shade.",
+    "materials": "PET · Titanium Nitride",
+    "options": [
+      "2 mil",
+      "4 mil"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "Window film"
+      ],
+      [
+        "Thickness",
+        "2 / 4 mil"
+      ],
+      [
+        "Application",
+        "Automotive glass"
+      ]
+    ],
+    "source": "Owner-supplied product brief · 2026-11-09",
+    "categoryArtwork": true
+  },
+  {
+    "slug": "titanium-carbide-window-film",
+    "name": "Titanium Carbide Window Film",
+    "category": "Window film",
+    "label": "WINDOW FILM",
+    "image": "window-film-category.webp",
+    "description": "A PET window-film series available in 2 mil and 4 mil. Compare the selected shade on the intended glass.",
+    "materials": "PET · Titanium Carbide",
+    "options": [
+      "2 mil",
+      "4 mil"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "Window film"
+      ],
+      [
+        "Thickness",
+        "2 / 4 mil"
+      ],
+      [
+        "Application",
+        "Automotive glass"
+      ]
+    ],
+    "source": "Owner-supplied product brief · 2026-11-09",
+    "categoryArtwork": true
+  },
+  {
+    "slug": "tpu-sunroof-ice-film",
+    "name": "TPU Sunroof Ice Film",
+    "category": "Windshield protection",
+    "label": "WINDSHIELD PROTECTION",
+    "image": "window-film-category.webp",
+    "description": "A dedicated 7.5 mil TPU sunroof protection option. Confirm dimensions, installation and optical data with your sample.",
+    "materials": "TPU",
+    "options": [
+      "7.5 mil"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "Windshield protection"
+      ],
+      [
+        "Thickness",
+        "7.5 mil"
+      ],
+      [
+        "Application",
+        "Automotive glass"
+      ]
+    ],
+    "source": "Owner-supplied product brief · 2026-11-09",
+    "categoryArtwork": true
+  },
+  {
+    "slug": "tpu-silver-sunroof-film",
+    "name": "TPU Silver-Coated Sunroof Film",
+    "category": "Windshield protection",
+    "label": "WINDSHIELD PROTECTION",
+    "image": "window-film-category.webp",
+    "description": "A 9 mil silver-coated TPU film for panoramic roof applications. Confirm the exact product and glass compatibility.",
+    "materials": "Silver-coated TPU",
+    "options": [
+      "9 mil"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "Windshield protection"
+      ],
+      [
+        "Thickness",
+        "9 mil"
+      ],
+      [
+        "Application",
+        "Automotive glass"
+      ]
+    ],
+    "source": "Owner-supplied product brief · 2026-11-09",
+    "categoryArtwork": true
+  },
+  {
+    "slug": "architectural-window-film",
+    "name": "Architectural Window Film",
+    "category": "Architectural film",
+    "label": "ARCHITECTURAL FILM",
+    "image": "architectural-film-category.webp",
+    "description": "Film for architectural glazing projects. Share the glass type, application and preferred appearance to discuss suitable specifications.",
+    "materials": "Architectural film",
+    "options": [
+      "Request Project Specifications"
+    ],
+    "specs": [
+      [
+        "Application",
+        "Architectural glazing"
+      ],
+      [
+        "Thickness",
+        "Confirm selected product"
+      ],
+      [
+        "Finish",
+        "Confirm selected product"
+      ]
+    ],
+    "source": "Owner-supplied product brief · 2026-11-09",
+    "categoryArtwork": true
+  }
+]

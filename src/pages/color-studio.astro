@@ -1,0 +1,5 @@
+---
+import Layout from '../layouts/Layout.astro';import ColorCatalog from '../components/ColorCatalog.astro';import {content} from '../data/i18n';
+const {lang}=content(Astro.url);const z=lang==='zh';
+---
+<Layout title={z?'现有产品颜色':'Existing Product Colors'} description={z?'浏览云辇现有产品色卡，按色系、编号与英文名称查找颜色并咨询购买。':'Browse YUNNIAN product color cards. Search by color family, catalog reference or English name.'}><section class="container page-intro"><span class="eyebrow">YUNNIAN / COLOR CATALOG</span><h1>{z?'找到颜色，放到车上看。':'Find Your Color. See It On Your Car.'}</h1><p>{z?'按色系、编号或英文名称查找。把喜欢的颜色加入清单，对比原图与车身效果，再一起询问样品。':'Search by color, reference or English name. Save your favorites, compare the original cards and vehicle previews, then enquire about samples together.'}</p></section><ColorCatalog/></Layout>

@@ -1,0 +1,6 @@
+---
+import Page from '../../collections-guide/[slug].astro';
+import collections from '../../../data/collection-index.json';
+export function getStaticPaths(){return Object.entries(collections).map(([slug,c])=>({params:{slug},props:{c}}));}
+---
+<Page c={Astro.props.c}/>

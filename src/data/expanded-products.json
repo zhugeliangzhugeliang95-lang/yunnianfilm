@@ -1,0 +1,305 @@
+[
+  {
+    "slug": "liquid-metal-color-ppf",
+    "name": "Liquid Metal Color PPF",
+    "category": "Color PPF",
+    "label": "COLOR & PROTECTION",
+    "image": "liquid-metal-color-ppf.webp",
+    "description": "A TPU color range with a liquid-metal appearance. Compare the physical sample under different lighting before selecting your color.",
+    "materials": "TPU color film",
+    "options": [
+      "Liquid Metal Aluminum Silver",
+      "Liquid Metal Dragon Blood Red",
+      "Liquid Metal Gunsmoke Grey",
+      "Byron Bay Blue",
+      "Request full color selection"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "TPU color PPF"
+      ],
+      [
+        "Roll size",
+        "1.52 m × 15 m"
+      ],
+      [
+        "Listed thickness",
+        "7.5 mil"
+      ],
+      [
+        "Finish",
+        "Liquid metal metallic"
+      ],
+      [
+        "Application",
+        "Full wraps or individual panels"
+      ],
+      [
+        "Color selection",
+        "Request physical swatches"
+      ]
+    ],
+    "sheet": null,
+    "source": "https://www.ynfilm.com/products/tpu-color-ppf-liquid-metal-series"
+  },
+  {
+    "slug": "magic-pearl-color-ppf",
+    "name": "Magic & Pearl Color PPF",
+    "category": "Color PPF",
+    "label": "COLOR & PROTECTION",
+    "image": "magic-pearl-color-ppf.webp",
+    "description": "Pearlescent and color-shifting TPU finishes for expressive exterior projects. Choose a starting color and confirm its appearance with a physical swatch.",
+    "materials": "TPU color film",
+    "options": [
+      "Glossy Aurora White",
+      "Lake Blue Pink",
+      "Rainbow Emerald",
+      "Racing Orange",
+      "Request full color selection"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "TPU color PPF"
+      ],
+      [
+        "Roll size",
+        "1.52 m × 15 m"
+      ],
+      [
+        "Listed thickness",
+        "7.5 mil"
+      ],
+      [
+        "Finish",
+        "Pearlescent / color shifting"
+      ],
+      [
+        "Application",
+        "Full wraps or individual panels"
+      ],
+      [
+        "Color selection",
+        "Request physical swatches"
+      ]
+    ],
+    "sheet": null,
+    "source": "https://www.ynfilm.com/products/tpu-color-ppf-magic-pearlescent-series"
+  },
+  {
+    "slug": "diamond-crystal-color-ppf",
+    "name": "Diamond Crystal Color PPF",
+    "category": "Color PPF",
+    "label": "COLOR & PROTECTION",
+    "image": "diamond-crystal-color-ppf.webp",
+    "description": "A TPU color series with a sparkling crystal effect. Explore the listed black and white variations and request a sample for finish evaluation.",
+    "materials": "TPU color film",
+    "options": [
+      "Diamond Crystal Black",
+      "Diamond Crystal White",
+      "Diamond Crystal White Gold",
+      "Diamond Crystal White Blue",
+      "Request full color selection"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "TPU color PPF"
+      ],
+      [
+        "Roll size",
+        "1.52 m × 15 m"
+      ],
+      [
+        "Listed thickness",
+        "7.5 mil"
+      ],
+      [
+        "Finish",
+        "Diamond crystal"
+      ],
+      [
+        "Application",
+        "Full wraps or individual panels"
+      ],
+      [
+        "Color selection",
+        "Request physical swatches"
+      ]
+    ],
+    "sheet": null,
+    "source": "https://www.ynfilm.com/products/tpu-color-ppf-diamond-crystal-series"
+  },
+  {
+    "slug": "glossy-crystal-color-ppf",
+    "name": "Glossy Crystal Color PPF",
+    "category": "Color PPF",
+    "label": "COLOR & PROTECTION",
+    "image": "glossy-crystal-color-ppf.webp",
+    "description": "A high-gloss TPU color range with solid and expressive colors. Review your preferred shade, roll size and sample requirements with the team.",
+    "materials": "TPU color film",
+    "options": [
+      "Piano Black",
+      "Piano White",
+      "OOLONG Milk Tea Pink",
+      "Acid Green",
+      "Request full color selection"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "TPU color PPF"
+      ],
+      [
+        "Roll size",
+        "1.52 m × 15 m"
+      ],
+      [
+        "Listed thickness",
+        "7.5 mil"
+      ],
+      [
+        "Finish",
+        "High gloss crystal"
+      ],
+      [
+        "Application",
+        "Full wraps or individual panels"
+      ],
+      [
+        "Color selection",
+        "Request physical swatches"
+      ]
+    ],
+    "sheet": null,
+    "source": "https://www.ynfilm.com/products/tpu-color-ppf-glossy-crystal-series"
+  },
+  {
+    "slug": "carbon-fiber-ppf",
+    "name": "Carbon Fiber Texture PPF",
+    "category": "Color PPF",
+    "label": "TEXTURE & EXPRESSION",
+    "image": "carbon-fiber-ppf.webp",
+    "description": "Carbon-fiber-pattern TPU film for a textured visual finish. Explore transparent, black and matte options, then confirm the intended application with your installer.",
+    "materials": "TPU color film",
+    "options": [
+      "TPU Transparent Carbon Fiber",
+      "TPU Carbon Fiber Black",
+      "TPU Matte Carbon Fiber Black",
+      "TPU Solid Carbon Fiber Black",
+      "Request full color selection"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "TPU color PPF"
+      ],
+      [
+        "Listed thickness",
+        "7.5 mil"
+      ],
+      [
+        "Finish",
+        "Carbon-fiber pattern"
+      ],
+      [
+        "Installation",
+        "Wet application"
+      ],
+      [
+        "Roll size",
+        "Confirm with your quotation"
+      ],
+      [
+        "Color selection",
+        "Request physical swatches"
+      ]
+    ],
+    "sheet": null,
+    "source": "https://www.ynfilm.com/products/tpu-forged-carbon"
+  },
+  {
+    "slug": "photochromic-headlight-film",
+    "name": "Photochromic Headlight Film",
+    "category": "Headlight films",
+    "label": "HEADLIGHT FILM",
+    "image": "photochromic-headlight-film.webp",
+    "description": "A light-sensitive TPU film listed for automotive headlight applications. Review the chosen tint, lamp compatibility and local lighting requirements before installation.",
+    "materials": "Aliphatic TPU headlight film",
+    "options": [
+      "TPU White to Purple",
+      "TPU White to Black"
+    ],
+    "specs": [
+      [
+        "Film type",
+        "Photochromic TPU"
+      ],
+      [
+        "Listed thickness",
+        "7.5 mil"
+      ],
+      [
+        "Roll size",
+        "0.3 m × 15 m"
+      ],
+      [
+        "Application",
+        "Automotive headlights; confirm suitability"
+      ],
+      [
+        "Packaging",
+        "YUNNIAN branded boxes"
+      ],
+      [
+        "Technical data",
+        "Request the selected variant’s data sheet"
+      ]
+    ],
+    "sheet": null,
+    "source": "https://www.ynfilm.com/products/tpu-photochromic-light-control-headlight-protection-film"
+  },
+  {
+    "slug": "windshield-protection-film",
+    "name": "Windshield Protection Film",
+    "category": "Windshield protection",
+    "label": "EXTERIOR GLASS FILM",
+    "image": "windshield-protection-film.webp",
+    "description": "An external windshield film with Special KPU listed as the base material. Confirm the exact specification, optical data and installation requirements for your vehicle and market.",
+    "materials": "Special KPU windshield film",
+    "options": [
+      "Phantom Rose (Chameleon)",
+      "Purple Aurora (Chameleon)",
+      "Crystal Clear (High Definition)"
+    ],
+    "specs": [
+      [
+        "Substrate",
+        "Special KPU"
+      ],
+      [
+        "Listed thickness",
+        "7.0 mil ± 0.2 mil"
+      ],
+      [
+        "Roll size",
+        "1.22 m × 15 m"
+      ],
+      [
+        "Application",
+        "Exterior windshield; confirm suitability"
+      ],
+      [
+        "VLT / TSER",
+        "Request the selected shade’s data sheet"
+      ],
+      [
+        "Installation",
+        "Confirm product-specific instructions"
+      ]
+    ],
+    "sheet": null,
+    "source": "https://www.ynfilm.com/products/premium-windshield-protection-film-glass-shield-7-5mil-tpu-anti-impact"
+  }
+]

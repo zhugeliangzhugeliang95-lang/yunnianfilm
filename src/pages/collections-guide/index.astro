@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import collections from '../../data/collection-index.json';
+import {content} from '../../data/i18n';
+import '../../styles/source-library.css';
+const {lang,path}=content(Astro.url),z=lang==='zh';
+---
+<Layout title={z?'原商城系列索引':'Original collection index'}><header class="container page-intro"><span class="eyebrow">YUNNIAN / COLLECTIONS</span><h1>{z?'系列索引':'Collection index'}</h1><p>{z?'查找原商城的产品分类，以及施工工具、反光膜和蓄光膜的项目资料。':'Browse the original store’s collections, including project ranges for tools, reflective materials and glow film.'}</p></header><section class="container source-section"><ul class="source-list">{Object.entries(collections).map(([slug,c])=><li><a href={path('/collections-guide/'+slug+'/')}>{z?c.zh:c.title} ↗</a><p>{c.members.length?(z?c.members.length+' 个系列':c.members.length+' series'):(z?'项目资料与询价':'Project information & inquiries')}</p></li>)}</ul><a class="text-link" href={path('/products/')}>{z?'查看完整产品目录':'Explore all products'} ↗</a></section></Layout>
