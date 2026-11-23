@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import subprocess
 from urllib.parse import quote
 from xml.sax.saxutils import escape
 
@@ -17,7 +18,10 @@ def render_worker(support, knowledge):
     if template.count(lookup_import) != 1:
         raise ValueError('Worker catalogue import must occur once')
     lookup = (support / 'catalogue-query.mjs').read_text(encoding='utf-8')
-    template = template.replace(lookup_import, lookup.replace('export function ', 'function '))
+    lookup_body = lookup.replace('export function ', 'function ')
+    bundled = ("const {mentionedModels, queryWindowFilms} = (() => {\n" + lookup_body +
+               "\nreturn {mentionedModels, queryWindowFilms};\n})();")
+    template = template.replace(lookup_import, bundled)
     marker = '__YUNNIAN_PUBLIC_KNOWLEDGE__'
     if template.count(marker) != 1:
         raise ValueError('Worker knowledge placeholder must occur once')
@@ -34,7 +38,9 @@ def package_worker():
         knowledge = snapshot(INSTRUCTIONS)
     else:
         knowledge = json.loads((support / 'catalog.json').read_text(encoding='utf-8'))
-    (OUTPUT / '_worker.js').write_text(render_worker(support, knowledge), encoding='utf-8')
+    worker = render_worker(support, knowledge)
+    subprocess.run(['node', '--input-type=module', '--check'], input=worker, text=True, check=True)
+    (OUTPUT / '_worker.js').write_text(worker, encoding='utf-8')
     (OUTPUT / '_routes.json').write_text(
         json.dumps({'version': 1, 'include': ['/support/api/*'], 'exclude': []}), encoding='utf-8'
     )
