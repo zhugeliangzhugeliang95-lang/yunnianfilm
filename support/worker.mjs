@@ -1,3 +1,4 @@
+import {mentionedModels, queryWindowFilms} from './catalogue-query.mjs';
 // The release build injects only the public guide, matched catalogue fields and chat instructions.
 const knowledge = __YUNNIAN_PUBLIC_KNOWLEDGE__;
 const json = (data, status = 200) => Response.json(data, {status, headers: {'Cache-Control':'no-store', 'X-Content-Type-Options':'nosniff'}});
@@ -18,15 +19,18 @@ function redact(text) {
 }
 
 function modelRows(text, history) {
-  const mentioned = value => knowledge.models.filter(r =>
-    value.toUpperCase().split(/[^A-Z0-9-]+/).includes(r.model.toUpperCase()));
-  const current = mentioned(text);
+  const current = mentionedModels(text, knowledge.models);
   if (current.length) return current;
-  for (const turn of history.slice().reverse()) {
-    const matches = mentioned(turn.question + ' ' + turn.answer);
-    if (matches.length) return matches;
+  const windowQuery = /窗膜|玻璃膜|隔热膜|titanium (?:nitride|carbide)|window (?:film|tint)/i.test(text);
+  if (!windowQuery && history.length && /那|这|它|上一|第.|哪个|几款|what about|those|these|their|which|thick|size|the (?:first|second)|\bit\b/i.test(text)) {
+    const last = history.at(-1);
+    const rows = mentionedModels(last.answer + ' ' + last.question, knowledge.models);
+    if (rows.length) return rows;
   }
-  return /型号|规格|产品表|\bmodels?\b|\bmil\b|catalog/i.test(text) ? knowledge.models : [];
+  if (!/型号|规格|产品表|\bmodels?\b|\bmil\b|catalog/i.test(text)) return [];
+  const thickness = text.match(/(\d+(?:\.\d+)?)\s*mils?\b/i);
+  return knowledge.models.filter(row => row.id.startsWith('window-') === windowQuery &&
+    (!thickness || Number(thickness[1]) === row.mil)).slice(0, 42);
 }
 
 function fallback(text, rows) {
@@ -41,7 +45,7 @@ function fallback(text, rows) {
     answer:cn ? '可以选透明哑光 TPU 车衣。原车颜色会透出来，表面的反光比亮面更柔和。' : 'Clear matte TPU paint protection film keeps the original color visible and softens reflections.',
     sources:knowledge.guide.finish.sources,handoff:false,mode:'knowledge_fallback'
   };
-  const topics = [['finish',/哑光|亚光|亮面|matte|gloss/i],['pvc_wrap',/PVC|改色膜/i],['clear_paint',/原车色|透明|original colo[u]?r|clear film/i],['tpu_material',/TPU/i],['ppf_meaning',/PPF|车衣/i],['window',/窗膜|window film/i]];
+  const topics = [['lamp_films',/车灯膜|headlight film/i],['specialty_roof',/天窗冰甲|sunroof film/i],['pet_choices',/PET.{0,5}改色|PET wraps?/i],['window_series',/氮化钛|碳化钛|titanium (?:carbide|nitride)/i],['finish',/哑光|亚光|亮面|matte|gloss/i],['pvc_wrap',/PVC|改色膜/i],['clear_paint',/原车色|透明|original colo[u]?r|clear film/i],['tpu_material',/TPU/i],['ppf_meaning',/PPF|车衣/i],['window',/窗膜|window film/i]];
   const topic = topics.find(([,pattern])=>pattern.test(text));
   if(topic) {
     const card=knowledge.guide[topic[0]];
@@ -54,6 +58,8 @@ async function answer(text, history, env) {
   const rows=modelRows(text, history);
   const backup = reason => ({...fallback(text, rows), engine_status:reason});
   if (human.test(text) || (trade.test(text) && !/区别|介绍|多厚|怎么选|以及|另外|比较|explain|difference|compare|\band\b/i.test(text))) return fallback(text,rows);
+  const match = queryWindowFilms(text, history, knowledge.models, zh(text));
+  if (match) return match;
   if (!env.GROQ_API_KEY) return backup('unconfigured');
   const sources = Object.fromEntries(Object.entries(knowledge.guide).map(([k,v])=>[k,v.sources]));
   for (const row of rows) sources[row.id]=[row.source];

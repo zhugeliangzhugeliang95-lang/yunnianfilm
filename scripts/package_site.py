@@ -11,16 +11,30 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'dist'
 
 
-def package_worker():
-    support = ROOT / 'support'
-    knowledge = json.loads((support / 'catalog.json').read_text(encoding='utf-8'))
+def render_worker(support, knowledge):
     template = (support / 'worker.mjs').read_text(encoding='utf-8')
+    lookup_import = "import {mentionedModels, queryWindowFilms} from './catalogue-query.mjs';"
+    if template.count(lookup_import) != 1:
+        raise ValueError('Worker catalogue import must occur once')
+    lookup = (support / 'catalogue-query.mjs').read_text(encoding='utf-8')
+    template = template.replace(lookup_import, lookup.replace('export function ', 'function '))
     marker = '__YUNNIAN_PUBLIC_KNOWLEDGE__'
     if template.count(marker) != 1:
         raise ValueError('Worker knowledge placeholder must occur once')
-    (OUTPUT / '_worker.js').write_text(
-        template.replace(marker, json.dumps(knowledge, ensure_ascii=False)), encoding='utf-8'
-    )
+    return template.replace(marker, json.dumps(knowledge, ensure_ascii=False))
+
+
+def package_worker():
+    support = ROOT / 'support'
+    service = ROOT.parent / 'ai-customer-service'
+    if (service / 'public_catalogue.py').is_file():
+        sys.path.insert(0, str(service))
+        from public_catalogue import snapshot
+        from chat_assistant import INSTRUCTIONS
+        knowledge = snapshot(INSTRUCTIONS)
+    else:
+        knowledge = json.loads((support / 'catalog.json').read_text(encoding='utf-8'))
+    (OUTPUT / '_worker.js').write_text(render_worker(support, knowledge), encoding='utf-8')
     (OUTPUT / '_routes.json').write_text(
         json.dumps({'version': 1, 'include': ['/support/api/*'], 'exclude': []}), encoding='utf-8'
     )

@@ -31,8 +31,36 @@ if (provider) provider.onchange = () => {
   sessionStorage.setItem('yun-chat-provider', providerName());
   session = sessionStorage.getItem(sessionKey()) || '';
   log.replaceChildren(greeting.cloneNode(true));
+  showExamples();
   updateNotice();
 };
+
+function showExamples() {
+  const localChinese = !hosted && navigator.language.startsWith('zh');
+  const chinese = document.documentElement.lang.startsWith('zh') || localChinese;
+  const examples = chinese ? [
+    ['按膜厚找窗膜', '帮我找两款 3 mil 的氮化钛窗膜'],
+    ['对比两个型号', 'LX70 和 VK7095HD 哪个更厚？']
+  ] : [
+    ['Find a window film', 'Show me two 3 mil titanium nitride window films.'],
+    ['Compare two models', 'Compare LX70 and VK7095HD. Which is thicker?']
+  ];
+  const group = document.createElement('div');
+  group.className = 'examples';
+  for (const [label, question] of examples) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = label;
+    button.onclick = () => {
+      const field = document.querySelector('#message');
+      field.value = question;
+      field.focus();
+    };
+    group.append(button);
+  }
+  log.append(group);
+}
+showExamples();
 
 function add(text, role, meta = '') {
   const el = document.createElement('div');
@@ -57,6 +85,7 @@ document.querySelector('#chat-form').onsubmit = async event => {
   if (!message || button.disabled) return;
   button.disabled = true;
   if (provider) provider.disabled = true;
+  log.querySelector('.examples')?.remove();
   add(message, 'user');
   field.value = '';
   const pending = add('…', 'assistant');
@@ -72,7 +101,17 @@ document.querySelector('#chat-form').onsubmit = async event => {
     if (data.mode === 'local_chat' && provider?.checked) notes.push(zh ? '本机 AI 回复' : 'Answered by local AI');
     if (data.mode === 'knowledge_fallback') notes.push(zh ? 'AI 暂不可用 · 资料回复' : 'AI unavailable · support fallback');
     if (data.handoff) notes.push(zh ? '已记录，待人工跟进' : 'Saved for team review');
-    add(data.answer, 'assistant', notes.join(' · '));
+    const reply = add(data.answer, 'assistant', notes.join(' · '));
+    for (const item of data.links || []) {
+      const target = new URL(item.url);
+      if (target.origin !== 'https://yunnianfilm.com' || !/^\/(?:zh\/)?products\/[a-z0-9-]+\/$/.test(target.pathname)) continue;
+      const a = document.createElement('a');
+      a.href = target.href;
+      a.textContent = item.label;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      reply.append(a);
+    }
   } catch (error) {
     add('Unable to connect. Please try again. ' + error.message, 'assistant');
   } finally {
