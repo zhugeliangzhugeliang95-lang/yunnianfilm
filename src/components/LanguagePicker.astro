@@ -1,0 +1,46 @@
+---
+import {inLanguage, languages, pagePath, siteLanguage} from '../locales/languages';
+
+const selected = siteLanguage(Astro.url.pathname);
+const current = pagePath(Astro.url.pathname);
+const copy = {
+  en: {title:'Choose a language', close:'Close', names:{en:'English', zh:'Simplified Chinese', es:'Spanish', fr:'French', ar:'Arabic'}},
+  zh: {title:'选择语言', close:'关闭', names:{en:'英语', zh:'简体中文', es:'西班牙语', fr:'法语', ar:'阿拉伯语'}},
+  es: {title:'Elegir idioma', close:'Cerrar', names:{en:'Inglés', zh:'Chino simplificado', es:'Español', fr:'Francés', ar:'Árabe'}},
+  fr: {title:'Choisir la langue', close:'Fermer', names:{en:'Anglais', zh:'Chinois simplifié', es:'Espagnol', fr:'Français', ar:'Arabe'}},
+  ar: {title:'اختر اللغة', close:'إغلاق', names:{en:'الإنجليزية', zh:'الصينية المبسطة', es:'الإسبانية', fr:'الفرنسية', ar:'العربية'}},
+}[selected.id];
+---
+
+<details class="site-languages" translate="no">
+  <summary class="locale-trigger" aria-label={copy.title + ' · ' + selected.name}>
+    <svg class="locale-globe" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65"><circle cx="12" cy="12" r="9.25"/><ellipse cx="12" cy="12" rx="4.1" ry="9.25"/><path d="M3 12h18"/></svg>
+    <bdi lang={selected.tag}>{selected.name}</bdi>
+    <svg class="locale-chevron" aria-hidden="true" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg>
+  </summary>
+  <div class="locale-options" translate="no">
+    <div class="locale-heading">
+      <h2 id="locale-title">{copy.title}</h2>
+      <button class="locale-close" type="button" aria-label={copy.close} hidden>
+        <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="m5 5 10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <ul class="locale-list">
+      {languages.map(option => {
+        const active = option.id === selected.id;
+        return <li><a data-language-link href={inLanguage(current, option.id)} lang={option.tag} hreflang={option.tag} aria-current={active ? 'page' : undefined}>
+          <span class="locale-names">
+            <bdi class="locale-native">{option.name}</bdi>
+            {!active && <bdi class="locale-description" lang={selected.tag}>{copy.names[option.id]}</bdi>}
+          </span>
+          {active && <span class="locale-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 8 3 3 6-6"/></svg></span>}
+        </a></li>;
+      })}
+    </ul>
+  </div>
+</details>
+
+<script>
+  import {initLanguagePicker} from '../scripts/language-picker';
+  initLanguagePicker();
+</script>
