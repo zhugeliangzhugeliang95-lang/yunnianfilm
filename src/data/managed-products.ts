@@ -3,6 +3,7 @@ import {translate} from './translate';
 import {textIn} from '../locales/copy';
 import {languages, type Locale} from '../locales/languages';
 import {productMedia} from './product-media';
+import {sourceTables, modelTermsZh} from './model-tables';
 import {skuWord} from './sku-words';
 import {products as swatches, colorName} from '../../public/automotive-studio/viewer/catalog/product-catalog.js';
 
@@ -20,6 +21,10 @@ export function productWord(value:string, locale:Locale) {
   if (card) return colorName(card,locale);
   return locale === 'zh' ? translate('zh',value) : textIn(value,locale);
 }
+export function modelWord(value: string, locale: Locale) {
+  if (locale === 'zh' && Object.hasOwn(modelTermsZh, value)) return modelTermsZh[value];
+  return productWord(value, locale);
+}
 const names = (value:string) => Object.fromEntries(languages.map(({id})=>[id,productWord(value,id)]));
 function record(product:typeof products[number]) {
   const media = productMedia(product);
@@ -28,7 +33,7 @@ function record(product:typeof products[number]) {
     copy:Object.fromEntries(languages.map(({id}) => [id,{
       name:productWord(product.name,id), description:productWord(product.description,id), material:productWord(product.materials,id),
     }])),
-    specs:product.specs, gallery:media.gallery.map(im=>({...im,labels:names(im.caption)})),
+    tables:sourceTables(product.slug), specs:product.specs, gallery:media.gallery.map(im=>({...im,labels:names(im.caption)})),
     variants:media.variants.map(v=>({value:v.value,src:v.src,kind:v.kind,labels:names(v.value)})),
   };
 }

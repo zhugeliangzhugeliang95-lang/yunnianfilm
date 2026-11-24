@@ -1,6 +1,7 @@
 import {baseCatalog,demand,json,limitedBytes,now,readJSON} from './common.js';
 import {access,digest,editor} from './access.js';
-import {cleanProduct,cleanStories,verifyImages} from './content.js';
+import {dashboardData} from './directory.js';
+import {cleanProduct,cleanStories,verifyImages,hasPendingChanges} from './content.js';
 
 function checkWebp(bytes) {
   const chars=(at,n)=>String.fromCharCode(...bytes.slice(at,at+n));
@@ -37,7 +38,7 @@ export async function handleCatalogAPI(req,env) {
     return json({configured:!!story,stories:story?JSON.parse(story.live):[]});
   }
   if(/^images\/[a-f0-9]{64}$/.test(action)&&!write) return servePhoto(req,db,action.slice(7));
-  if((action==='session'&&method==='GET')||(['login','activate','logout'].includes(action)&&method==='POST'))return access(req,db,action);
+  if((action==='session'&&method==='GET')||(['login','activate','logout','password'].includes(action)&&method==='POST'))return access(req,db,action);
   demand(await editor(req,db),401,'请登录产品后台。');
   if(action==='images'&&method==='POST'){
     demand(req.headers.get('Content-Type')==='image/webp',415,'请上传 WebP 图片。');
@@ -48,23 +49,31 @@ export async function handleCatalogAPI(req,env) {
   }
   const base=await baseCatalog(req,env);
   if(action==='dashboard'&&method==='GET'){
-    const rows=await db.prepare('SELECT kind,id,revision,updated,live IS NOT NULL AS published,draft IS NOT live AS pending,json_extract(draft,\'$.copy.zh.name\') AS zh,json_extract(draft,\'$.copy.en.name\') AS en FROM catalog_documents ORDER BY updated DESC').all();
-    return json({entries:rows.results,categories:base.categories,products:base.products.map(p=>({slug:p.slug,zh:p.copy.zh.name,en:p.copy.en.name,category:p.category}))});
+    return json(await dashboardData(db,base));
   }
   const route=/^documents\/(product|stories)\/([a-z0-9][a-z0-9-]{0,95})$/.exec(action);
   demand(route && (route[1]==='product'||route[2]==='home'),404,'找不到该内容。');
   const [,type,id]=route;
   if(method==='GET'){
-    const row=await db.prepare('SELECT draft,revision,live IS NOT NULL AS published,draft IS NOT live AS pending FROM catalog_documents WHERE kind=? AND id=?').bind(type,id).first();
+    const row=await db.prepare('SELECT draft,live,revision,live IS NOT NULL AS published,draft IS NOT live AS pending FROM catalog_documents WHERE kind=? AND id=?').bind(type,id).first();
     const original=type==='stories'?base.stories:base.bySlug.get(id);
     demand(row||original,404,'找不到该内容。');
-    return json({content:row?JSON.parse(row.draft):original,revision:row?.revision||0,published:!!(row?.published||original),pending:!!row?.pending});
+    const liveOnly=url.searchParams.get('version')==='live';
+    const stored=liveOnly?row?.live:row?.draft;
+    const content=stored?JSON.parse(stored):original;
+    demand(content,404,'这个草稿还没有线上版本。');
+    if(type==='product' && !content.tables)content.tables=original?.tables || [];
+    return json({content,revision:row?.revision||0,published:!!(row?.published||original),pending:row?hasPendingChanges(type,id,row.draft,row.published,row.pending,base):false});
   }
   demand(method==='PUT',405,'此操作不支持。');
   const input=await readJSON(req,300000), publish=input?.mode==='publish';
   demand(input && (publish||input.mode==='draft') && Number.isSafeInteger(input.revision) && input.revision>=0,400,'请刷新后重试。');
   if(type==='product' && input.new===true) demand(!base.bySlug.has(id),409,'此产品网址已使用，请重新选择。');
   const doc=type==='product'?cleanProduct(input.content,id,base,publish):cleanStories(input.content,publish);
+  if(type==='product' && !('tables' in doc) && input.revision>0) {
+    const saved=await db.prepare("SELECT json_extract(draft,'$.tables') AS tables FROM catalog_documents WHERE kind=? AND id=? AND revision=?").bind(type,id,input.revision).first();
+    if(saved?.tables)doc.tables=JSON.parse(saved.tables);
+  }
   await verifyImages(db,doc);
   const data=JSON.stringify(doc);
   let saved;

@@ -4,22 +4,36 @@
 <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
 <title>产品内容后台 | YUNNIAN</title><link rel="icon" href="/yunnian-favicon-v10.webp"><link rel="stylesheet" href="/manage/editor.css">
 </head><body>
-<header><a href="/zh/" aria-label="云辇官网"><img src="/images/yunnian-logo-white.webp" alt="YUNNIAN" width="147" height="37"></a><span>产品内容后台</span><div id="account" hidden><span id="account-name"></span><button id="logout" type="button">退出</button></div></header>
+<header><a href="/zh/" aria-label="云辇官网"><img src="/images/yunnian-logo-white.webp" alt="YUNNIAN" width="147" height="37"></a><span>产品内容后台</span><div id="account" hidden><span id="account-name"></span><button id="change-password" type="button">修改密码</button><button id="logout" type="button">退出</button></div></header>
 <main>
-  <section id="access" class="access" hidden><h1 id="access-title">登录产品后台</h1><p id="access-intro"></p>
-    <form id="login-form"><label>登录账号<input id="login-name" autocomplete="username" required minlength="2" maxlength="100"></label><label>密码<input id="login-password" type="password" autocomplete="current-password" required maxlength="200"></label>
-    <button class="primary" id="login-submit">登录</button></form>
+  <section id="access" class="access" hidden>
+    <img class="access-photo" src="/images/film-craft-v3.webp" alt="">
+    <div class="access-form">
+      <div class="access-modes" aria-label="账号入口"><button type="button" id="mode-login" aria-pressed="true">账号登录</button><button type="button" id="mode-activate" aria-pressed="false">首次启用</button></div>
+      <h1 id="access-title">登录产品后台</h1><p id="access-intro"></p>
+      <form id="login-form">
+        <label id="invite-field" hidden>专属启用链接或启用码<input id="invite-code" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴交付文件里的启用链接"></label>
+        <label>登录账号<input id="login-name" autocomplete="username" required minlength="2" maxlength="100"></label>
+        <label>密码<span class="password-input"><input id="login-password" type="password" autocomplete="current-password" required maxlength="200"><button type="button" id="show-password" aria-pressed="false">显示</button></span></label>
+        <button class="primary" id="login-submit">登录</button>
+      </form>
+    </div>
   </section>
   <div id="workspace" class="workspace" hidden>
-    <aside><h2>内容管理</h2><button class="nav" id="product-nav" aria-pressed="true">产品目录</button><button class="nav" id="stories-nav" aria-pressed="false">客户案例与评价</button><a href="/zh/products/" target="_blank" rel="noopener">查看官网产品</a></aside>
+    <aside><h2>内容管理</h2><button class="nav" id="product-nav" aria-pressed="true">产品目录</button><button class="nav" id="stories-nav" aria-pressed="false">客户案例与评价</button><a href="/zh/products/" target="_blank" rel="noopener">查看官网产品 ↗</a></aside>
     <section class="desk" aria-label="内容编辑"><div class="desk-head"><div><h1 id="title">产品目录</h1><p id="subtitle"></p></div><div id="head-actions"></div></div>
       <div id="items"></div><form id="editing" hidden novalidate><div id="fields"></div>
-      <div class="savebar"><span id="state"></span><button type="button" data-action="save">保存草稿</button><button type="button" data-action="preview">预览</button><button type="button" class="primary" data-action="publish">发布到官网</button></div>
+      <div class="savebar"><span id="state" role="status"></span><button type="button" data-action="save">保存草稿</button><button type="button" data-action="preview">预览</button><button type="button" class="primary" data-action="publish">发布到官网</button></div>
       </form><div id="live-link"></div>
     </section>
   </div>
   <p id="status" role="status" aria-live="polite">正在连接后台…</p>
 </main>
 <dialog id="story-preview"><div class="dialog-title"><h2>案例与评价预览</h2><button id="preview-close" type="button">关闭</button></div><div id="preview-stories"></div></dialog>
+<dialog id="password-dialog" aria-labelledby="password-title"><div class="dialog-title"><h2 id="password-title">修改登录密码</h2><button type="button" data-close-dialog>关闭</button></div>
+  <form id="password-form"><label>当前密码<input name="current" type="password" autocomplete="current-password" required maxlength="200"></label><label>新密码<input name="next" type="password" autocomplete="new-password" placeholder="至少 12 个字符" required minlength="12" maxlength="200"></label><label>确认新密码<input name="repeat" type="password" required autocomplete="new-password" maxlength="200"></label><p class="hint">保存后，其他设备需使用新密码登录。</p><p class="error-text" role="alert"></p><button class="primary">保存新密码</button></form></dialog>
+<dialog id="import-dialog" aria-labelledby="import-title"><div class="dialog-title"><h2 id="import-title">从 Excel 或 WPS 粘贴</h2><button type="button" data-close-dialog>关闭</button></div>
+  <form id="import-form"><label>复制表头和数据行，粘贴到这里<textarea id="sheet-paste" dir="auto" rows="8" required spellcheck="false"></textarea></label><p id="sheet-size" class="hint"></p><p class="error-text" role="alert"></p><button class="primary">替换编辑中的表格</button></form></dialog>
+<script>if(location.protocol==='file:')location.replace('https://yunnianfilm.com/manage/');</script>
 <script type="module" src="/manage/editor.js"></script>
 </body></html>

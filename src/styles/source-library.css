@@ -20,3 +20,4 @@
 .company-video-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}.company-video-grid video{width:100%;aspect-ratio:16/9;object-fit:contain;background:#121b18}.company-video-grid figcaption{padding:.65rem 0;color:#49554d}
 .source-section [id],.article-body [id]{scroll-margin-top:7rem}.service-links{display:flex;flex-wrap:wrap;gap:.65rem 1.3rem;margin:1rem 0 2rem}
 @media(max-width:620px){.library-title{display:block}.source-table td,.source-table th{padding:.65rem .75rem}.source-list,.company-video-grid{grid-template-columns:1fr}.library-fold>summary{flex-wrap:wrap}.source-section .eyebrow{letter-spacing:.1em}}
+[data-product-library][hidden],[data-model-note][hidden],[data-model-link][hidden]{display:none}

@@ -1,6 +1,7 @@
 import {baseCatalog,demand} from './common.js';
 import {editor} from './access.js';
 import {locales,prefix,escapeHTML as e,copyFor,localeValue,galleryHTML,offerHTML} from '../public/catalog-ui/product-view.js';
+import {modelTablesHTML} from '../public/catalog-ui/model-tables.js';
 import {storyViews,storyGroupHTML} from '../src/scripts/customer-stories.ts';
 
 const detailPath=(id,l)=>prefix(l)+'/products/'+id+'/';
@@ -108,6 +109,12 @@ async function productDetail(req,env,p,l,base,preview,edited){
     if(!href.pathname.endsWith('/contact/'))return;
     href.searchParams.set('product',copyFor(p,'en').name);el.setAttribute('href',href.pathname+href.search);
   }});
+  const tables=p.tables ?? seed?.tables ?? [];
+  const hasArchive=Boolean(seed && template.slug===seed.slug && base.sourceSlugs?.includes(seed.slug));
+  const toggle=(selector,visible)=>rw.on(selector,{element(el){if(visible)el.removeAttribute('hidden');else el.setAttribute('hidden','');}});
+  toggle('[data-product-library],[data-model-link]',tables.length>0 || hasArchive);
+  toggle('[data-model-note]',tables.length>0 && p.category==='Window film');
+  setHTML(rw,'[data-model-tables]',modelTablesHTML(tables,l,term=>Object.hasOwn(base.modelWords?.[l] || {},term)?base.modelWords[l][term]:term));
   if(!seed||template.slug!==seed.slug) {
     remove(rw,'[data-product-sources],[data-product-source-link],[data-product-detail-images]');
     setHTML(rw,'#variant-refs','{}');

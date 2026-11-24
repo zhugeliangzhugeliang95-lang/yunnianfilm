@@ -38,7 +38,7 @@ const labMode={'Clear PPF':'ppf','Color PPF':'tpu-color','PET color wraps':'pet-
       <span class="eyebrow" data-product-label>{p.label}</span><h1 data-product-name>{p.name}</h1><p class="lead" data-product-description>{p.description}</p>
       <dl class="detail-quickfacts" data-product-facts>{quickFacts.map(([key,value])=><div><dt>{key}</dt><dd>{value}</dd></div>)}</dl>
       <div data-product-offer translate="no" set:html={offerHTML(editable,locale)}/>
-      {originalSheets[p.slug]&&<a class="sample-link" data-product-source-link href="#model-library">{lang==='zh'?'查看型号表与图册':'See model data and photos'} ↓</a>}
+      <a class="sample-link" data-model-link hidden={!originalSheets[p.slug]} href="#model-library">{lang==='zh'?'查看型号表与图册':'See model data and photos'} ↓</a>
       <p class="small-note">{t('Price, availability, lead time and shipping are confirmed with your quotation.')}</p>
     </div>
   </section>
@@ -49,7 +49,7 @@ const labMode={'Clear PPF':'ppf','Color PPF':'tpu-color','PET color wraps':'pet-
     </div>
     <dl data-product-specs>{p.specs.map(([key,value])=><div><dt>{key}</dt><dd>{value}</dd></div>)}</dl>
   </section>
-  <div data-product-sources><ProductReferences product={p}/></div>
+  <ProductReferences product={p}/>
   {labMode&&<FilmLab initialMode={labMode} embedded/>}
   <section class="related-products section container" hidden={!related.length}>
     <div class="section-heading"><div><span class="eyebrow">{lang==='zh'?'继续探索':'CONTINUE EXPLORING'}</span><h2>{lang==='zh'?'同类产品':'Related Products'}</h2></div><a class="text-link" href={path('/film-guide/')}>{lang==='zh'?'查看选型指南':'Read the film guide'} ↗</a></div>

@@ -13,16 +13,46 @@ async function verifier(password,salt) {
 }
 async function startSession(db, user) {
   const token=random(), key=await digest(token);
-  await db.batch([
+  const [, inserted] = await db.batch([
     db.prepare('DELETE FROM catalog_sessions WHERE expires<=?').bind(now()),
-    db.prepare('INSERT INTO catalog_sessions VALUES(?,?,?)').bind(key,user.id,now()+age),
+    db.prepare('INSERT INTO catalog_sessions SELECT ?,id,? FROM catalog_editors WHERE id=? AND verifier=?').bind(key,now()+age,user.id,user.verifier),
   ]);
+  demand(inserted.meta.changes===1,401,'登录信息已变更，请重新登录。');
   return json({login:user.login},200,{'Set-Cookie':cookie(token,age)});
 }
 export async function editor(req,db) {
   const value=sessionToken(req);
   if(!/^[0-9a-f]{64}$/.test(value))return null;
   return db.prepare('SELECT e.id,e.login FROM catalog_editors e JOIN catalog_sessions s ON s.editor=e.id WHERE s.digest=? AND s.expires>?').bind(await digest(value),now()).first();
+}
+async function limitAttempts(req,db) {
+  const bucket=await digest('catalog/'+(req.headers.get('CF-Connecting-IP')||'local'));
+  const instant=now();
+  const [counter]=await db.batch([
+    db.prepare('INSERT INTO catalog_attempts VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET attempts=CASE WHEN expires<=? THEN 1 ELSE attempts+1 END,expires=CASE WHEN expires<=? THEN excluded.expires ELSE expires END RETURNING attempts').bind(bucket,instant+900,instant,instant),
+    db.prepare('DELETE FROM catalog_attempts WHERE expires<?').bind(instant),
+  ]);
+  demand(counter.results[0].attempts<=15,429,'尝试次数较多，请稍后再试。');
+  return bucket;
+}
+async function changePassword(req,db,input) {
+  const user=await editor(req,db);
+  demand(user,401,'请先登录。');
+  const {current,password}=input || {};
+  demand(typeof current==='string' && current.length>0 && current.length<=200,400,'请输入当前密码。');
+  demand(typeof password==='string' && password.length>=12 && password.length<=200 && password!==current,400,'请设置至少 12 个字符的新密码。');
+  const bucket=await limitAttempts(req,db);
+  const row=await db.prepare('SELECT salt,verifier FROM catalog_editors WHERE id=?').bind(user.id).first();
+  demand(row && await verifier(current,row.salt)===row.verifier,403,'当前密码不正确。');
+  const salt=random(), next=await verifier(password,salt), token=random(), key=await digest(token);
+  const [updated]=await db.batch([
+    db.prepare('UPDATE catalog_editors SET salt=?,verifier=? WHERE id=? AND verifier=?').bind(salt,next,user.id,row.verifier),
+    db.prepare('DELETE FROM catalog_sessions WHERE editor=? AND EXISTS(SELECT 1 FROM catalog_editors WHERE id=? AND verifier=?)').bind(user.id,user.id,next),
+    db.prepare('INSERT INTO catalog_sessions SELECT ?,id,? FROM catalog_editors WHERE id=? AND verifier=?').bind(key,now()+age,user.id,next),
+  ]);
+  demand(updated.meta.changes===1,409,'密码已在其他设备变更，请重新登录。');
+  await db.prepare('DELETE FROM catalog_attempts WHERE bucket=?').bind(bucket).run();
+  return json({login:user.login},200,{'Set-Cookie':cookie(token,age)});
 }
 export async function access(req,db,action) {
   if(action==='session') { const user=await editor(req,db);return json({login:user?.login||null}); }
@@ -31,16 +61,11 @@ export async function access(req,db,action) {
     return json({ok:true},200,{'Set-Cookie':cookie('',0)});
   }
   const input=await readJSON(req,3000);
+  if(action==='password')return changePassword(req,db,input);
   const login=String(input?.login||'').trim().normalize('NFKC').toLowerCase();
   const password=input?.password;
   demand(login.length>=2 && login.length<=100 && typeof password==='string' && password.length>=1 && password.length<=200,400,'请输入账号和密码。');
-  const bucket=await digest('catalog/'+(req.headers.get('CF-Connecting-IP')||'local'));
-  const instant=now();
-  const [counter]=await db.batch([
-    db.prepare('INSERT INTO catalog_attempts VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET attempts=CASE WHEN expires<=? THEN 1 ELSE attempts+1 END,expires=CASE WHEN expires<=? THEN excluded.expires ELSE expires END RETURNING attempts').bind(bucket,instant+900,instant,instant),
-    db.prepare('DELETE FROM catalog_attempts WHERE expires<?').bind(instant),
-  ]);
-  demand(counter.results[0].attempts<=15,429,'尝试次数较多，请稍后再试。');
+  const bucket=await limitAttempts(req,db);
   let user;
   if(action==='activate') {
     demand(password.length>=12 && /^[\p{L}\p{N}_.@+-]+$/u.test(login),400,'账号可用文字、数字或邮箱，密码至少需 12 个字符。');
@@ -57,7 +82,7 @@ export async function access(req,db,action) {
       ]);
       demand(claim.meta.changes===1,410,'启用链接已使用或已过期。');
     }catch(error){if(String(error).includes('UNIQUE'))demand(false,409,'此账号已使用，请换一个账号。');throw error;}
-    user={id,login};
+    user={id,login,verifier:pw};
   }else{
     user=await db.prepare('SELECT * FROM catalog_editors WHERE login=?').bind(login).first();
     const actual=await verifier(password,user?.salt||'absent-catalog-account');
