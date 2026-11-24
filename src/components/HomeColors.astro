@@ -1,8 +1,33 @@
 ---
 import {content} from '../data/i18n';
-import {products} from '../../public/automotive-studio/viewer/catalog/product-catalog.js';
-const {lang,path}=content(Astro.url);const z=lang==='zh';
+import {siteLanguage} from '../locales/languages';
+import {colorName,products} from '../../public/automotive-studio/viewer/catalog/product-catalog.js';
+
+const {lang,path}=content(Astro.url);
+const z=lang==='zh';
+const locale=siteLanguage(Astro.url.pathname);
 const refs=['YN-0300','YN-0135','YN-0074','YN-0001'];
 const picks=refs.map(ref=>products.find(p=>p.reference===ref)!);
 ---
-<section id="color-edit" class="home-colors" aria-labelledby="home-colors-title"><div class="container"><div class="home-colors-heading"><div><span class="eyebrow">02 / THE COLOR EDIT</span><h2 id="home-colors-title">{z?'从一张色卡，':'A color worth'}<br/>{z?'到一辆心动车。':'looking closer at.'}</h2></div><div><p>{z?'在 404 款现有颜色中寻找灵感。按色系筛选、放到车上看，把喜欢的几款留在同一份清单。':'Find your starting point among 404 existing colors. Explore a color family, preview it on the car, and save your favorites to one shortlist.'}</p><a class="button button-light" href={path('/color-studio/')}>{z?'探索全部现有颜色':'Explore all existing colors'} ↗</a></div></div><div class="home-color-edit">{picks.map((p,i)=><a href={path('/color-studio/?q='+p.reference)}><div class="home-color-photo"><img src={'/automotive-studio/viewer/'+p.card} width="1272" height="720" loading="lazy" translate="no" alt={p.nameEn}/><span aria-hidden="true">↗</span></div><div class="home-color-caption"><span>0{i+1} / {p.reference}</span><h3 translate="no" lang="en" dir="ltr">{p.nameEn}</h3><p>{z?p.name:'Original product card'}</p></div></a>)}</div><div class="home-colors-bottom"><p>{z?'原始产品色卡 · 固定编号与英文名称 · 以实物确认颜色及质感':'Original product cards · Fixed references & English names · Confirm with a physical sample'}</p><a href={path('/color-studio/?family=green')}>{z?'从绿色系开始':'Explore the green collection'} ↗</a></div></div></section>
+<section id="color-edit" class="home-colors" aria-labelledby="home-colors-title">
+  <div class="container">
+    <div class="home-colors-heading">
+      <div><span class="eyebrow">02 / THE COLOR EDIT</span><h2 id="home-colors-title">{z?'从一张色卡，':'A color worth'}<br/>{z?'到一辆心动车。':'looking closer at.'}</h2></div>
+      <div><p>{z?'在 404 款现有颜色中寻找灵感。按色系筛选、放到车上看，把喜欢的几款留在同一份清单。':'Find your starting point among 404 existing colors. Explore a color family, preview it on the car, and save your favorites to one shortlist.'}</p><a class="button button-light" href={path('/color-studio/')}>{z?'探索全部现有颜色':'Explore all existing colors'} ↗</a></div>
+    </div>
+    <div class="home-color-edit">
+      {picks.map((p,i)=>{
+        const name = colorName(p,locale.id);
+        return <a href={path('/color-studio/?q='+p.reference)}>
+          <div class="home-color-photo"><img src={'/automotive-studio/viewer/'+p.card} width="1272" height="720" loading="lazy" translate="no" alt={name}/><span aria-hidden="true">↗</span></div>
+          <div class="home-color-caption">
+            <span><bdi>0{i+1} / {p.reference}</bdi></span>
+            <h3 translate="no" lang={locale.tag}>{name}</h3>
+            {name !== p.nameEn ? <p translate="no"><bdi lang="en" dir="ltr">{p.nameEn}</bdi></p> : <p>Original product card</p>}
+          </div>
+        </a>;
+      })}
+    </div>
+    <div class="home-colors-bottom"><p>{z?'原始产品色卡 · 固定编号与英文名称 · 以实物确认颜色及质感':'Original product cards · Fixed references & English names · Confirm with a physical sample'}</p><a href={path('/color-studio/?family=green')}>{z?'从绿色系开始':'Explore the green collection'} ↗</a></div>
+  </div>
+</section>

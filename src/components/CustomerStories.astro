@@ -1,0 +1,81 @@
+---
+import CustomerStory from './CustomerStory.astro';
+import originals from '../data/customer-stories.json';
+import {storyLabels, storyViews} from '../scripts/customer-stories';
+import {siteLanguage} from '../locales/languages';
+
+const locale = siteLanguage(Astro.url.pathname).id;
+const labels = storyLabels[locale];
+const stories = storyViews(originals as Parameters<typeof storyViews>[0], locale);
+const groups = ['case', 'review'] as const;
+---
+<section class="customer-stories section" id="customer-stories" aria-labelledby="stories-title" data-story-locale={locale} translate="no">
+  <div class="container">
+    <h2 id="stories-title">{labels.heading}</h2>
+    <div class="stories-spread">
+      {groups.map(kind => {
+        const entries = stories.filter(story => story.kind === kind);
+        return <div data-story-group={kind} hidden={!entries.length}>
+          {entries.map(story => <CustomerStory story={story} linkText={labels.product} />)}
+        </div>;
+      })}
+    </div>
+    <template><CustomerStory linkText={labels.product} /></template>
+  </div>
+</section>
+
+<script>
+  import {refreshStories} from '../scripts/customer-stories';
+  const section = document.querySelector<HTMLElement>('#customer-stories');
+  if (section) void refreshStories(section);
+</script>
+
+<style is:global>
+  .customer-stories {
+    background: #f3f3ee;
+    border-block: 1px solid #dcdfd8;
+    color: #181b18;
+  }
+  .customer-stories[hidden], .customer-stories [hidden] { display: none !important; }
+  .customer-stories h2 {
+    font-size: clamp(2rem, 3.6vw, 3.35rem);
+    font-weight: 520;
+    line-height: 1.12;
+    margin: 0 0 clamp(1.5rem, 3vw, 2.6rem);
+    text-transform: none;
+  }
+  .stories-spread { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(1.75rem, 5vw, 5.5rem); }
+  .stories-spread > [data-story-group] { min-width: 0; }
+  .stories-spread:has(> [hidden]) { grid-template-columns: 1fr; }
+  .stories-spread:has(> [hidden]) > [data-story-group]:not([hidden]) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    align-items: start;
+    gap: 2rem;
+  }
+  .customer-stories .story-entry + .story-entry { margin-block-start: 1.55rem; }
+  .customer-stories .story-entry { min-width: 0; }
+  .customer-stories .story-media { overflow: hidden; margin-block-end: 1.15rem; }
+  .customer-stories .story-media img { display: block; width: 100%; height: auto; aspect-ratio: 1.96; object-fit: cover; object-position: 50% 43%; }
+  .customer-stories [data-story-group="review"] .story-entry { padding-block-start: 1.05rem; border-block-start: 1px solid #c1c6be; }
+  .customer-stories [data-story-group="review"] .story-media img { max-height: 16rem; }
+  .customer-stories .story-kind { font-size: .875rem; font-weight: 650; color: #674248; margin: 0 0 .5rem; line-height: 1.4; }
+  .customer-stories .story-title { font-size: clamp(1.22rem, 2.15vw, 1.85rem); line-height: 1.2; text-transform: none; margin: 0; }
+  .customer-stories [data-story-group="review"] .story-title { font-size: clamp(1.125rem, 1.55vw, 1.45rem); }
+  .customer-stories .story-body, .customer-stories .story-quote {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333a33;
+    margin: .72rem 0 0;
+    white-space: pre-line;
+  }
+  .customer-stories .story-quote { border-inline-start: 2px solid #aeb6ac; padding-inline-start: .9rem; }
+  .customer-stories .story-credit { font-size: .875rem; line-height: 1.45; margin: .55rem 0 0; color: #4d554d; }
+  .customer-stories .story-product { display: inline-flex; align-items: center; min-height: 44px; margin-block-start: .3rem; text-underline-offset: .25em; text-decoration: underline; font-size: .9rem; font-weight: 600; }
+  .customer-stories .story-product:hover, .customer-stories .story-product:focus-visible { color: #a61832; }
+  .customer-stories .story-text { overflow-wrap: anywhere; }
+  @media (max-width: 760px) {
+    .stories-spread { grid-template-columns: 1fr; gap: 1.5rem; }
+    .customer-stories .story-media img { aspect-ratio: 1.7; }
+  }
+</style>

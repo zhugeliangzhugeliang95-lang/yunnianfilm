@@ -1,49 +1,61 @@
 ---
-import { products as sourceProducts } from '../../data/products';
-
-import { content, localizeProduct } from '../../data/i18n';
-
+import {products as sourceProducts} from '../../data/products';
+import {content, localizeProduct} from '../../data/i18n';
+import {categoryUrl,catalogCategory} from '../../data/categories';
+import {siteLanguage} from '../../locales/languages';
+import {managedBySlug} from '../../data/managed-products';
+import {galleryHTML,offerHTML} from '../../../public/catalog-ui/product-view.js';
 import Layout from '../../layouts/Layout.astro';
 import CTA from '../../components/CTA.astro';
 import Product from '../../components/Product.astro';
-import {categoryUrl,catalogCategory} from '../../data/categories';
 import FilmLab from '../../components/FilmLab.astro';
 import ProductReferences from '../../components/ProductReferences.astro';
-import ProductGallery from '../../components/ProductGallery.astro';
 import originalSheets from '../../data/source-product-details.json';
 import detailImages from '../../data/detail-images.json';
 
 export function getStaticPaths(){return sourceProducts.map(product=>({params:{slug:product.slug},props:{product}}));}
 const {lang,t,path,products}=content(Astro.url);
+const locale=siteLanguage(Astro.url.pathname).id;
 const p=localizeProduct(Astro.props.product,lang);
-const isColorCatalog=['Color PPF','PET color wraps'].includes(p.category);
+const editable=managedBySlug.get(p.slug)!;
 const legacyVariants=Object.fromEntries((originalSheets[p.slug]||[]).flatMap(sheet=>sheet.variants.map(v=>[v.id,v.title])));
 const related=products.filter(item=>item.slug!==p.slug&&item.category===p.category).slice(0,4);
+const quickFacts=p.specs.filter(([key])=>[t('Thickness'),t('Listed thickness'),t('Roll size'),t('Substrate')].includes(key)).slice(0,2);
+const labMode={'Clear PPF':'ppf','Color PPF':'tpu-color','PET color wraps':'pet-color','Window film':'window'}[p.category];
 ---
 <Layout title={p.name} description={p.description}>
-  <div class="container breadcrumb"><a href={path("/products/")}>{t("Our films")}</a><span>/</span><a href={path(categoryUrl(p.category))}>{catalogCategory(p.category,lang)}</a><span>/</span><span>{p.name}</span></div>
-  <section class="container product-detail"><div class="product-media-scroll" tabindex="0" aria-label={lang==='zh'?'产品图片与详情，可上下滚动':'Product Images And Details, Scroll To Explore'}><ProductGallery product={p} /><div class="product-detail-images" data-product-detail-images>{(detailImages[p.slug]||[]).map(img=><img src={img} loading="lazy" alt={p.name+' '+(lang==='zh'?'产品详情':'Product Details')}/>)}{p.sheet&&<img src={p.sheet} loading="lazy" alt={p.name+' '+(lang==='zh'?'规格资料':'Specification Sheet')}/>}</div></div><div class="detail-copy"><span class="eyebrow">{p.label}</span><h1>{p.name}</h1><p class="lead">{p.description}</p><dl class="detail-quickfacts">{p.specs.filter(([key])=>[t('Thickness'),t('Listed thickness'),t('Roll size'),t('Substrate')].includes(key)).slice(0,2).map(([key,value])=><div><dt>{key}</dt><dd>{value}</dd></div>)}</dl>{isColorCatalog?<><a class="button button-dark" href={path('/color-studio/')}>{lang==='zh'?'选择现有产品颜色':'Choose an existing product color'} ↗</a><a id="quote-link" class="button button-accent" href={path('/contact/?'+new URLSearchParams({product:p.originalName}))}>{t("Request a wholesale quote")} <span>↗</span></a><a class="sample-link" href={path('/contact/?'+new URLSearchParams({product:p.originalName,intent:'Sample request'}))}>{t('Discuss samples ↗')}</a></>:<form class="product-inquiry" action={path('/contact/')} method="get">
-    <input type="hidden" name="product" value={p.originalName}/>
-    <div class="selection"><label for="variant">{t("Choose your interest")}</label><select id="variant" name="variant">{p.options.map((o,i)=><option value={o}>{p.optionLabels[i]}</option>)}</select></div>
-    <button id="quote-link" type="submit" class="button button-accent">{t("Request a wholesale quote")} <span>↗</span></button>
-    <button class="sample-link" type="submit" name="intent" value="Sample request">{t("Discuss samples ↗")}</button>
-  </form>}{originalSheets[p.slug]&&<a class="sample-link" href="#model-library">{lang==='zh'?'查看型号表与图册':'See model data and photos'} ↓</a>}<p class="small-note">{t("Price, availability, lead time and shipping are confirmed with your quotation.")}</p></div></section>
-  <section class="section container specification"><div><span class="eyebrow">{t("PRODUCT DETAILS")}</span><h2>{t("Know your material.")}</h2><p>{t("Use these details as a starting point for your inquiry. Request the current data sheet and written terms for the variant you choose.")}</p>{p.sheet && <a class="text-link" href={p.sheet} target="_blank" rel="noopener noreferrer">{t("View 6.5 mil technical sheet ↗")}</a>}</div><dl>{p.specs.map(([key,value])=><div><dt>{key}</dt><dd>{value}</dd></div>)}</dl></section><ProductReferences product={p}/>{related.length>0&&<section class="related-products section container"><div class="section-heading"><div><span class="eyebrow">{lang==='zh'?'继续探索':'CONTINUE EXPLORING'}</span><h2>{lang==='zh'?'同类产品':'Related Products'}</h2></div><a class="text-link" href={path('/film-guide/')}>{lang==='zh'?'查看选型指南':'Read the film guide'} ↗</a></div><div class="product-grid">{related.map((item,i)=><Product product={item} index={i}/>)}</div></section>}{['Clear PPF','Color PPF','PET color wraps','Window film'].includes(p.category) && <FilmLab initialMode={p.category==='Clear PPF'?'ppf':p.category==='Window film'?'window':p.category==='PET color wraps'?'pet-color':'tpu-color'} embedded/>}<CTA href={path('/contact/?'+new URLSearchParams({product:p.originalName,intent:'Sample request'}))} title={"Let’s put it\nto the test."} text={t("Request samples for your own installation and material evaluation.")} />
-  <script type="application/json" id="variant-refs" set:html={JSON.stringify(legacyVariants).replace(/</g,'\\u003c')} />
-  <script>
-    const variant=document.querySelector<HTMLSelectElement>('#variant');
-    const queryValue=new URLSearchParams(location.search).get('variant')||'';
-    const refs:Record<string,string>=JSON.parse(document.querySelector('#variant-refs')?.textContent||'{}');
-    const requested=refs[queryValue]||queryValue;
-    if(variant && requested && Array.from(variant.options).some(o=>o.value===requested)) variant.value=requested;
-    function updateVariant(){
-      if(!variant)return;
-      document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach(a=>{const url=new URL(a.href);url.searchParams.set('variant',variant.value);a.href=url.toString();});
-    }
-    updateVariant();
-    variant?.dispatchEvent(new Event('change'));
-    variant?.addEventListener('change',updateVariant);
-  </script>
+  <link slot="head" rel="stylesheet" href="/catalog-ui/product.css"/>
+  <div class="container breadcrumb"><a href={path('/products/')}>{t('Our films')}</a><span>/</span><a data-product-category href={path(categoryUrl(p.category))}>{catalogCategory(p.category,lang)}</a><span>/</span><span data-product-name>{p.name}</span></div>
+  <section class="container product-detail">
+    <div class="product-media-column">
+      <div data-product-gallery translate="no" set:html={galleryHTML(editable,locale)}/>
+      <div class="product-detail-images" data-product-detail-images>
+        {(detailImages[p.slug]||[]).map(img=><img src={img} loading="lazy" alt={p.name+' '+(lang==='zh'?'产品详情':'Product details')}/>)}
+        {p.sheet&&<img src={p.sheet} loading="lazy" alt={p.name+' '+(lang==='zh'?'规格资料':'Specification sheet')}/>}
+      </div>
+    </div>
+    <div class="detail-copy">
+      <span class="eyebrow" data-product-label>{p.label}</span><h1 data-product-name>{p.name}</h1><p class="lead" data-product-description>{p.description}</p>
+      <dl class="detail-quickfacts" data-product-facts>{quickFacts.map(([key,value])=><div><dt>{key}</dt><dd>{value}</dd></div>)}</dl>
+      <div data-product-offer translate="no" set:html={offerHTML(editable,locale)}/>
+      {originalSheets[p.slug]&&<a class="sample-link" data-product-source-link href="#model-library">{lang==='zh'?'查看型号表与图册':'See model data and photos'} ↓</a>}
+      <p class="small-note">{t('Price, availability, lead time and shipping are confirmed with your quotation.')}</p>
+    </div>
+  </section>
+  <section class="section container specification">
+    <div><span class="eyebrow">{t('PRODUCT DETAILS')}</span><h2>{t('Know your material.')}</h2>
+      <p>{t('Use these details as a starting point for your inquiry. Request the current data sheet and written terms for the variant you choose.')}</p>
+      {p.sheet&&<a data-product-source-link class="text-link" href={p.sheet} target="_blank" rel="noopener noreferrer">{t('View 6.5 mil technical sheet ↗')}</a>}
+    </div>
+    <dl data-product-specs>{p.specs.map(([key,value])=><div><dt>{key}</dt><dd>{value}</dd></div>)}</dl>
+  </section>
+  <div data-product-sources><ProductReferences product={p}/></div>
+  {labMode&&<FilmLab initialMode={labMode} embedded/>}
+  <section class="related-products section container" hidden={!related.length}>
+    <div class="section-heading"><div><span class="eyebrow">{lang==='zh'?'继续探索':'CONTINUE EXPLORING'}</span><h2>{lang==='zh'?'同类产品':'Related Products'}</h2></div><a class="text-link" href={path('/film-guide/')}>{lang==='zh'?'查看选型指南':'Read the film guide'} ↗</a></div>
+    <div class="product-grid">{related.map((item,i)=><Product product={item} index={i}/>)}</div>
+  </section>
+  <CTA href={path('/contact/?'+new URLSearchParams({product:p.originalName,intent:'Sample request'}))} title={"Let’s put it\nto the test."} text={t('Request samples for your own installation and material evaluation.')}/>
+  <script type="application/json" id="variant-refs" set:html={JSON.stringify(legacyVariants).replace(/</g,'\\u003c')}/>
+  <script is:inline type="module" src="/catalog-ui/gallery.js"></script>
 </Layout>
-
-<style>.product-inquiry>.button,.product-inquiry>.sample-link{width:100%}.product-inquiry>.sample-link{cursor:pointer}</style>

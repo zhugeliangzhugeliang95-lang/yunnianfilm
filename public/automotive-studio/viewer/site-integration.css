@@ -44,4 +44,4 @@ body[data-env=day] .stage-shade{background:linear-gradient(180deg,#10141460,tran
 
 html[dir="rtl"] body{font-family:Arial,Tahoma,sans-serif;letter-spacing:normal}
 html[dir="rtl"] :is(.stage-heading,.site-header,.inspector-head,.control-section,.inspector-bottom,.catalog-filters){letter-spacing:normal}
-html[dir="rtl"] :is(.brand,#card-title,#card-filename,.catalog-name,#color-name,#look-name){direction:ltr;unicode-bidi:isolate}
+html[dir="rtl"] :is(.brand,#color-en,#product-reference){direction:ltr;unicode-bidi:isolate}

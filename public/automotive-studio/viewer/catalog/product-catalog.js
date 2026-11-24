@@ -2,6 +2,7 @@ import {products as sourceProducts,catalogMeta as sourceMeta} from './catalog-da
 import {photoProfiles} from './photo-profiles.js';
 import {references} from './catalog-references.js';
 import {printedNames,nameChecks} from './printed-names.js';
+import {translatedNames} from './localized-names.js';
 export const families=[
  ['green','Green','绿色','绿|翠|翡翠|橄榄|碧|green|jade|emerald|olive|mint|sage'],
  ['blue','Blue','蓝色','蓝|blue|cyan|aqua|teal'],
@@ -24,7 +25,25 @@ export const products=sourceProducts.map(p=>{
  return {...p,canPreview:p.canPreview||p.effect==='reflective'||!!photoProfiles[p.id]?.textureRegion,reference:references[p.id],nameEn,explicitFinish,nameCheck:nameChecks.includes(p.id),families:families.filter(f=>f[3].split('|').some(word=>new RegExp(/^[a-z]+$/.test(word)?'\\b'+word+'\\b':word,'i').test(text))).map(f=>f[0])};
 });
 export const catalogMeta={...sourceMeta,previewCount:products.filter(p=>p.canPreview).length,colorMethod:'Original photo appearance profiles; not physically calibrated',catalogRevision:'2026-11-11-photo-reference'};
-export const normalize=text=>String(text||'').normalize('NFKC').toLowerCase().replace(/[\s\-_/]/g,'');
+export function colorName(product, locale = 'en') {
+ const lang = locale.split('-')[0];
+ if (lang === 'zh') {
+  return product.name.replace(/\s*[（(]中(?:英)?[）)]\s*$/u,'').replace(/\s*[(（]/gu,'（').replace(/[)）]/gu,'）').trim();
+ }
+ return translatedNames[product.reference]?.[lang] || product.nameEn;
+}
+export function colorOrderName(product, lang = 'en') {
+ const name = colorName(product, lang);
+ return name === product.nameEn ? name : name + ' / ' + product.nameEn;
+}
+export const colorSearchCopy = {
+ en: {label:'Search by color name or reference', example:'e.g. green, British Green, YN-0300'},
+ zh: {label:'搜索颜色名称或目录编号', example:'例如：绿、英伦绿、YN-0300'},
+ es: {label:'Buscar por nombre de color o referencia', example:'Ej. verde, verde británico, YN-0300'},
+ fr: {label:'Rechercher par nom de couleur ou référence', example:'Ex. vert, vert britannique, YN-0300'},
+ ar: {label:'ابحث باسم اللون أو برقمه', example:'مثلاً أخضر، أخضر بريطاني، YN-0300'},
+};
+export const normalize=text=>String(text||'').normalize('NFKD').toLowerCase().replace(/[\p{M}\s\p{Pd}_/’'ـ]/gu,'');
 const alias={绿:'green',绿色:'green',绿色系:'green',green:'green',greens:'green',蓝:'blue',蓝色:'blue',blue:'blue',红:'red',红色:'red',red:'red',粉:'pink',粉色:'pink',pink:'pink',紫:'purple',紫色:'purple',purple:'purple',黄:'yellow',黄色:'yellow',yellow:'yellow',橙:'orange',橙色:'orange',orange:'orange',金:'gold',金色:'gold',gold:'gold',银:'silver',银色:'silver',silver:'silver',灰:'gray',灰色:'gray',gray:'gray',grey:'gray',白:'white',白色:'white',white:'white',黑:'black',黑色:'black',black:'black',棕:'brown',棕色:'brown',brown:'brown'};
 const localizedFamilies = {
  green:'verde verdes vert verts verte vertes أخضر اخضر خضراء الأخضر الاخضر', blue:'azul azules bleu bleue bleus أزرق ازرق زرقاء الأزرق',
@@ -43,8 +62,11 @@ export function matchesProduct(p,query='',family=''){
  const q=normalize(query);if(!q)return true;
  const word=q.replace(/^ال(?=[\u0600-\u06ff])/u,'');
  if(Object.hasOwn(alias,word))return p.families.includes(alias[word]);
- return normalize([p.reference,p.nameEn,p.name,p.sourceName].join(' ')).includes(q);
+ return searchNames.get(p.id)?.some(name=>name.includes(q)) ?? false;
 }
+const searchNames = new Map(products.map(p=>[
+ p.id, [p.reference, p.nameEn, p.name, p.sourceName, colorName(p,'zh'), ...Object.values(translatedNames[p.reference] || {})].map(normalize),
+]));
 export const finishLabel=(p,lang='en')=>p.explicitFinish?({Gloss:['Gloss','亮面'],Matte:['Matte','哑面'],Satin:['Satin','缎面']}[p.explicitFinish][lang==='zh'?1:0]):(lang==='zh'?'以原图产品为准':'As Pictured');
 
 export const nameCheckLabel=(lang='en')=>lang==='zh'?'请对照原图，并按编号确认产品名称。':'Confirm The Product Name Against The Original Card And Reference.';

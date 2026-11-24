@@ -41,8 +41,11 @@ def package_worker():
     worker = render_worker(support, knowledge)
     subprocess.run(['node', '--input-type=module', '--check'], input=worker, text=True, check=True)
     (OUTPUT / '_worker.js').write_text(worker, encoding='utf-8')
+    subprocess.run(['node','scripts/bundle-catalog-worker.mjs'],cwd=ROOT,check=True)
+    localized = [prefix + section + '*' for prefix in ('','/zh','/fr','/es','/ar')
+                 for section in ('/products','/contact')]
     (OUTPUT / '_routes.json').write_text(
-        json.dumps({'version': 1, 'include': ['/support/api/*'], 'exclude': []}), encoding='utf-8'
+        json.dumps({'version': 1, 'include': ['/support/api/*','/catalog-api/*','/sitemap.xml',*localized], 'exclude': []}), encoding='utf-8'
     )
 
 
@@ -65,7 +68,7 @@ def write_search_files(origin):
     urls = []
     for file in sorted(OUTPUT.rglob('*.html')):
         name = file.relative_to(OUTPUT).as_posix()
-        if name.startswith(('automotive-studio/', 'support/')) or '404' in Path(name).parts or name == '404.html':
+        if name.startswith(('automotive-studio/', 'support/','manage/')) or '404' in Path(name).parts or name == '404.html':
             continue
         route = '/' + name.removesuffix('index.html')
         canonical = origin + quote(route, safe='/')
@@ -77,7 +80,7 @@ def write_search_files(origin):
         file.write_text(markup, encoding='utf-8')
         urls.append(canonical)
     (OUTPUT / 'robots.txt').write_text(
-        f'User-agent: *\nAllow: /\nDisallow: /automotive-studio/viewer/\nSitemap: {origin}/sitemap.xml\n',
+        f'User-agent: *\nAllow: /\nDisallow: /manage/\nDisallow: /automotive-studio/viewer/\nSitemap: {origin}/sitemap.xml\n',
         encoding='utf-8',
     )
     locations = ''.join(f'  <url><loc>{escape(url)}</loc></url>\n' for url in sorted(urls))

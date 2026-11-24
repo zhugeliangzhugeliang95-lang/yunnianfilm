@@ -29,6 +29,7 @@ const canonicalPath = inLanguage(current, selected.id);
 <html lang={selected.tag} dir={selected.id==='ar'?'rtl':'ltr'}>
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <slot name="head" />
     <title>{t(title)} | YUNNIAN</title><meta name="description" content={t(description)} />
     <link rel="canonical" href={new URL(canonicalPath, Astro.site)} /><meta property="og:image" content={new URL('/images/hero.webp', Astro.site)} />
     {languages.map(option => <link rel="alternate" hreflang={option.tag} href={new URL(inLanguage(current,option.id), Astro.site)} />)}

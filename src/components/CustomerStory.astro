@@ -1,0 +1,19 @@
+---
+import type {StoryView} from '../scripts/customer-stories';
+
+interface Props {story?: StoryView; linkText: string}
+const {story, linkText} = Astro.props;
+---
+<article class="story-entry" data-customer-story={story?.id || ''}>
+  <div class="story-media" hidden={!story?.image}>
+    <img src={story?.image || undefined} loading="lazy" decoding="async" width="900" height="580" alt="" />
+  </div>
+  <div class="story-text">
+    <p class="story-kind">{story?.label}</p>
+    <h3 class="story-title" lang={story?.lang} dir="auto">{story?.title}</h3>
+    <p class="story-body" lang={story?.lang} dir="auto" hidden={!story?.body}>{story?.body}</p>
+    <blockquote class="story-quote" lang={story?.lang} dir="auto" hidden={!story?.quote}>{story?.quote}</blockquote>
+    <p class="story-credit" lang={story?.lang} dir="auto" hidden={!story?.credit}>{story?.credit}</p>
+    <a class="story-product" href={story?.link || undefined} aria-label={story?.link ? linkText + ' · ' + story.title : undefined} hidden={!story?.link}>{linkText}</a>
+  </div>
+</article>

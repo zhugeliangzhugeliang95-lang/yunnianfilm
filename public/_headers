@@ -10,3 +10,9 @@
 
 /automotive-studio/viewer/environments/*
   Cache-Control: public, max-age=86400
+
+/manage/*
+  Cache-Control: private, no-store
+  Referrer-Policy: no-referrer
+  X-Robots-Tag: noindex, nofollow
+  Content-Security-Policy: frame-ancestors 'none'

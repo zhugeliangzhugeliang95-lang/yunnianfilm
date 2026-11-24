@@ -69,7 +69,7 @@ export function t(text){
  return ui(s).replace(/(\d+) 张色卡/g,(_,n)=>ui('{count} color cards',{count:n})).replace(/(\d+) 张可试基础色/g,(_,n)=>ui('{count} base color previews',{count:n})).replace(/ · 可试色/g,' · preview available').replace(/ · 仅色卡/g,' · image only').replace(/继续浏览 · 已显示/g,ui('Load more · showing')).replace(/Load more · 已显示/g,'Load more · showing').replace(/，应用基础色预览/g,', preview base color').replace(/，查看原始色卡/g,', view original').replace(/查看 (.+) 原始色卡/g,'View $1 original color card');
 }
 function translateNode(node){
- if(node.nodeType===Node.TEXT_NODE){if(['SCRIPT','STYLE','TEXTAREA'].includes(node.parentElement?.tagName))return;if(!settings.pet&&node.parentElement?.closest('.catalog-name,#card-title,#card-filename,#color-name,#look-name,#colors button span'))return;const raw=node.nodeValue;const trimmed=raw.trim();const result=t(trimmed);if(result!==trimmed)node.nodeValue=raw.replace(trimmed,result);return;}
+ if(node.nodeType===Node.TEXT_NODE){if(['SCRIPT','STYLE','TEXTAREA'].includes(node.parentElement?.tagName))return;if(!settings.pet&&node.parentElement?.closest('.catalog-name,#card-title,#card-filename,#color-name,#color-en,#look-name,#colors button span'))return;const raw=node.nodeValue;const trimmed=raw.trim();const result=t(trimmed);if(result!==trimmed)node.nodeValue=raw.replace(trimmed,result);return;}
  if(node.nodeType!==Node.ELEMENT_NODE)return;
  if(['SCRIPT','STYLE'].includes(node.tagName))return;
  for(const attr of ['aria-label','title','placeholder','alt'])if(node.hasAttribute(attr)){const value=node.getAttribute(attr),result=t(value);if(result!==value)node.setAttribute(attr,result);}

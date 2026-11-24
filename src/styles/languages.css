@@ -173,5 +173,4 @@
 html[dir=rtl] body{font-family:Arial,Tahoma,sans-serif}
 html[dir=rtl] :is(h1,h2,h3,h4,.eyebrow,button,.button){font-family:inherit;line-height:1.28}
 html[dir=rtl] :is(input[type=email],input[name=variant],.contact-email,.selected-reference,.color-card-meta>span:first-child,.product-model-code){direction:ltr;unicode-bidi:isolate}
-html[dir=rtl] :is(.color-product-card h2,.home-color-card h3){direction:ltr;unicode-bidi:isolate;text-align:start}
 html[dir=rtl] .reading-progress{transform-origin:right}

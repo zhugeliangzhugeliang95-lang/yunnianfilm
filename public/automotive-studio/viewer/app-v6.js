@@ -1,7 +1,7 @@
 import {settings,translateUI,t,sendSelection,isActive} from './site-integration.js';
 import * as THREE from 'three';
 import {usePhotoProduct,appearanceNote} from './photo-appearance.js';
-import {products,catalogMeta} from './catalog/product-catalog.js';
+import {products,colorName as catalogColorName,colorOrderName,catalogMeta} from './catalog/product-catalog.js';
 import {setupCatalogue} from './catalog-ui.js';
 import {OrbitControls} from './controls/OrbitControls.js';
 import {GLTFLoader} from './loaders/GLTFLoader.js';
@@ -19,21 +19,22 @@ const palette=['酸性绿','珍珠白','法拉利红','液态金属古铜'].map(
 let currentProduct=palette[0],recent=[...palette],currentProfile=materialProfile(palette[0]);
 
 let lightingPreference=null;
-let renderer,scene,camera,controls,studio,composer,ao,fxaa,current='car',vehicle='car',finish='Gloss',hex=palette[0].hex,colorName=palette[0].name,modelMap={},paint=[],ready=false,targetColor=new THREE.Color(hex),lastTime=0,viewMotion=null,needsRender=true;
+let renderer,scene,camera,controls,studio,composer,ao,fxaa,current='car',vehicle='car',finish='Gloss',hex=palette[0].hex,colorName=catalogColorName(palette[0],settings.lang),modelMap={},paint=[],ready=false,targetColor=new THREE.Color(hex),lastTime=0,viewMotion=null,needsRender=true;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function pressed(selector,key,value){document.querySelectorAll(selector).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset[key]===value)));}
-function notifySelection(){sendSelection({hex,finish,name:colorName,sourceName:currentProduct?.sourceName||'',id:currentProduct?.id||'',reference:currentProduct?.reference||''});}
-function renderQuick(){const box=document.querySelector('#colors');box.replaceChildren();for(const p of recent){const b=document.createElement('button');b.dataset.product=p.id;b.setAttribute('aria-label',p.reference+' '+p.nameEn);b.setAttribute('aria-pressed',String(currentProduct?.id===p.id));const photo=document.createElement('img');photo.src=p.thumbnail;photo.alt='';const label=document.createElement('span');label.textContent=p.reference+' · '+p.nameEn;b.append(photo,label);b.addEventListener('click',()=>chooseProduct(p));box.append(b);}}
+function notifySelection(){sendSelection({hex,finish,name:colorOrderName(currentProduct,settings.lang),sourceName:currentProduct?.sourceName||'',id:currentProduct?.id||'',reference:currentProduct?.reference||''});}
+function renderQuick(){const box=document.querySelector('#colors');box.replaceChildren();for(const p of recent){const b=document.createElement('button');b.dataset.product=p.id;b.setAttribute('aria-label',p.reference+' '+catalogColorName(p,settings.lang));b.setAttribute('aria-pressed',String(currentProduct?.id===p.id));const photo=document.createElement('img');photo.src=p.thumbnail;photo.alt='';const label=document.createElement('span');label.textContent=p.reference+' · '+catalogColorName(p,settings.lang);b.append(photo,label);b.addEventListener('click',()=>chooseProduct(p));box.append(b);}}
 function chooseProduct(p){
  if(!p?.canPreview)return;
- currentProduct=p;currentProfile=materialProfile(p);studio?.applyProduct(paint,p);usePhotoProduct(p,()=>{needsRender=true;});hex=p.hex;targetColor.set(hex);colorName=p.nameEn;finish=p.explicitFinish||p.sourceFinish||'Gloss';
- document.querySelector('#color-name').textContent=p.nameEn;document.querySelector('#color-en').textContent=p.reference+' / TPU';
+ currentProduct=p;currentProfile=materialProfile(p);studio?.applyProduct(paint,p);usePhotoProduct(p,()=>{needsRender=true;});hex=p.hex;targetColor.set(hex);colorName=catalogColorName(p,settings.lang);finish=p.explicitFinish||p.sourceFinish||'Gloss';
+ document.querySelector('#color-name').textContent=colorName;
+ const printed=document.querySelector('#color-en');printed.lang='en';printed.dir='ltr';printed.textContent=colorName===p.nameEn?p.reference+' / TPU':p.reference+' · '+p.nameEn;
  document.querySelector('#product-reference').textContent=p.reference;document.documentElement.style.setProperty('--paint',hex);
- document.querySelector('#look-name').textContent=p.reference+' · '+p.nameEn;
+ document.querySelector('#look-name').textContent=p.reference+' · '+colorName;
  const finishText=p.explicitFinish?({Gloss:'亮面',Matte:'哑面',Satin:'缎面'}[p.explicitFinish]):'以原图产品为准';
  document.querySelector('#finish-caption').textContent=finishText;document.querySelector('#look-finish').textContent=finishText;
  document.body.dataset.finish=finish;document.querySelector('#view-source').disabled=false;
- const photo=document.querySelector('#selected-card-photo');photo.src=p.card;photo.alt=p.nameEn;
+ const photo=document.querySelector('#selected-card-photo');photo.src=p.card;photo.alt=colorName;
  document.querySelector('#preview-note').textContent=settings.lang==='zh'?'原图取色 · 未实物校准':'Photo Reference · Not Physically Calibrated';
  document.querySelector('.footnote').textContent=appearanceNote(p,settings.lang);
  document.querySelector('#photo-compare-label').textContent=settings.lang==='zh'?'原图对照':'Original Card Reference';

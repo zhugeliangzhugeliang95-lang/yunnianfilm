@@ -1,0 +1,119 @@
+[
+  {
+    "id": "example-clear-ppf-front-end",
+    "kind": "case",
+    "sample": true,
+    "image": "/images/clear-ppf-application.webp",
+    "product": "lubrizol-sm301-ppf",
+    "copy": {
+      "en": {
+        "title": "Choosing a finish for a daily driver",
+        "body": "A driver wants to protect the front of the car and keep the look of the original paint. At the workshop, two clear PPF samples placed beside the bonnet make the difference between gloss and matte easier to see. The preferred finish and the panels to cover go on the sample request.",
+        "credit": "",
+        "quote": ""
+      },
+      "zh": {
+        "title": "给通勤车的前脸选一款透明车衣",
+        "body": "车主希望保护前脸，也想保留原车漆的观感。选膜时，可以把亮面和哑面两张透明车衣样片放在引擎盖旁，在同一束光下看反射的差别，再把偏好的质感和准备贴覆的部位写进索样单。",
+        "credit": "",
+        "quote": ""
+      },
+      "es": {
+        "title": "Elegir el acabado para un coche de uso diario",
+        "body": "Un conductor quiere proteger el frontal sin perder el aspecto de la pintura original. En el taller, colocar una muestra de PPF brillante y otra mate junto al capó permite comparar los reflejos bajo la misma luz. En la solicitud de muestras se anotan el acabado elegido y las piezas que se van a cubrir.",
+        "credit": "",
+        "quote": ""
+      },
+      "fr": {
+        "title": "Choisir une finition pour une voiture de tous les jours",
+        "body": "Un automobiliste souhaite protéger la face avant tout en gardant l’aspect de la peinture d’origine. À l’atelier, deux échantillons de film transparent placés près du capot permettent de comparer les reflets du brillant et du mat sous la même lumière. La finition retenue et les éléments à couvrir figurent sur la demande d’échantillons.",
+        "credit": "",
+        "quote": ""
+      },
+      "ar": {
+        "title": "اختيار تشطيب شفاف لسيارة تُستخدم يومياً",
+        "body": "يرغب صاحب السيارة في حماية مقدمتها مع الحفاظ على مظهر الطلاء الأصلي. يضع الفني عيّنتين من فيلم الحماية الشفاف بجوار غطاء المحرك، إحداهما لامعة والأخرى مطفأة، لمقارنة انعكاس الضوء عليهما. ثم يدوّن التشطيب المختار والأجزاء المراد تغطيتها في طلب العيّنات.",
+        "credit": "",
+        "quote": ""
+      }
+    }
+  },
+  {
+    "id": "example-t90-glass",
+    "kind": "review",
+    "sample": true,
+    "image": "",
+    "product": "t90-carbide",
+    "copy": {
+      "en": {
+        "title": "Two T90 shades on the same glass",
+        "body": "",
+        "credit": "Window film installer",
+        "quote": "Side by side on the same glass, the T7090 and T5090 samples are easier to compare than two separate photos. I’d show the driver both before settling on a shade."
+      },
+      "zh": {
+        "title": "在同一块玻璃上比较两款 T90",
+        "body": "",
+        "credit": "窗膜安装师",
+        "quote": "把 T7090 和 T5090 放在同一块玻璃上，比单独看两张照片更容易看出深浅。定型号之前，我会让车主把两张样片一起看。"
+      },
+      "es": {
+        "title": "Dos tonos de T90 sobre el mismo cristal",
+        "body": "",
+        "credit": "Instalador de láminas para lunas",
+        "quote": "Me resulta más fácil comparar el T7090 y el T5090 con las dos muestras sobre el mismo cristal que mirando fotos por separado. Le enseñaría ambas al conductor antes de elegir el tono."
+      },
+      "fr": {
+        "title": "Deux teintes T90 sur le même vitrage",
+        "body": "",
+        "credit": "Poseur de films pour vitrages",
+        "quote": "Je vois mieux la différence entre le T7090 et le T5090 avec deux échantillons sur la même vitre qu’avec deux photos séparées. Je montrerais les deux au conducteur avant de choisir la teinte."
+      },
+      "ar": {
+        "title": "درجتان من سلسلة T90 على الزجاج نفسه",
+        "body": "",
+        "credit": "فني تركيب أفلام زجاج السيارات",
+        "quote": "يسهل عليّ تمييز درجة التظليل بين T7090 وT5090 عندما أضع العيّنتين جنباً إلى جنب على الزجاج نفسه. سأعرضهما على صاحب السيارة قبل أن يختار الدرجة."
+      }
+    }
+  },
+  {
+    "id": "example-colour-reference",
+    "kind": "review",
+    "sample": true,
+    "image": "",
+    "product": "classic-color-ppf",
+    "copy": {
+      "en": {
+        "title": "Reading metallic green in a larger panel",
+        "body": "",
+        "credit": "Wrap shop buyer",
+        "quote": "The roll photo shows the metallic detail. Seeing the same dark green on a door gives me a better sense of the whole colour. I’d ask for the physical swatch before ordering."
+      },
+      "zh": {
+        "title": "金属墨绿铺到整扇车门上是什么感觉",
+        "body": "",
+        "credit": "改色门店采购",
+        "quote": "膜卷图能看清金属颗粒，上车图能看出整扇车门的颜色。两张图一起看更有把握，下单前我还是会再要一张实物样片。"
+      },
+      "es": {
+        "title": "Ver el verde metalizado en una puerta entera",
+        "body": "",
+        "credit": "Responsable de compras de un taller de rotulación",
+        "quote": "En la foto del rollo aprecio el grano metalizado. Al ver el mismo verde oscuro en una puerta me hago mejor idea del color en conjunto. Pediría una muestra física antes de encargar el rollo."
+      },
+      "fr": {
+        "title": "Voir le vert métallisé sur une portière entière",
+        "body": "",
+        "credit": "Responsable des achats d’un atelier de covering",
+        "quote": "Sur la photo du rouleau, je distingue le grain métallisé. Sur la portière, je vois mieux ce que donne ce vert foncé à grande échelle. Je demanderais un échantillon avant de commander."
+      },
+      "ar": {
+        "title": "رؤية الأخضر المعدني على باب كامل",
+        "body": "",
+        "credit": "مسؤول مشتريات في ورشة تغليف سيارات",
+        "quote": "تُظهر صورة اللفافة تفاصيل اللمعة المعدنية، أما صورة الباب فتوضح كيف يبدو الأخضر الداكن على مساحة أكبر. سأطلب عيّنة فعلية قبل شراء اللفافة."
+      }
+    }
+  }
+]
