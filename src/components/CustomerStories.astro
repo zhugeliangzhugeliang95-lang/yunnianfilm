@@ -1,7 +1,6 @@
 ---
-import CustomerStory from './CustomerStory.astro';
 import originals from '../data/customer-stories.json';
-import {storyLabels, storyViews} from '../scripts/customer-stories';
+import {storyLabels, storyViews, storyGroupHTML} from '../scripts/customer-stories';
 import {siteLanguage} from '../locales/languages';
 
 const locale = siteLanguage(Astro.url.pathname).id;
@@ -14,21 +13,12 @@ const groups = ['case', 'review'] as const;
     <h2 id="stories-title">{labels.heading}</h2>
     <div class="stories-spread">
       {groups.map(kind => {
-        const entries = stories.filter(story => story.kind === kind);
-        return <div data-story-group={kind} hidden={!entries.length}>
-          {entries.map(story => <CustomerStory story={story} linkText={labels.product} />)}
-        </div>;
+        const cards = storyGroupHTML(stories, kind, locale);
+        return <div data-story-group={kind} hidden={!cards} set:html={cards}/>;
       })}
     </div>
-    <template><CustomerStory linkText={labels.product} /></template>
   </div>
 </section>
-
-<script>
-  import {refreshStories} from '../scripts/customer-stories';
-  const section = document.querySelector<HTMLElement>('#customer-stories');
-  if (section) void refreshStories(section);
-</script>
 
 <style is:global>
   .customer-stories {

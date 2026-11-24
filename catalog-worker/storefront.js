@@ -1,12 +1,30 @@
 import {baseCatalog,demand} from './common.js';
 import {editor} from './access.js';
 import {locales,prefix,escapeHTML as e,copyFor,localeValue,galleryHTML,offerHTML} from '../public/catalog-ui/product-view.js';
+import {storyViews,storyGroupHTML} from '../src/scripts/customer-stories.ts';
 
 const detailPath=(id,l)=>prefix(l)+'/products/'+id+'/';
 const setText=(rw,selector,value)=>rw.on(selector,{element(el){el.setInnerContent(String(value??''));}});
 const setHTML=(rw,selector,value)=>rw.on(selector,{element(el){el.setInnerContent(value,{html:true});}});
 const setAttr=(rw,selector,name,value)=>rw.on(selector,{element(el){el.setAttribute(name,value);}});
 const remove=(rw,selector)=>rw.on(selector,{element(el){el.remove();}});
+async function homepage(req,env,locale) {
+  const [original,record]=await Promise.all([
+    env.ASSETS.fetch(req),
+    env.SUPPORT_DB.prepare("SELECT live FROM catalog_documents WHERE kind='stories' AND id='home' AND live IS NOT NULL").first(),
+  ]);
+  if(!record || original.status!==200)return original;
+  const views=storyViews(JSON.parse(record.live),locale),rw=new HTMLRewriter();
+  if(!views.length)remove(rw,'#customer-stories');
+  for(const kind of ['case','review']){
+    const cards=storyGroupHTML(views,kind,locale);
+    rw.on('[data-story-group="'+kind+'"]',{element(el){
+      el.setInnerContent(cards,{html:true});
+      if(cards)el.removeAttribute('hidden');else el.setAttribute('hidden','');
+    }});
+  }
+  return rw.transform(fresh(original));
+}
 function fresh(response,privatePage=false) {
   const headers=new Headers(response.headers);
   for(const header of ['etag','last-modified','content-length'])headers.delete(header);
@@ -99,6 +117,8 @@ async function productDetail(req,env,p,l,base,preview,edited){
 }
 export async function storefront(req,env) {
   const db=env.SUPPORT_DB,url=new URL(req.url);
+  const home=/^\/(?:(zh|fr|es|ar)\/)?$/.exec(url.pathname);
+  if(home)return homepage(req,env,home[1]||'en');
   if(url.pathname==='/sitemap.xml'){
     const edited=await publicEdits(db);if(!edited.length)return env.ASSETS.fetch(req);
     const base=await baseCatalog(req,env), more=edited.filter(p=>!base.bySlug.has(p.slug));

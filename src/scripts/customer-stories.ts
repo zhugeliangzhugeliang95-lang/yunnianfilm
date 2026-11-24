@@ -1,3 +1,4 @@
+import {escapeHTML} from '../../public/catalog-ui/product-view.js';
 import {inLanguage, languages, type Locale} from '../locales/languages';
 
 export const storyLabels = {
@@ -45,47 +46,16 @@ export function storyViews(stories: Story[], locale: Locale): StoryView[] {
   return result;
 }
 
-function fillCard(template: HTMLTemplateElement, view: StoryView, locale: Locale) {
-  const card = template.content.firstElementChild!.cloneNode(true) as HTMLElement;
-  card.dataset.customerStory = view.id;
-  const imageWrap = card.querySelector<HTMLElement>('.story-media')!;
-  imageWrap.hidden = !view.image;
-  if (view.image) imageWrap.querySelector<HTMLImageElement>('img')!.src = view.image;
-  card.querySelector<HTMLElement>('.story-kind')!.textContent = view.label;
-  for (const field of ['title', 'body', 'quote', 'credit'] as const) {
-    const node = card.querySelector<HTMLElement>('.story-' + field)!;
-    node.textContent = view[field] || '';
-    node.lang = view.lang;
-    node.hidden = !view[field];
-  }
-  const link = card.querySelector<HTMLAnchorElement>('.story-product')!;
-  link.hidden = !view.link;
-  if (view.link) {
-    link.href = view.link;
-    link.textContent = storyLabels[locale].product;
-    link.setAttribute('aria-label', storyLabels[locale].product + ' · ' + view.title);
-  }
-  return card;
-}
-
-export async function refreshStories(section: HTMLElement) {
-  const locale = section.dataset.storyLocale as Locale;
-  const template = section.querySelector<HTMLTemplateElement>('template');
-  if (!template || !storyLabels[locale]) return;
-  try {
-    const response = await fetch('/catalog-api/stories', {headers: {Accept: 'application/json'}});
-    if (!response.ok) return;
-    const data = await response.json();
-    if (data?.configured !== true || !Array.isArray(data.stories)) return;
-    const views = storyViews(data.stories, locale);
-    for (const kind of ['case', 'review'] as const) {
-      const group = section.querySelector<HTMLElement>('[data-story-group="' + kind + '"]')!;
-      const cards = views.filter(view => view.kind === kind).map(view => fillCard(template, view, locale));
-      group.replaceChildren(...cards);
-      group.hidden = cards.length === 0;
-    }
-    section.hidden = views.length === 0;
-  } catch {
-    // The published static examples remain readable when the content service is offline.
-  }
+export function storyGroupHTML(views: StoryView[], kind: Kind, locale: Locale) {
+  const linkText = storyLabels[locale].product;
+  return views.filter(view => view.kind === kind).map(view => {
+    const lang = escapeHTML(view.lang);
+    const text = (tag: string, field: 'title' | 'body' | 'quote' | 'credit') => view[field]
+      ? `<${tag} class="story-${field}" lang="${lang}" dir="auto">${escapeHTML(view[field])}</${tag}>` : '';
+    const media = view.image
+      ? `<div class="story-media"><img src="${escapeHTML(view.image)}" loading="lazy" decoding="async" width="900" height="580" alt=""></div>` : '';
+    const link = view.link
+      ? `<a class="story-product" href="${escapeHTML(view.link)}" aria-label="${escapeHTML(linkText + ' · ' + view.title)}">${escapeHTML(linkText)}</a>` : '';
+    return `<article class="story-entry" data-customer-story="${escapeHTML(view.id)}">${media}<div class="story-text"><p class="story-kind">${escapeHTML(view.label)}</p>${text('h3','title')}${text('p','body')}${text('blockquote','quote')}${text('p','credit')}${link}</div></article>`;
+  }).join('');
 }

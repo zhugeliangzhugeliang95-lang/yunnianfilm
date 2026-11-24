@@ -44,8 +44,9 @@ def package_worker():
     subprocess.run(['node','scripts/bundle-catalog-worker.mjs'],cwd=ROOT,check=True)
     localized = [prefix + section + '*' for prefix in ('','/zh','/fr','/es','/ar')
                  for section in ('/products','/contact')]
+    homepages = ['/','/zh/','/fr/','/es/','/ar/']
     (OUTPUT / '_routes.json').write_text(
-        json.dumps({'version': 1, 'include': ['/support/api/*','/catalog-api/*','/sitemap.xml',*localized], 'exclude': []}), encoding='utf-8'
+        json.dumps({'version': 1, 'include': ['/support/api/*','/catalog-api/*','/sitemap.xml',*homepages,*localized], 'exclude': []}), encoding='utf-8'
     )
 
 
