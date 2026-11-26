@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /manage/
+Disallow: /catalog-api/
 Disallow: /automotive-studio/viewer/
 Disallow: /support/api/
 

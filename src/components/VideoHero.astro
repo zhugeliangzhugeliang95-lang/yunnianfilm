@@ -1,8 +1,9 @@
 ---
 import {siteLanguage} from '../locales/languages';
 import {tpuCopy} from '../locales/tpu';
+import {content} from '../data/i18n';
 const range = tpuCopy[siteLanguage(Astro.url.pathname).id].homeHeading;
-import {content} from '../data/i18n';const {lang,path}=content(Astro.url);const z=lang==='zh';const L=(en:string,zh:string)=>z?zh:en;
+const {lang,path}=content(Astro.url);const z=lang==='zh';const L=(en:string,zh:string)=>z?zh:en;
 ---
 <section class="video-hero" aria-label={L('YUNNIAN company and product introduction','云辇公司与产品介绍')}>
  <video class="intro-video" id="intro-video" muted loop playsinline preload="metadata" poster="/videos/yunnian-production-poster.webp" aria-label={L('Production and film-material showcase','生产设备与膜材展示短片')}><source src="/videos/yunnian-production-loop.mp4" type="video/mp4"/></video><div class="video-hero-shade"></div>

@@ -1,12 +1,12 @@
 """Finish the Astro build with its public support widget, Worker and search metadata."""
 import json
 import os
+from html.parser import HTMLParser
 from pathlib import Path
-import re
 import sys
 import subprocess
 from urllib.parse import quote
-from xml.sax.saxutils import escape
+from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'dist'
@@ -45,8 +45,9 @@ def package_worker():
     localized = [prefix + section + '*' for prefix in ('','/zh','/fr','/es','/ar')
                  for section in ('/products','/contact')]
     homepages = ['/','/zh/','/fr/','/es/','/ar/']
+    tpu_pages = [path + 'tpu-paint-protection-film/' for path in homepages]
     (OUTPUT / '_routes.json').write_text(
-        json.dumps({'version': 1, 'include': ['/support/api/*','/catalog-api/*','/sitemap.xml',*homepages,*localized], 'exclude': []}), encoding='utf-8'
+        json.dumps({'version': 1, 'include': ['/support/api/*','/catalog-api/*','/sitemap.xml',*homepages,*tpu_pages,*localized], 'exclude': []}), encoding='utf-8'
     )
 
 
@@ -57,7 +58,8 @@ def write_legacy_redirects():
         if not line.strip() or line.lstrip().startswith('#'):
             continue
         path, target, status = line.split()
-        for locale in ('es', 'ar'):
+        locales = ('es', 'ar', 'zh', 'fr') if target == '/tpu-paint-protection-film/' else ('es', 'ar')
+        for locale in locales:
             if target.startswith('/'):
                 rules.append(f'/{locale}{path} /{locale}{target} {status}')
             elif path.startswith(('/account', '/cart', '/checkout')):
@@ -65,31 +67,44 @@ def write_legacy_redirects():
     (OUTPUT / '_redirects').write_text('\n'.join(rules) + '\n', encoding='utf-8')
 
 
+class SearchHead(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.canonical = []
+        self.alternates = {}
+        self.robots = []
+
+    def handle_starttag(self, tag, attrs):
+        values = dict(attrs)
+        if tag == 'link' and values.get('rel') == 'canonical':
+            self.canonical.append(values['href'])
+        if tag == 'link' and values.get('rel') == 'alternate' and values.get('hreflang'):
+            self.alternates[values['hreflang']] = values['href']
+        if tag == 'meta' and values.get('name') == 'robots':
+            self.robots.extend(word.strip().lower() for word in values['content'].split(','))
+
+
 def write_search_files(origin):
-    urls = []
-    for file in sorted(OUTPUT.rglob('*.html')):
+    sitemap = ET.Element('urlset', {'xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9',
+                                    'xmlns:xhtml': 'http://www.w3.org/1999/xhtml'})
+    for file in sorted(OUTPUT.rglob('index.html')):
         name = file.relative_to(OUTPUT).as_posix()
-        if name.startswith(('automotive-studio/', 'support/','manage/')) or '404' in Path(name).parts or name == '404.html':
+        if name.startswith(('automotive-studio/', 'support/', 'manage/')) or '404' in Path(name).parts:
             continue
         route = '/' + name.removesuffix('index.html')
         canonical = origin + quote(route, safe='/')
-        markup = file.read_text(encoding='utf-8')
-        if 'rel="canonical"' not in markup or f'href="{canonical}"' not in markup:
-            raise ValueError(f'Check the canonical URL for {name}')
-        markup = re.sub(r'<meta name="robots" content="noindex,nofollow"\s*/?\s*>',
-                        '<meta name="robots" content="index,follow">', markup)
-        file.write_text(markup, encoding='utf-8')
-        urls.append(canonical)
-    (OUTPUT / 'robots.txt').write_text(
-        f'User-agent: *\nAllow: /\nDisallow: /manage/\nDisallow: /automotive-studio/viewer/\nSitemap: {origin}/sitemap.xml\n',
-        encoding='utf-8',
-    )
-    locations = ''.join(f'  <url><loc>{escape(url)}</loc></url>\n' for url in sorted(urls))
-    (OUTPUT / 'sitemap.xml').write_text(
-        '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + locations + '</urlset>\n',
-        encoding='utf-8',
-    )
+        head = SearchHead()
+        head.feed(file.read_text(encoding='utf-8').split('</head>', 1)[0])
+        if head.canonical != [canonical] or 'noindex' in head.robots or canonical not in head.alternates.values():
+            raise ValueError(f'Check indexability, canonical and language links for {name}')
+        url = ET.SubElement(sitemap, 'url')
+        ET.SubElement(url, 'loc').text = canonical
+        for tag, href in head.alternates.items():
+            ET.SubElement(url, 'xhtml:link', rel='alternate', hreflang=tag, href=href)
+    robots = (ROOT / 'public' / 'robots.txt').read_text(encoding='utf-8')
+    (OUTPUT / 'robots.txt').write_text(robots.replace('https://yunnianfilm.com/sitemap.xml', origin + '/sitemap.xml'), encoding='utf-8')
+    ET.indent(sitemap)
+    ET.ElementTree(sitemap).write(OUTPUT / 'sitemap.xml', encoding='UTF-8', xml_declaration=True)
 
 
 if __name__ == '__main__':

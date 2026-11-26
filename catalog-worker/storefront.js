@@ -3,6 +3,8 @@ import {editor} from './access.js';
 import {locales,prefix,escapeHTML as e,copyFor,localeValue,galleryHTML,offerHTML} from '../public/catalog-ui/product-view.js';
 import {modelTablesHTML} from '../public/catalog-ui/model-tables.js';
 import {storyViews,storyGroupHTML} from '../src/scripts/customer-stories.ts';
+import {tpuSchema} from '../src/data/tpu-schema.ts';
+import {tpuPagePath} from '../src/locales/tpu.ts';
 
 const detailPath=(id,l)=>prefix(l)+'/products/'+id+'/';
 const setText=(rw,selector,value)=>rw.on(selector,{element(el){el.setInnerContent(String(value??''));}});
@@ -84,6 +86,20 @@ async function listing(req,env,edited,l,base){
   }
   return rw.transform(fresh(original));
 }
+async function tpuLanding(req, env, locale) {
+  const [original, edited] = await Promise.all([env.ASSETS.fetch(req), publicEdits(env.SUPPORT_DB)]);
+  if (!edited.length || original.status !== 200) return original;
+  const base = await baseCatalog(req, env);
+  if (!edited.some(p => p.category === 'Clear PPF' || base.bySlug.get(p.slug)?.category === 'Clear PPF')) return original;
+  const catalog = new Map(base.products.map(p => [p.slug, p]));
+  for (const product of edited) catalog.set(product.slug, product);
+  const series = [...catalog.values()].filter(p => p.category === 'Clear PPF');
+  const graph = tpuSchema('https://yunnianfilm.com', locale, series.map(p => ({slug:p.slug, name:copyFor(p,locale).name})));
+  const rw = new HTMLRewriter();
+  setHTML(rw, '[data-tpu-series]', series.map(p => productCard(p,locale,base,false)).join(''));
+  setHTML(rw, 'script[type="application/ld+json"]', JSON.stringify({'@context':'https://schema.org','@graph':graph}).replace(/</g,'\\u003c'));
+  return rw.transform(fresh(original));
+}
 async function productDetail(req,env,p,l,base,preview,edited){
   const seed=base.bySlug.get(p.slug);
   const template=seed?.category===p.category?seed:base.products.find(item=>item.category===p.category);
@@ -92,8 +108,9 @@ async function productDetail(req,env,p,l,base,preview,edited){
   const publicOrigin='https://yunnianfilm.com',canonical=publicOrigin+detailPath(p.slug,l);
   setText(rw,'title',c.name+' | YUNNIAN');setText(rw,'[data-product-name]',c.name);setText(rw,'[data-product-description]',c.description);
   setText(rw,'[data-product-label]',cat);setText(rw,'[data-product-category]',cat);
-  setAttr(rw,'[data-product-category]','href',prefix(l)+'/products/?category='+encodeURIComponent(p.category));
+  setAttr(rw,'[data-product-category]','href',prefix(l)+(p.category==='Clear PPF'?tpuPagePath:'/products/?category='+encodeURIComponent(p.category)));
   setAttr(rw,'link[rel="canonical"]','href',canonical);
+  setAttr(rw,'meta[property="og:url"]','content',canonical);
   rw.on('link[hreflang],a[data-language-link]',{element(el){
     const tag=el.getAttribute('hreflang')||'en';const to=tag==='zh-CN'?'zh':locales.includes(tag)?tag:'en';
     const href=detailPath(p.slug,to);el.setAttribute('href',el.tagName==='link'?publicOrigin+href:href);
@@ -126,11 +143,18 @@ export async function storefront(req,env) {
   const db=env.SUPPORT_DB,url=new URL(req.url);
   const home=/^\/(?:(zh|fr|es|ar)\/)?$/.exec(url.pathname);
   if(home)return homepage(req,env,home[1]||'en');
+  const tpuLocale = locales.find(l => url.pathname === prefix(l) + tpuPagePath);
+  if(tpuLocale)return tpuLanding(req,env,tpuLocale);
   if(url.pathname==='/sitemap.xml'){
     const edited=await publicEdits(db);if(!edited.length)return env.ASSETS.fetch(req);
     const base=await baseCatalog(req,env), more=edited.filter(p=>!base.bySlug.has(p.slug));
     const res=await basePage(req,env,'/sitemap.xml');if(!more.length)return res;
-    const xml=more.flatMap(p=>locales.map(l=>'<url><loc>https://yunnianfilm.com'+detailPath(p.slug,l)+'</loc></url>')).join('');
+    const xml=more.map(p=>{
+      const urls=locales.map(locale=>({tag:locale==='zh'?'zh-CN':locale,href:'https://yunnianfilm.com'+detailPath(p.slug,locale)}));
+      const links=[...urls,{tag:'x-default',href:'https://yunnianfilm.com'+detailPath(p.slug,'en')}]
+        .map(({tag,href})=>'<xhtml:link rel="alternate" hreflang="'+tag+'" href="'+e(href)+'"/>').join('');
+      return urls.map(({href})=>'<url><loc>'+e(href)+'</loc>'+links+'</url>').join('');
+    }).join('');
     return new Response((await res.text()).replace('</urlset>',xml+'</urlset>'),{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'no-store'}});
   }
   const route=/^\/(?:(zh|fr|ar|es)\/)?(products|contact)(?:\/([a-z0-9][a-z0-9-]{0,95}))?\/?$/.exec(url.pathname);

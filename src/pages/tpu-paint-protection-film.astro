@@ -2,46 +2,22 @@
 import Layout from '../layouts/Layout.astro';
 import Product from '../components/Product.astro';
 import {content} from '../data/i18n';
+import {tpuBreadcrumbs, tpuSchema} from '../data/tpu-schema';
 import {textIn} from '../locales/copy';
 import {inLanguage, siteLanguage} from '../locales/languages';
-import {tpuCopy, tpuPagePath} from '../locales/tpu';
+import {tpuCopy} from '../locales/tpu';
 
 const language = siteLanguage(Astro.url.pathname);
 const copy = tpuCopy[language.id];
 const {products} = content(Astro.url);
 const series = products.filter(product => product.category === 'Clear PPF');
 const path = (route: string) => inLanguage(route, language.id);
-const absolute = (route: string) => new URL(path(route), Astro.site).href;
-const canonical = absolute(tpuPagePath);
 const seriesName = (name: string) => {
   const id = language.id;
   return id === 'en' || id === 'zh' ? name : textIn(name, id);
 };
-const breadcrumbs = [
-  {name: copy.home, path: '/'}, {name: copy.catalog, path: '/products/'},
-  {name: copy.heading, path: tpuPagePath},
-];
-const schema = [
-  {
-    '@type': 'CollectionPage', '@id': canonical, url: canonical,
-    name: copy.heading, description: copy.description, inLanguage: language.tag,
-    isPartOf: {'@id': new URL('/#website', Astro.site).href},
-    breadcrumb: {'@id': canonical + '#breadcrumbs'},
-    mainEntity: {
-      '@type': 'ItemList', name: copy.series, numberOfItems: series.length,
-      itemListElement: series.map((product, i) => ({
-        '@type': 'ListItem', position: i + 1, name: seriesName(product.name),
-        url: absolute('/products/' + product.slug + '/'),
-      })),
-    },
-  },
-  {
-    '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumbs',
-    itemListElement: breadcrumbs.map((item, i) => ({
-      '@type': 'ListItem', position: i + 1, name: item.name, item: absolute(item.path),
-    })),
-  },
-];
+const breadcrumbs = tpuBreadcrumbs(language.id);
+const schema = tpuSchema(Astro.site!, language.id, series.map(p => ({slug: p.slug, name: seriesName(p.name)})));
 ---
 <Layout title={copy.title} description={copy.description} schema={schema}>
   <nav class="container breadcrumb tpu-crumb" aria-label={copy.catalog}>
@@ -61,7 +37,7 @@ const schema = [
   </header>
   <section id="clear-ppf" class="container section tpu-series">
     <h2>{copy.series}</h2><p>{copy.seriesIntro}</p>
-    <div class="product-grid">{series.map((product, index) => <Product product={product} index={index} />)}</div>
+    <div class="product-grid" data-tpu-series>{series.map((product, index) => <Product product={product} index={index} />)}</div>
   </section>
   <div class="container tpu-guide">
     <section>

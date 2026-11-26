@@ -150,8 +150,10 @@
 /collections/reflective-film/ /collections-guide/reflective-film/ 301
 /collections/tpu-color-ppf-color-change-wrap /collections-guide/tpu-color-ppf-color-change-wrap/ 301
 /collections/tpu-color-ppf-color-change-wrap/ /collections-guide/tpu-color-ppf-color-change-wrap/ 301
-/collections/tpu-paint-protection-film-ppf-2 /collections-guide/tpu-paint-protection-film-ppf-2/ 301
-/collections/tpu-paint-protection-film-ppf-2/ /collections-guide/tpu-paint-protection-film-ppf-2/ 301
+/collections/tpu-paint-protection-film-ppf-2 /tpu-paint-protection-film/ 301
+/collections/tpu-paint-protection-film-ppf-2/ /tpu-paint-protection-film/ 301
+/collections-guide/tpu-paint-protection-film-ppf-2 /tpu-paint-protection-film/ 301
+/collections-guide/tpu-paint-protection-film-ppf-2/ /tpu-paint-protection-film/ 301
 /collections/architectural-safety-films/* /collections-guide/architectural-safety-films/ 301
 /collections/headlight-specialty-films/* /collections-guide/headlight-specialty-films/ 301
 /collections/nano-ceramic-window-tint/* /collections-guide/nano-ceramic-window-tint/ 301
@@ -160,7 +162,7 @@
 /collections/professional-tools/* /collections-guide/professional-tools/ 301
 /collections/reflective-film/* /collections-guide/reflective-film/ 301
 /collections/tpu-color-ppf-color-change-wrap/* /collections-guide/tpu-color-ppf-color-change-wrap/ 301
-/collections/tpu-paint-protection-film-ppf-2/* /collections-guide/tpu-paint-protection-film-ppf-2/ 301
+/collections/tpu-paint-protection-film-ppf-2/* /tpu-paint-protection-film/ 301
 /blogs/news/tagged/* /blog/ 301
 /account https://www.ynfilm.com/account 302
 /account/* https://www.ynfilm.com/account/:splat 302
