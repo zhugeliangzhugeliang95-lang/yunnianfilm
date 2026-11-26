@@ -56,7 +56,10 @@ const graph = current === '/' ? [
     {languages.filter(option => option.id !== selected.id).map(option => <meta property="og:locale:alternate" content={option.og}/>)}
     {['es','fr','ar'].includes(selected.id) && <script is:inline src={'/locales/'+selected.id+'.js'}></script>}
     <meta name="robots" content={indexable ? 'index,follow' : 'noindex,follow'} /><meta name="theme-color" content="#141615" />
-    {canonicalPath === '/' && <meta name="google-site-verification" content="cUU3gSNb35o72LcAezXC_AjjU2FKGPuhmBlOPe3UC84" />}
+    {canonicalPath === '/' && <>
+      <meta name="google-site-verification" content="cUU3gSNb35o72LcAezXC_AjjU2FKGPuhmBlOPe3UC84" />
+      <meta name="msvalidate.01" content="5262BE793FCC869FA182A1ECD6F08E60" />
+    </>}
     {graph.length > 0 && <script is:inline type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@graph':graph}).replace(/</g,'\\u003c')} />}
     <meta property="og:title" content={`${t(title)} | YUNNIAN`} /><meta property="og:description" content={t(description)} /><meta property="og:type" content="website" />
     <link rel="icon" href="/yunnian-favicon-v10.webp" type="image/webp" />
