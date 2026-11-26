@@ -1,7 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';import CTA from '../components/CTA.astro';import {content} from '../data/i18n';import {editorial} from '../data/editorial';
+import {blogPosts} from '../data/blog';
 const {lang,path}=content(Astro.url);const {L}=editorial(lang);
+const materialGuide=blogPosts.find(post=>post.slug==='understanding-ppf-layers')!;
 const resources=[
+ {label:materialGuide.category[lang],title:materialGuide.title[lang],text:materialGuide.excerpt[lang],href:path('/blog/'+materialGuide.slug+'/'),cta:L('Read the guide','阅读指南')},
  {label:L('DOCUMENTS','资料'),title:L('Buyer services and reports','采购服务与检测报告'),text:L('Find sample report PDFs, shipping guidance and original store policies.','查阅送检样品的报告、运输说明和原商城服务条款。'),href:path('/buyer-services/'),cta:L('Open buyer services','查看采购服务')},
  {label:L('COLLECTIONS','系列'),title:L('Collection index','产品系列索引'),text:L('Explore all nine original collections, including installation tools, reflective film and glow film.','查阅原商城九个分类，包含施工工具、反光膜与蓄光膜。'),href:path('/collections-guide/'),cta:L('Explore collections','查看系列')},
  {label:L('GUIDE / INTERACTIVE','指南 / 交互选型'),title:L('The film selection guide','汽车膜选型指南'),text:L('Compare clear PPF, color PPF and automotive window film by purpose and the questions to ask.','按用途比较透明车衣、彩色车衣和汽车窗膜，了解选型时需要确认的事项。'),href:path('/film-guide/'),cta:L('Read the guide','阅读指南')},

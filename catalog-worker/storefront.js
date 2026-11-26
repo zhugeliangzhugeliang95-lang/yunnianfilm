@@ -4,6 +4,7 @@ import {locales,prefix,escapeHTML as e,copyFor,localeValue,galleryHTML,offerHTML
 import {modelTablesHTML} from '../public/catalog-ui/model-tables.js';
 import {storyViews,storyGroupHTML} from '../src/scripts/customer-stories.ts';
 import {tpuSchema} from '../src/data/tpu-schema.ts';
+import {tpuComparisonRows} from '../src/data/tpu-comparison.ts';
 import {tpuPagePath} from '../src/locales/tpu.ts';
 
 const detailPath=(id,l)=>prefix(l)+'/products/'+id+'/';
@@ -97,6 +98,14 @@ async function tpuLanding(req, env, locale) {
   const graph = tpuSchema('https://yunnianfilm.com', locale, series.map(p => ({slug:p.slug, name:copyFor(p,locale).name})));
   const rw = new HTMLRewriter();
   setHTML(rw, '[data-tpu-series]', series.map(p => productCard(p,locale,base,false)).join(''));
+  if (locale === 'en' || locale === 'zh') {
+    const rows = tpuComparisonRows(series, locale, value => base.words[locale]?.[value] || value);
+    setHTML(rw, '[data-tpu-comparison-rows]', rows);
+    rw.on('[data-tpu-comparison]', {element(el) {
+      if (rows) el.removeAttribute('hidden');
+      else el.setAttribute('hidden', '');
+    }});
+  }
   setHTML(rw, 'script[type="application/ld+json"]', JSON.stringify({'@context':'https://schema.org','@graph':graph}).replace(/</g,'\\u003c'));
   return rw.transform(fresh(original));
 }

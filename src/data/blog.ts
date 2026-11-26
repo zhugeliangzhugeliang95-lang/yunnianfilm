@@ -162,16 +162,26 @@ export const blogPosts: BlogPost[] = [
       "zh": "膜层结构"
     },
     "title": {
-      "en": "What stays on the paint? A guide to PPF layers.",
-      "zh": "车衣贴好后，哪些膜层留在漆面上？"
+      "en": "What is TPU? Thermoplastic polyurethane in paint protection film",
+      "zh": "TPU 是什么材料？看懂隐形车衣的基膜、涂层与厚度"
     },
     "excerpt": {
-      "en": "Separate the protective system from temporary handling layers—and read thickness correctly.",
-      "zh": "区分最终保留的保护结构与临时保护层，同时读懂厚度口径。"
+      "en": "See where TPU sits in a paint protection film, which layers come off during installation, and how to compare film thickness in mils and microns.",
+      "zh": "了解热塑性聚氨酯在车衣里是哪一层、哪些膜层会在施工时揭掉，以及如何把 mil 换算成微米来比较两款车衣。"
     },
     "image": "clear-ppf.webp",
     "readMinutes": 3,
     "sections": [
+      {
+        "heading": {
+          "en": "What does TPU stand for?",
+          "zh": "TPU 的全称是什么？"
+        },
+        "body": {
+          "en": "TPU stands for thermoplastic polyurethane. It is a family of elastic plastics used in products as different as footwear and flexible tubing. In clear automotive PPF, a thin sheet of TPU forms the flexible body of the film. It bends around a painted panel, while the topcoat faces the road and the adhesive holds the film against the paint.",
+          "zh": "TPU 是热塑性聚氨酯的英文缩写。这类材料兼具塑料的可加工性和弹性，可用于鞋材、软管等产品。在透明汽车漆面保护膜（PPF）中，TPU 被制成可贴合车身曲面的基膜。车衣贴好后，表面涂层朝外，胶层与漆面接触。"
+        }
+      },
       {
         "heading": {
           "en": "Read a layer diagram from surface to adhesive",
@@ -198,8 +208,8 @@ export const blogPosts: BlogPost[] = [
           "zh": "确认厚度到底包括什么"
         },
         "body": {
-          "en": "Before comparing two thickness figures, check their definitions. A supplier may state the film body, film plus adhesive, or separate values for the liner and cap. Record the unit and the included layers on the same sample sheet. Comparing numbers without that boundary can make two different constructions look equivalent when the quoted measurements describe different things.",
-          "zh": "比较厚度之前，先确认数值指的是基膜本身、膜材加胶层，还是另列了离型膜及表面保护膜。建议在样品记录表上同时写明单位和计入的膜层。缺少这一口径时，两组数字即使接近，也未必代表同一种结构或相同的实际使用厚度。"
+          "en": "Suppose one data sheet lists 8.5 mil and another lists 216 microns. One mil equals 25.4 microns, so 8.5 mil is 215.9 microns. Those figures describe practically the same thickness if they cover the same layers. Check whether each includes the adhesive, and record the liner and removable cap separately on your sample sheet.",
+          "zh": "一份资料写 8.5 mil，另一份写 216 微米，哪款更厚？1 mil 等于 25.4 微米，8.5 mil 换算后是 215.9 微米。若测量的膜层相同，这两个数几乎相等。比对时请核对胶层是否计入，并把离型膜和可揭除保护膜的厚度另行记录。"
         }
       },
       {
@@ -214,6 +224,10 @@ export const blogPosts: BlogPost[] = [
       }
     ],
     "sources": [
+      {
+        "title": "HEXPOL TPE · What is TPU?",
+        "url": "https://www.hexpol.com/tpe/resources/tpe-academy/what-is-tpe/what-is-tpu/"
+      },
       {
         "title": "3M · PPF Series 150 Gloss construction and thickness definitions",
         "url": "https://multimedia.3m.com/mws/media/2553808O/3m-paint-protection-film-series-150-gloss.pdf?fn=3m-paint-protection-film-series-150-en.pdf"

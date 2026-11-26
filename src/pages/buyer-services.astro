@@ -4,8 +4,11 @@ import SourceText from '../components/SourceText.astro';
 import {content} from '../data/i18n';
 import archive from '../data/company-archive.json';
 import details from '../data/source-product-details.json';
+import {siteLanguage, inLanguage} from '../locales/languages';
+import {tpuCopy, tpuPagePath} from '../locales/tpu';
 import '../styles/source-library.css';
 const {lang,path}=content(Astro.url),z=lang==='zh';
+const locale=siteLanguage(Astro.url.pathname).id;
 const sections=[
  ['shipping-policy','Shipping & tracking','运输与跟踪','The original shop describes preparation, carrier charges, tracking and import duties. Wholesale freight is quoted by destination.','原商城说明备货、承运费用、包裹追踪与进口税费。批发运费按目的地另行报价。'],
  ['refund-policy','Returns & refunds','退货与退款','The original store describes a seven-day return request, the condition of the item and how to contact the team.','原商城列明收货后七天内提出退货申请，并说明商品状态、凭证及联系流程。'],
@@ -20,7 +23,9 @@ const labelReport=(p:string)=>p.includes('PET-WINDOW')?(z?'PET 窗膜':'PET wind
 ---
 <Layout title={z?'采购、检测报告与原商城订单':'Buyer services, test reports & original store orders'}>
  <header class="container page-intro"><span class="eyebrow">YUNNIAN / SERVICE</span><h1>{z?'采购与订单服务':'Buyer services'}</h1><p>{z?'为选材、索样和旧订单找到对应资料。本次批发采购的供货、交期和售后，以双方确认的书面报价为准。':'Find sample reports, ordering information and support for purchases from our original store. The written quotation sets the terms for each new wholesale order.'}</p></header>
- <section class="container source-section"><div class="library-title"><h2 id="reports">{z?'样品检测报告':'Sample test reports'}</h2></div><p class="source-intro">{z?'按样品类别和报告编号查阅原件。每份 PDF 列有送检样品、检测日期和适用范围。':'Choose the material and report number. Each PDF identifies the sample submitted, its test date and scope.'}</p><ul class="source-list">{docs.map(doc=><li><a href={doc.path} target="_blank" rel="noopener">{labelReport(doc.path)} · {doc.path.includes('REACH')?'REACH':'RoHS'} ↗</a><p>{doc.path.match(/(?:CAN|TSN)AUTO\d+/)?.[0]} · PDF</p></li>)}</ul></section>
+ <section class="container source-section"><div class="library-title"><h2 id="reports">{z?'样品检测报告':'Sample test reports'}</h2></div><p class="source-intro">{z?'按样品类别和报告编号查阅原件。每份 PDF 列有送检样品、检测日期和适用范围。':'Choose the material and report number. Each PDF identifies the sample submitted, its test date and scope.'}</p><ul class="source-list">{docs.map(doc=><li><a href={doc.path} target="_blank" rel="noopener">{labelReport(doc.path)} · {doc.path.includes('REACH')?'REACH':'RoHS'} ↗</a><p>{doc.path.match(/(?:CAN|TSN)AUTO\d+/)?.[0]} · PDF</p></li>)}</ul>
+  <a class="text-link" href={inLanguage(tpuPagePath,locale)+'#clear-ppf'}>{tpuCopy[locale].compareLink}</a>
+ </section>
  <section class="container source-section"><div class="library-title"><h2>{z?'原商城购买说明':'Original store policies'}</h2></div>{sections.map(([key,en,zh,desc,descZh])=><div id={key} class="service-policy"><h3>{z?zh:en}</h3><p class="library-note">{z?descZh:desc}</p><details class="library-fold"><summary>{z?'阅读原版英文条款':'Read full store policy'}</summary><div lang="en" dir="ltr" translate="no"><SourceText html={archive.policies[key]}/></div></details></div>)}
  <div id="privacy-choices"><h3>{z?'隐私选择':'Privacy choices'}</h3><div class="service-links"><a href={path('/privacy/')}>{z?'本网站的隐私说明':'This website’s privacy policy'}</a><a href="https://www.ynfilm.com/pages/data-sharing-opt-out">{z?'原商城隐私选择':'Original store privacy choices'} ↗</a></div></div></section>
  <section class="container source-section"><div class="library-title"><h2>{z?'原商城采购问答':'Ordering questions'}</h2></div>{archive.faq.map(([q,a],i)=><details class="library-fold"><summary>{z?faqTopics[i]:q}</summary><p>{z?faqZh[i]:a}</p>{z&&<p lang="en">{a}</p>}</details>)}</section>

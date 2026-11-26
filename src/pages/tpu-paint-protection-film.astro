@@ -2,15 +2,21 @@
 import Layout from '../layouts/Layout.astro';
 import Product from '../components/Product.astro';
 import {content} from '../data/i18n';
+import {managedProducts, productWord} from '../data/managed-products';
+import {tpuComparisonRows} from '../data/tpu-comparison';
 import {tpuBreadcrumbs, tpuSchema} from '../data/tpu-schema';
 import {textIn} from '../locales/copy';
 import {inLanguage, siteLanguage} from '../locales/languages';
 import {tpuCopy} from '../locales/tpu';
+import {buyerGuide, clearFilmReports} from '../locales/tpu-buyer';
 
 const language = siteLanguage(Astro.url.pathname);
 const copy = tpuCopy[language.id];
 const {products} = content(Astro.url);
 const series = products.filter(product => product.category === 'Clear PPF');
+const buyerLocale = language.id === 'en' || language.id === 'zh' ? language.id : undefined;
+const guide = buyerLocale && buyerGuide[buyerLocale];
+const comparison = buyerLocale ? tpuComparisonRows(managedProducts.filter(p => p.category === 'Clear PPF'), buyerLocale, value => productWord(value, buyerLocale)) : '';
 const path = (route: string) => inLanguage(route, language.id);
 const seriesName = (name: string) => {
   const id = language.id;
@@ -37,9 +43,23 @@ const schema = tpuSchema(Astro.site!, language.id, series.map(p => ({slug: p.slu
   </header>
   <section id="clear-ppf" class="container section tpu-series">
     <h2>{copy.series}</h2><p>{copy.seriesIntro}</p>
+    {guide && <div class="tpu-comparison" data-tpu-comparison hidden={!comparison}>
+      <table>
+        <caption>{guide.caption}</caption>
+        <thead><tr><th scope="col">{guide.series}</th><th scope="col">{guide.thickness}</th><th scope="col">{guide.details}</th></tr></thead>
+        <tbody data-tpu-comparison-rows set:html={comparison}/>
+      </table>
+    </div>}
     <div class="product-grid" data-tpu-series>{series.map((product, index) => <Product product={product} index={index} />)}</div>
   </section>
   <div class="container tpu-guide">
+    {guide && <>
+      <section id="film-thickness">
+        <h2>{guide.thicknessHeading}</h2><p>{guide.thicknessText}</p>
+        <a class="text-link" href={path('/blog/understanding-ppf-layers/')}>{guide.materialGuide}</a>
+      </section>
+      <section><h2>{guide.rollHeading}</h2><p>{guide.rollText}</p></section>
+    </>}
     <section>
       <h2>{copy.finish}</h2><p>{copy.finishText}</p>
       <div class="tpu-actions">
@@ -54,6 +74,11 @@ const schema = tpuSchema(Astro.site!, language.id, series.map(p => ({slug: p.slu
         <a class="text-link" href={path('/oem/')}>{copy.oem}</a>
       </div>
     </section>
+    {guide && <section id="sample-reports" class="tpu-reports">
+      <h2>{guide.reportsHeading}</h2><p>{guide.reportsText}</p>
+      <ul>{clearFilmReports.map(report => <li><a href={report.href}>{guide[report.kind]} · {report.number} (PDF)</a></li>)}</ul>
+      <a class="text-link" href={'/downloads/sample-checklist-' + buyerLocale + '.txt'} download>{guide.checklist}</a>
+    </section>}
   </div>
 </Layout>
 <style>
@@ -66,10 +91,21 @@ const schema = tpuSchema(Astro.site!, language.id, series.map(p => ({slug: p.slu
   .tpu-series { border-top: 1px solid var(--line); scroll-margin-top: 6rem; }
   .tpu-series h2, .tpu-guide h2 { font-size: clamp(1.65rem,3vw,2.75rem); line-height: 1.12; }
   .tpu-series > p { margin-bottom: 2rem; }
+  .tpu-comparison { margin-block: 0 2.5rem; }
+  .tpu-comparison table { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: start; }
+  .tpu-comparison caption { text-align: start; font-weight: 600; padding-bottom: .65rem; }
+  .tpu-comparison :global(th), .tpu-comparison :global(td) { text-align: start; vertical-align: top; overflow-wrap: anywhere; padding: .8rem .6rem; border-bottom: 1px solid var(--line); }
+  .tpu-comparison thead { background: #edf2f2; }
+  .tpu-comparison :global(th a), .tpu-reports a { text-decoration: underline; text-underline-offset: .18em; }
+  .tpu-comparison :global(td small) { color: #46565b; }
+  .tpu-reports { grid-column: 1 / -1; }
+  .tpu-reports ul { padding-inline-start: 1.15rem; margin: .75rem 0 1.5rem; }
+  .tpu-reports li + li { margin-top: .4rem; }
   .tpu-guide { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(2rem,5vw,5rem); padding-block: 1rem 4rem; }
   .tpu-guide section { border-top: 1px solid var(--line); padding-top: 1.5rem; }
   @media(max-width: 760px) {
     .tpu-intro, .tpu-guide { grid-template-columns: 1fr; }
     .tpu-intro { gap: 1.5rem; padding-bottom: 2rem; }
+    .tpu-comparison :global(th), .tpu-comparison :global(td) { padding: .65rem .35rem; font-size: .87rem; }
   }
 </style>
