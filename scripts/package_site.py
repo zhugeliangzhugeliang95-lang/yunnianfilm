@@ -53,10 +53,11 @@ def package_worker():
 
 def write_legacy_redirects():
     source = (ROOT / 'public' / '_redirects').read_text(encoding='utf-8').strip()
-    rules = [source]
+    rules = []
     for line in source.splitlines():
         if not line.strip() or line.lstrip().startswith('#'):
             continue
+        rules.append(line)
         path, target, status = line.split()
         locales = ('es', 'ar', 'zh', 'fr') if target == '/tpu-paint-protection-film/' else ('es', 'ar')
         for locale in locales:
@@ -64,6 +65,8 @@ def write_legacy_redirects():
                 rules.append(f'/{locale}{path} /{locale}{target} {status}')
             elif path.startswith(('/account', '/cart', '/checkout')):
                 rules.append(f'/{locale}{path} https://www.ynfilm.com/{locale}{path.replace("*", ":splat")} {status}')
+    # Pages expects all exact paths before patterns, including the translated rules.
+    rules.sort(key=lambda line: any(mark in line.split()[0] for mark in ('*', '/:')))
     (OUTPUT / '_redirects').write_text('\n'.join(rules) + '\n', encoding='utf-8')
 
 
