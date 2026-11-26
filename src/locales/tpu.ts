@@ -9,7 +9,7 @@ const en = {
   catalogTitle: 'Automotive Film Catalog for Wholesale Buyers',
   catalogDescription: 'Browse YUNNIAN film series by application, substrate, finish or model. Compare clear and colored PPF, wraps and window films before requesting a sample.',
   title: 'TPU Paint Protection Film (PPF) for Wholesale & OEM',
-  description: 'Compare clear TPU paint protection film by substrate, finish and thickness. Explore YUNNIAN PPF series for installers and distributors and request a sample or OEM quote.',
+  description: 'Compare clear TPU paint protection film by finish and thickness. Explore YUNNIAN PPF rolls for installers and distributors. Request a sample or OEM quote.',
   heading: 'TPU Paint Protection Film',
   intro: 'TPU is thermoplastic polyurethane, the flexible base material in these paint protection films. Installers apply clear PPF to painted panels such as the hood and front bumper to help protect the original finish from everyday scuffs.',
   home: 'Home', catalog: 'Film catalog', compare: 'Compare clear PPF series', sample: 'Request a film sample',
