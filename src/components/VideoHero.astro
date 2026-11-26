@@ -1,13 +1,19 @@
 ---
+import {siteLanguage} from '../locales/languages';
+import {tpuCopy} from '../locales/tpu';
+const range = tpuCopy[siteLanguage(Astro.url.pathname).id].homeHeading;
 import {content} from '../data/i18n';const {lang,path}=content(Astro.url);const z=lang==='zh';const L=(en:string,zh:string)=>z?zh:en;
 ---
 <section class="video-hero" aria-label={L('YUNNIAN company and product introduction','云辇公司与产品介绍')}>
  <video class="intro-video" id="intro-video" muted loop playsinline preload="metadata" poster="/videos/yunnian-production-poster.webp" aria-label={L('Production and film-material showcase','生产设备与膜材展示短片')}><source src="/videos/yunnian-production-loop.mp4" type="video/mp4"/></video><div class="video-hero-shade"></div>
- <div class="video-hero-copy"><p class="eyebrow">{L('AUTOMOTIVE FILM · GUANGZHOU, CHINA','中国 · 广州 / 汽车膜与材料')}</p><h1>YUNNIAN<span>®</span></h1><div class="video-hero-message"><h2>{L('Making Every Sheet of Film','让每一卷膜')}<br/>{L('More Valuable','更有价值')}</h2><div><p>{L('TPU paint protection. Color wraps. Solar-control window films.','TPU 漆面保护膜 · 车身改色膜 · 防晒隔热窗膜')}<br/>{L('Explore our materials, samples and OEM possibilities.','了解材料、评估样品，探索 OEM 合作。')}</p><a class="button button-accent" href="#collections">{L('Explore the collections','探索产品分类')} ↗</a></div></div></div>
+ <div class="video-hero-copy"><p class="eyebrow">{L('AUTOMOTIVE FILM · GUANGZHOU, CHINA','中国 · 广州 / 汽车膜与材料')}</p><h1>YUNNIAN<span>®</span> <small class="hero-range">{range}</small></h1><div class="video-hero-message"><h2>{L('Making Every Sheet of Film','让每一卷膜')}<br/>{L('More Valuable','更有价值')}</h2><div><p>{L('TPU paint protection. Color wraps. Solar-control window films.','TPU 漆面保护膜 · 车身改色膜 · 防晒隔热窗膜')}<br/>{L('Explore our materials, samples and OEM possibilities.','了解材料、评估样品，探索 OEM 合作。')}</p><a class="button button-accent" href="#collections">{L('Explore the collections','探索产品分类')} ↗</a></div></div></div>
  <div class="video-hero-bottom"><span>{L('PRODUCTION FILM / 14 SEC / MUTED PREVIEW','生产展示 / 14 秒 / 静音预览')}</span><div><button type="button" id="intro-toggle" aria-label={L('Play introduction','播放介绍短片')}>{L('Play','播放')} <span aria-hidden="true">▷</span></button><button type="button" id="intro-open">{L('Watch the film','观看完整短片')} ↗</button></div></div>
  <span class="video-source-note">{L('PRODUCTION & MATERIALS','生产设备与膜材展示')}</span>
 </section>
 <dialog id="intro-dialog" aria-label={L('YUNNIAN introduction film','云辇介绍短片')}><div class="intro-dialog-heading"><span>YUNNIAN / {L('PRODUCT INTRODUCTION','产品介绍')}</span><button type="button" id="intro-close" aria-label={L('Close video','关闭视频')}>×</button></div><video id="intro-full" controls playsinline preload="none" poster="/videos/yunnian-production-poster.webp"><source src="/videos/yunnian-production-film.mp4" type="video/mp4"/></video><p>{L('Production and material footage. Original audio is available in this player.','生产设备与膜材展示，播放器中保留原声。')}</p></dialog>
+<style>
+  .hero-range { display: block; margin-block-start: .75rem; font-size: clamp(1rem,1.6vw,1.35rem); letter-spacing: 0; line-height: 1.3; }
+</style>
 <script>
  import {pageLocale, localePrefix, ui} from '../../public/locales/runtime.js';
 

@@ -1,5 +1,6 @@
 ---
-import {content} from '../data/i18n';
+import {siteLanguage} from '../locales/languages';
+import {tpuCopy} from '../locales/tpu';
 import Layout from '../layouts/Layout.astro';
 import VideoHero from '../components/VideoHero.astro';
 import HomeCollections from '../components/HomeCollections.astro';
@@ -9,6 +10,6 @@ import SampleJourney from '../components/SampleJourney.astro';
 import BlogPreview from '../components/BlogPreview.astro';
 import CustomerStories from '../components/CustomerStories.astro';
 import CTA from '../components/CTA.astro';
-const {t}=content(Astro.url);
+const copy = tpuCopy[siteLanguage(Astro.url.pathname).id];
 ---
-<Layout dark title={t('Paint protection & automotive film')}><VideoHero/><HomeCollections/><HomeColors/><FilmLab/><SampleJourney/><CustomerStories/><BlogPreview/><CTA/></Layout>
+<Layout dark title={copy.homeTitle} description={copy.homeDescription}><VideoHero/><HomeCollections/><HomeColors/><FilmLab/><SampleJourney/><CustomerStories/><BlogPreview/><CTA/></Layout>

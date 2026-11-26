@@ -2,7 +2,7 @@ import {parse, serialize} from 'parse5';
 import {textIn} from './copy';
 import {inLanguage, type TranslatedLocale} from './languages';
 
-const pageRoute = /^\/(?:$|\?|#|(?:about|applications|blog|buyer-services|collections-guide|color-studio|company-library|contact|film-guide|film-lab|oem|privacy|products|resources|404)(?:\/|\?|#|$))/;
+const pageRoute = /^\/(?:$|\?|#|(?:about|applications|blog|buyer-services|collections-guide|color-studio|company-library|contact|film-guide|film-lab|oem|privacy|products|resources|tpu-paint-protection-film|404)(?:\/|\?|#|$))/;
 const labelAttributes = new Set(['alt', 'title', 'aria-label', 'placeholder', 'label', 'data-default-alt', 'data-default', 'data-gallery-caption']);
 const normalized = (value: string) => value.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
 function localURL(value: string, locale: TranslatedLocale) {

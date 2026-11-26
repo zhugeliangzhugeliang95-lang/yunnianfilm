@@ -1,4 +1,5 @@
 import type { Language } from './i18n';
+import {categoryUrl} from './categories';
 
 export function editorial(lang: Language) {
   const L = (en: string, zh: string) => lang === 'zh' ? zh : en;
@@ -13,7 +14,7 @@ export function editorial(lang: Language) {
       alt: L('Illustrative scene of clear film being positioned over a car panel', '透明保护膜覆于汽车面板的施工场景示意图'),
       note: L('Application concept · illustrative scene', '应用概念 · 场景示意'),
       tags: [L('Aliphatic TPU', '脂肪族 TPU'), '6.5–9.5 mil', L('Multiple substrates', '多种基材')],
-      destination: '/products/?category=Clear%20PPF',
+      destination: categoryUrl('Clear PPF'),
       action: L('Explore clear PPF', '探索透明车衣'),
     },
     {

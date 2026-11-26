@@ -6,7 +6,7 @@ import collections from '../../data/collection-index.json';
 import {categoryUrl} from '../../data/categories';
 import {content} from '../../data/i18n';
 import '../../styles/source-library.css';
-export function getStaticPaths(){return Object.entries(collections).map(([slug,c])=>({params:{slug},props:{c}}));}
+export function getStaticPaths(){return Object.entries(collections).filter(([,c])=>c.category!=='Clear PPF').map(([slug,c])=>({params:{slug},props:{c}}));}
 const {lang,path,products}=content(Astro.url),z=lang==='zh';
 const {c}=Astro.props;
 const members=c.members.map(slug=>products.find(p=>p.slug===slug)).filter(Boolean);

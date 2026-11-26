@@ -1,2 +1,6 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /automotive-studio/viewer/
+Disallow: /support/api/
+
+Sitemap: https://yunnianfilm.com/sitemap.xml

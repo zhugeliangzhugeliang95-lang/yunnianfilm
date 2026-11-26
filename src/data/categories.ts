@@ -1,3 +1,4 @@
+import {tpuPagePath} from '../locales/tpu';
 // One taxonomy for navigation, catalog filters, breadcrumbs and the buying guide.
 export const categories = [
  {key:'Clear PPF',code:'01',mark:'TPU',image:'tpu-ppf-category.webp',en:'TPU Paint Protection Film',zh:'TPU 漆面保护膜',summary:['Original paint, protected.','保留原车色，关注漆面保护。'],detail:['Wanhua, Covestro, BASF and Lubrizol TPU. Clear gloss or matte; 6.5, 7.5, 8.5 and 9.5 mil.','万华、科思创、巴斯夫、路博润四类基材。透明亮面或哑光，厚度为 6.5、7.5、8.5、9.5 mil。']},
@@ -11,4 +12,4 @@ export const categories = [
  {key:'Specialty PPF',code:'09',mark:'APC',image:'legacy/c7786134990a97a8.webp',en:'APC Paint Protection',zh:'APC 特种车衣',summary:['Aliphatic polycarbonate paint protection.','脂肪族聚碳酸酯漆面保护膜。'],detail:['Compare Space Armor U75 and U90, in 7.5 and 9 mil.','查询 Space Armor U75 与 U90 的 7.5 mil 和 9 mil 版本。']},
 ];
 export const catalogCategory = (category:string, lang:'en'|'zh') => categories.find(c=>c.key===category)?.[lang] || category;
-export const categoryUrl = (category:string) => '/products/?category='+encodeURIComponent(category);
+export const categoryUrl = (category:string) => category === 'Clear PPF' ? tpuPagePath : '/products/?category='+encodeURIComponent(category);

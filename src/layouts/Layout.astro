@@ -20,10 +20,25 @@ import CustomerService from '../components/CustomerService.astro';
 import LanguagePicker from '../components/LanguagePicker.astro';
 
 const {lang,t,path,company,products}=content(Astro.url);
-const {title='Automotive film, thoughtfully selected.',description='Explore YUNNIAN paint protection film, color PPF and automotive window film. Product selection, OEM cooperation and wholesale inquiries.',dark=false} = Astro.props;
+const {title='Automotive film, thoughtfully selected.',description='Explore YUNNIAN paint protection film, color PPF and automotive window film. Product selection, OEM cooperation and wholesale inquiries.',dark=false,schema=[]} = Astro.props;
 const selected = siteLanguage(Astro.url.pathname);
 const current = pagePath(Astro.url.pathname);
 const canonicalPath = inLanguage(current, selected.id);
+const canonical = new URL(canonicalPath, Astro.site).href;
+const indexable = current !== '/404.html';
+const home = new URL('/', Astro.site).href;
+const graph = current === '/' ? [
+  {
+    '@type': 'Organization', '@id': home + '#organization',
+    name: 'YUNNIAN', alternateName: '云辇', legalName: company.name, url: home,
+    logo: new URL('/images/yunnian-logo-white.webp', Astro.site).href,
+  },
+  {
+    '@type': 'WebSite', '@id': home + '#website', url: home, name: 'YUNNIAN',
+    inLanguage: languages.map(language => language.tag), publisher: {'@id': home + '#organization'},
+  },
+  ...schema,
+] : schema;
 ---
 <!doctype html>
 <html lang={selected.tag} dir={selected.id==='ar'?'rtl':'ltr'}>
@@ -31,13 +46,17 @@ const canonicalPath = inLanguage(current, selected.id);
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <slot name="head" />
     <title>{t(title)} | YUNNIAN</title><meta name="description" content={t(description)} />
-    <link rel="canonical" href={new URL(canonicalPath, Astro.site)} /><meta property="og:image" content={new URL('/images/hero.webp', Astro.site)} />
-    {languages.map(option => <link rel="alternate" hreflang={option.tag} href={new URL(inLanguage(current,option.id), Astro.site)} />)}
-    <link rel="alternate" hreflang="x-default" href={new URL(inLanguage(current,'en'), Astro.site)} />
+    {indexable && <>
+      <link rel="canonical" href={canonical} /><meta property="og:url" content={canonical}/>
+      {languages.map(option => <link rel="alternate" hreflang={option.tag} href={new URL(inLanguage(current,option.id), Astro.site)} />)}
+      <link rel="alternate" hreflang="x-default" href={new URL(inLanguage(current,'en'), Astro.site)} />
+    </>}
+    <meta property="og:image" content={new URL('/images/hero.webp', Astro.site)} />
     <meta property="og:locale" content={selected.og} />
     {languages.filter(option => option.id !== selected.id).map(option => <meta property="og:locale:alternate" content={option.og}/>)}
     {['es','fr','ar'].includes(selected.id) && <script is:inline src={'/locales/'+selected.id+'.js'}></script>}
-    <meta name="robots" content="noindex,nofollow" /><meta name="theme-color" content="#141615" />
+    <meta name="robots" content={indexable ? 'index,follow' : 'noindex,follow'} /><meta name="theme-color" content="#141615" />
+    {graph.length > 0 && <script is:inline type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@graph':graph}).replace(/</g,'\\u003c')} />}
     <meta property="og:title" content={`${t(title)} | YUNNIAN`} /><meta property="og:description" content={t(description)} /><meta property="og:type" content="website" />
     <link rel="icon" href="/yunnian-favicon-v10.webp" type="image/webp" />
     {current==='/' && <link rel="preload" as="image" href="/videos/yunnian-production-poster.webp" />}
