@@ -21,13 +21,18 @@
   "title": "Automotive Window Film",
   "zh": "汽车隔热窗膜",
   "intro": "按色深、具体型号和测试条件比较窗膜。",
-  "body": "\n    Advanced automotive window films with high heat rejection, UV400 protection, and superior clarity.\n  ",
+  "body": "\n    <p>Choose automotive window tint for car glass by visible light transmission (VLT), shade and film thickness. The Constant Color TiN window film series lists a 1.52 m × 30 m roll and model-specific VLT values. Check the selected model against the intended window and local tint rules.</p><p><a href=\"/products/constant-color-tin/\">Compare Constant Color window film</a>. Send your target VLT, model, roll quantity and destination to request a quote. <a href=\"/contact/\">Request a wholesale quote</a>.</p><p>For exterior glass protection, see <a href=\"/products/windshield-protection-film/\">Glass Shield KPU windshield film</a> and <a href=\"/products/tpu-sunroof-ice-film/\">TPU sunroof film</a>.</p>\n  ",
   "members": [
    "ir-5g-tin-2mil",
-   "windshield-protection-film",
-   "chameleon-aurora-window-film",
-   "tpu-sunroof-ice-film",
+   "m60-carbide",
+   "a95-magnetron-carbide",
+   "s99-magnetron-carbide",
+   "c90-carbide",
+   "t90-carbide",
+   "m90-carbide",
+   "a95-ceramic-carbide",
    "s99-ceramic-carbide",
+   "chameleon-aurora-window-film",
    "jr-coextruded-window-film",
    "constant-color-tin",
    "hs-ceramic-tin",
@@ -44,9 +49,11 @@
  "pet-color-change-wrap": {
   "title": "Pet Color Change Wrap",
   "zh": "PET 改色膜",
-  "intro": "查阅原厂色名称、YC 对照表与产品实拍。",
-  "body": "\n    <p>PET color-changing film: offers better value for money and is ideal for car owners who frequently change their car’s color within a year</p>\n  ",
+  "intro": "按系列和色号查看原厂色、水晶、液态金属改色膜的实物图和整卷规格。",
+  "body": "\n    <p>Choose a color change car wrap when the job calls for a new body colour. In the PET Crystal series, PVC is the installed face film and PET is the removable release liner. Crystal and Liquid Metal are available in 1.52 m × 16 m rolls. Select by colour code and review a physical swatch before ordering.</p><p><a href=\"/products/pet-crystal-series-color-change-wrap/\">View PET Crystal color change wrap</a>. For samples or wholesale pricing, provide the colour code, roll quantity and destination. <a href=\"/contact/\">Request a wholesale quote</a>.</p>\n  ",
   "members": [
+   "pet-liquid-metal-series-color-change-wrap",
+   "pet-crystal-series-color-change-wrap",
    "pet-special-oem-wrap"
   ],
   "category": "PET color wraps"
@@ -79,7 +86,7 @@
   "title": "TPU Color PPF",
   "zh": "TPU 彩色车衣",
   "intro": "从原厂色、液态金属、珠光、水晶和纹理中选择现成颜色。",
-  "body": "\n    Transformative vehicle wraps combining the protection of PPF with high-end liquid metal, matte, and gloss color finishes.\n  ",
+  "body": "\n    <p>Colored paint protection film combines a new body colour with a TPU paint-protection layer. Compare the Classic OEM, Liquid Metal and Glossy Crystal series by finish. Classic OEM is supplied in 1.52 m × 15 m rolls at 7.5 mil.</p><p><a href=\"/products/classic-color-ppf/\">See Classic OEM colored PPF</a>. Include the series, shade or colour code and roll quantity when requesting samples or wholesale pricing. <a href=\"/contact/\">Request a wholesale quote</a>.</p>\n  ",
   "members": [
    "solar-eclipse-tpu",
    "liquid-metal-color-ppf",
@@ -96,10 +103,8 @@
   "title": "TPU Paint Protection Film",
   "zh": "漆面保护膜",
   "intro": "按基材、卷材规格与应用区分透明车衣、APC 车衣和两轮车用膜。",
-  "body": "\n    High-performance aliphatic TPU films (Lubrizol/Covestro substrate) for ultimate invisible vehicle protection. Self-healing and anti-yellowing.\n  ",
+  "body": "\n    <p>Clear TPU paint protection film (PPF) lets the original paint colour show through. For full-vehicle installations, our embedded-coating series comes in 1.52 m × 15 m rolls with a choice of 7.5 or 8.5 mil. The Lubrizol SM301 series offers 6.5, 7.5, 8.5 and 9.5 mil options.</p><p><a href=\"/products/embedded-coating-tpu-ppf/\">Compare the clear TPU roll options</a>. For a wholesale quote, send the series, thickness, roll quantity and delivery country. <a href=\"/contact/\">Request a wholesale quote</a>.</p><p>Other protective films: <a href=\"/products/space-armor-apc-ppf/\">Space Armor APC paint protection film</a> · <a href=\"/products/motorcycle-ebike-protective-film/\">motorcycle and e-bike protective rolls</a>.</p>\n  ",
   "members": [
-   "motorcycle-ebike-protective-film",
-   "space-armor-apc-ppf",
    "embedded-coating-tpu-ppf",
    "lubrizol-sm301-ppf",
    "basf-elastollan-ppf",

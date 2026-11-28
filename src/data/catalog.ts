@@ -2,8 +2,6 @@ export const catalogMeta: Record<string,{finishes:string[];thickness:string[]}> 
   'pet-tech-color-wrap': {finishes:[],thickness:[]},
   'laser-color-ppf': {finishes:['laser'],thickness:[]},
   'chrome-color-ppf': {finishes:['chrome','metallic'],thickness:[]},
-  'light-cured-window-film': {finishes:[],thickness:[]},
-  'core-color-window-film': {finishes:[],thickness:[]},
   'lubrizol-sm301-ppf': {finishes:['clear'],thickness:['6.5','7.5','8.5','9.5']},
   'basf-elastollan-ppf': {finishes:['clear'],thickness:['6.5','7.5','8.5']},
   'covestro-ppf': {finishes:['clear'],thickness:['7.5','8.5','9.5']},

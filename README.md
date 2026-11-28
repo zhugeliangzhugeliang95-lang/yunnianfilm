@@ -1,6 +1,6 @@
 # YUNNIAN Film
 
-云辇汽车膜多语言官网源码。网站包含 53 个产品系列、404 张带固定编号的色卡、车型贴膜预览、型号规格表、技术文章、样品检测报告和采购询价入口。[中文官网](https://yunnianfilm.com/zh/) · [English website](https://yunnianfilm.com/)
+云辇汽车膜多语言官网源码。网站包含产品系列目录、404 张带固定编号的色卡、车型贴膜预览、型号规格表、技术文章、样品检测报告和采购询价入口。[中文官网](https://yunnianfilm.com/zh/) · [English website](https://yunnianfilm.com/)
 
 ## 本地运行
 
@@ -16,6 +16,8 @@ npm run dev
 ## 产品内容后台
 
 编辑人员通过首次启用链接设置账号，之后在 [产品内容后台](https://yunnianfilm.com/manage/) 登录。后台可以维护五种语言的产品资料、SKU 图片、客户案例与评价。保存草稿可预览，点击「发布到官网」后访客就能看到更新。
+
+正式站点按 Cloudflare 识别的来源 IP 拒绝中国大陆访问，包括页面、媒体和后台。Pages 的生产和预览环境均配置为在无法执行访问检查时关闭访问。
 
 后台和公开目录使用同一 Cloudflare Pages 项目。部署时将 D1 数据库绑定为 `SUPPORT_DB`，并在该数据库执行 `catalog-worker/schema.sql`。首次启用链接通过私下交付，数据库仅保存启用码的 SHA-256 摘要。
 

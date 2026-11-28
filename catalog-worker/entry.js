@@ -5,6 +5,12 @@ import {querySeries} from '../support/series-query.mjs';
 import {publicEdits,storefront} from './storefront.js';
 export default {
   async fetch(request,env,ctx) {
+    if (request.cf?.country === 'CN') {
+      return new Response(request.method === 'HEAD' ? null : 'This website is unavailable in your region.', {
+        status: 403,
+        headers: {'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'private, no-store'},
+      });
+    }
     const path=new URL(request.url).pathname;
     if(path.startsWith('/support/api/')) {
       let catalog;

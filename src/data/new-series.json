@@ -608,103 +608,181 @@
   "source": "https://www.ynfilm.com/products/tpu-color-ppf-diamond-laser-series"
  },
  {
-  "slug": "ultra-gloss-metallic-tpu",
-  "category": "Color PPF",
-  "name": "Ultra Gloss Metallic TPU Color PPF",
-  "label": "COLOR PPF",
-  "image": "",
-  "materials": "TPU color film",
-  "description": "A gloss metallic TPU series for full-body color changes. Use a physical card to identify the color and surface effect for your wrap.",
+  "slug": "pet-liquid-metal-series-color-change-wrap",
+  "category": "PET color wraps",
+  "name": "PET Liquid Metal Color Wrap",
+  "label": "PET COLOR WRAPS",
+  "image": "legacy/5b58e53c4ad0e9a2.webp",
+  "materials": "PVC vehicle color-change wrap",
+  "description": "Compare 21 Liquid Metal colors by YT code and product photo. The PVC color-change film comes in 1.52 m × 16 m rolls.",
   "options": [
-   "Request a series sample"
+   "Matte Liquid Metal Silver",
+   "Liquid Metal Silver",
+   "Liquid Metal Starlight Silver",
+   "Liquid Metal Gun Gray",
+   "Liquid Metal Coal Gray",
+   "Liquid Metal Somato Blue",
+   "Liquid Metal Black",
+   "Liquid Metal Noble White",
+   "Liquid Metal Mountain Green",
+   "Liquid Metal Stella Purple",
+   "Flowing Star Silver",
+   "Liquid Metal Mercury Gray",
+   "Liquid Metal Agate Gray",
+   "Liquid Metal Aluminum Mercury",
+   "Liquid Metal Tungsten Blue",
+   "Liquid Metal Champagne Pink",
+   "Liquid Metal Loganberry",
+   "Liquid Metal Dragon Blood Red",
+   "Liquid Metal Cherry Red",
+   "Liquid Metal Deep Sea Blue",
+   "Liquid Metal Agate Green"
   ],
   "specs": [
    [
-    "Application",
-    "Vehicle body panels"
+    "Material",
+    "PVC vehicle color-change wrap"
+   ],
+   [
+    "Roll size",
+    "1.52 m × 16 m"
    ]
   ],
-  "source": "https://yunnianfilms.1688.com/",
-  "storeTitle": "TPU汽车改色膜超亮金属系列亮面改色膜全车贴膜跨境直销工厂批发"
+  "source": "https://www.ynfilm.com/products/pet-liquid-metal-series-color-change-wrap"
  },
  {
-  "slug": "quick-repair-hydrophobic-ppf",
-  "category": "Clear PPF",
-  "name": "Quick-Repair Hydrophobic TPU PPF",
-  "label": "CLEAR PPF",
-  "image": "",
-  "materials": "Clear TPU paint protection film",
-  "description": "A hydrophobic clear TPU range listed under quick-repair films. Ask for the selected sample’s repair conditions and coating specification.",
+  "slug": "pet-crystal-series-color-change-wrap",
+  "category": "PET color wraps",
+  "name": "PET Crystal Color Wrap",
+  "label": "PET COLOR WRAPS",
+  "image": "legacy/4c4c9db01063fc0a.webp",
+  "materials": "PVC face film on a PET release liner",
+  "description": "Choose from 113 Crystal colors by their SJ code. Each color has its own product photo. Rolls measure 1.52 m × 16 m, and A5 swatches are available.",
   "options": [
-   "Request a series sample"
+   "Piano Ferrari Red",
+   "Piano Sky Blue",
+   "Piano Sunflower Yellow (Dark)",
+   "Piano Rouge Pink",
+   "Piano Nardo Gray (Light)",
+   "Piano Rose Red",
+   "Piano Racing Green",
+   "Piano White",
+   "Piano Apple Green",
+   "Piano Tiffany",
+   "Crystal Pale Pink",
+   "Crystal Cement Gray (Dark)",
+   "Crystal Desert Yellow",
+   "Piano Khaki Milan",
+   "Piano Sunflower Yellow",
+   "Piano Khaki Gray",
+   "Piano Sea Breeze Blue",
+   "Piano Ice Cream Blue",
+   "Piano Flame Orange",
+   "Oolong Milk Tea Pink",
+   "Ultra Gloss Pink Purple",
+   "Manta Purple",
+   "Piano Khaki Green",
+   "Piano Volcanic Gray",
+   "Piano Cement Gray (Light)",
+   "Piano Shell Pink",
+   "Weimi Purple",
+   "Piano Lavender Purple",
+   "Lilac Purple",
+   "Deep Blue (Porsche)",
+   "Neptune Blue (Porsche)",
+   "Olive Green (Porsche)",
+   "GT Violet (Porsche)",
+   "Meissen Blue (Porsche)",
+   "Signal Yellow (Porsche)",
+   "Underberg Green (Porsche)",
+   "Brewster Green (Porsche)",
+   "Mexico Blue (Porsche)",
+   "Agate Gray (Porsche)",
+   "Piano Avocado Green",
+   "Crystal Xingdai Purple",
+   "Crystal Coral Orange",
+   "Sport Gray (Porsche)",
+   "Starlight Ruby Red (Porsche)",
+   "Light Green (Porsche)",
+   "Lilac Pink Purple",
+   "Strawberry Red (Porsche)",
+   "Misty Gray Green (Porsche)",
+   "Rouge Red (Porsche)",
+   "Ya Gray (Porsche)",
+   "Miami Blue (Porsche)",
+   "Signal Green (Porsche)",
+   "Gulf Blue (Porsche)",
+   "Black Olive (Porsche)",
+   "Arrow Blue (Porsche)",
+   "Acid Green (Porsche)",
+   "Arctic Gray (Porsche)",
+   "Provence Purple (Porsche)",
+   "Brooklyn Gray (BMW)",
+   "Sao Paulo Yellow (BMW)",
+   "Abu Dhabi Blue (BMW)",
+   "Desert Storm Yellow (Mercedes)",
+   "Pasadena Yellow (Audi)",
+   "Viper Green (Audi)",
+   "Hell Green (Audi)",
+   "Battle Green (Audi)",
+   "Nardo Gray (Audi)",
+   "Mary Kay Pink (Bentley)",
+   "Deep Emerald Green (Bentley)",
+   "Glacier Blue (Bentley)",
+   "McLaren Orange (McLaren)",
+   "Saga Green (Rolls-Royce)",
+   "Pepper White (MINI)",
+   "Dazzling Yellow",
+   "Tuscany Blue (Land Rover)",
+   "Racing Red (Ferrari)",
+   "Mirror Sky Pink (NIO)",
+   "Cloud Dawn Yellow (NIO)",
+   "Morning Mist Green (NIO)",
+   "Elephant Gray (Li Auto)",
+   "Lightning Yellow (Xiaomi)",
+   "Modena Yellow (Ferrari)",
+   "Piano Red Bean Red",
+   "Tulip Pink",
+   "Rousseau Green",
+   "Urban Green",
+   "Monet Purple",
+   "Manet Brown",
+   "Beetroot Purple",
+   "White Peach Pink",
+   "Mosen Green",
+   "Shark Gray (Dove Gray)",
+   "Almond Latte",
+   "Piano Shark Blue",
+   "Ancora Red",
+   "Lava Orange (Porsche)",
+   "Shadow Green (Porsche)",
+   "Super Sparkle Green (XPeng P7)",
+   "Marble Light Purple",
+   "Calla Lily Green",
+   "Hazy Purple Gray",
+   "Mocha Mousse",
+   "Zandvoort Blue (BMW)",
+   "Sea Breeze Blue",
+   "Cocoa Candy Brown",
+   "Butterfly Valley Blue",
+   "Dixi Purple",
+   "Venus Purple",
+   "Candy Purple Latte",
+   "Genmaicha Brown",
+   "Capri Blue",
+   "Lychee Pink",
+   "Mousse Blue"
   ],
   "specs": [
    [
-    "Application",
-    "Vehicle body panels"
-   ]
-  ],
-  "source": "https://yunnianfilms.1688.com/",
-  "storeTitle": "隐形车衣TPU快修秒修疏水漆面保护膜汽车防刮蹭厂家直销跨境批发"
- },
- {
-  "slug": "dream-series-tpu",
-  "category": "Color PPF",
-  "name": "Dream Series TPU Color PPF",
-  "label": "COLOR PPF",
-  "image": "",
-  "materials": "TPU color film",
-  "description": "This color-change series is listed for full-body wraps. Compare the actual card in daylight to choose the visual effect for your vehicle.",
-  "options": [
-   "Request a series sample"
-  ],
-  "specs": [
+    "Material",
+    "PVC face film on a PET release liner"
+   ],
    [
-    "Application",
-    "Vehicle body panels"
+    "Roll size",
+    "1.52 m × 16 m"
    ]
   ],
-  "source": "https://yunnianfilms.1688.com/",
-  "storeTitle": "TPU汽车改色膜梦幻系列改色车衣DIY个性全车贴膜工厂批发跨境直销"
- },
- {
-  "slug": "thermal-repair-hydrophobic-ppf",
-  "category": "Clear PPF",
-  "name": "Heat-Repair Hydrophobic TPU PPF",
-  "label": "CLEAR PPF",
-  "image": "",
-  "materials": "Clear TPU paint protection film",
-  "description": "A clear TPU series with a hydrophobic surface, listed for heat-assisted repair. Request the sample’s temperature conditions and aftercare instructions.",
-  "options": [
-   "Request a series sample"
-  ],
-  "specs": [
-   [
-    "Application",
-    "Vehicle body panels"
-   ]
-  ],
-  "source": "https://yunnianfilms.1688.com/",
-  "storeTitle": "TPU隐形车衣PPF增亮疏水热修复漆面保护膜厂家直销批发"
- },
- {
-  "slug": "wet-dry-install-tpu",
-  "category": "Color PPF",
-  "name": "Wet / Dry Installation TPU Color Film",
-  "label": "COLOR PPF",
-  "image": "",
-  "materials": "TPU color film",
-  "description": "A TPU color series listed for wet and dry application. Confirm the surface preparation and installation instructions with the selected sample.",
-  "options": [
-   "Request a series sample"
-  ],
-  "specs": [
-   [
-    "Application",
-    "Vehicle body panels"
-   ]
-  ],
-  "source": "https://yunnianfilms.1688.com/",
-  "storeTitle": "TPU汽车改色膜干湿两贴改色个性贴纸全车贴膜工厂批发跨境直销"
+  "source": "https://www.ynfilm.com/products/pet-crystal-series-color-change-wrap"
  }
 ]

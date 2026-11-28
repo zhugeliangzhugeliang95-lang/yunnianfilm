@@ -6,7 +6,7 @@ export function sourceTables(slug: string) {
   for (const record of records) {
     for (const rows of record.tables) unique.set(JSON.stringify(rows), {title: record.title, rows});
   }
-  const headers = new Set(['Model', 'Specification', 'Technical Data', 'Color code', 'Color Name', 'Feature']);
+  const headers = new Set(['Model', 'Specification', 'Technical Data', 'Color code', 'Color Name', 'SKU', 'Feature']);
   return Array.from(unique.values(), ({title, rows}) => {
     const hasHeader = headers.has(rows[0]?.[0]);
     return {title: unique.size > 1 ? title : '', columns: hasHeader ? rows[0] : ['Field', 'Published detail'], rows: hasHeader ? rows.slice(1) : rows};

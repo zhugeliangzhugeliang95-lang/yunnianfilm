@@ -43,12 +43,9 @@ def package_worker():
     (OUTPUT / '_worker.js').write_text(worker, encoding='utf-8')
     subprocess.run(['node','scripts/check-support-catalog.mjs'],cwd=ROOT,check=True)
     subprocess.run(['node','scripts/bundle-catalog-worker.mjs'],cwd=ROOT,check=True)
-    localized = [prefix + section + '*' for prefix in ('','/zh','/fr','/es','/ar')
-                 for section in ('/products','/contact')]
-    homepages = ['/','/zh/','/fr/','/es/','/ar/']
-    tpu_pages = [path + 'tpu-paint-protection-film/' for path in homepages]
+    # Apply the regional access policy before serving HTML, media, or an API response.
     (OUTPUT / '_routes.json').write_text(
-        json.dumps({'version': 1, 'include': ['/support/api/*','/catalog-api/*','/sitemap.xml',*homepages,*tpu_pages,*localized], 'exclude': []}), encoding='utf-8'
+        json.dumps({'version': 1, 'include': ['/*'], 'exclude': []}), encoding='utf-8'
     )
 
 

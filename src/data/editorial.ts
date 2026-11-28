@@ -35,7 +35,7 @@ export function editorial(lang: Language) {
       name: L('A different perspective.', '焕新每一程视野。'),
       title: L('Automotive window film', '汽车窗膜'),
       short: L('Consider every layer of the view.', '从玻璃开始，探索更多可能。'),
-      description: L('Explore Aurora, light-cured and core-color series. Request optical data for the selected shade and intended window.', '了解极光、光固化与芯层恒色窗膜。按所选颜色和施工部位索取光学资料，评估是否适合您的市场。'),
+      description: L('Compare Aurora, nano-ceramic and titanium nitride window films by shade and visible light transmission.', '按色深和可见光透射比，比较极光变色、纳米陶瓷和氮化钛汽车窗膜。'),
       image: 'window-film.webp',
       alt: L('YUNNIAN Chameleon Aurora windshield film product presentation', '云辇极光变色前挡窗膜产品展示'),
       note: L('Product imagery · confirm local tint requirements', '产品展示 · 请确认当地贴膜要求'),
