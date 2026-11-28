@@ -37,6 +37,8 @@ if (provider) provider.checked = sessionStorage.getItem('yun-chat-provider') !==
 const providerName = () => hosted || provider?.checked ? 'groq' : 'local';
 const sessionKey = () => 'yun-dialogue-' + providerName();
 let session = sessionStorage.getItem(sessionKey()) || '';
+const pageProduct = new URLSearchParams(location.search).get('product') || '';
+let openingTurn = true;
 let busy = false;
 const field = $('#message'), send = $('#send'), contact = $('#contact');
 const contactButton = $('#contact-form button'), saved = $('#saved');
@@ -90,6 +92,7 @@ contact.addEventListener('input', () => { saved.textContent = ''; updateControls
 if (provider) provider.addEventListener('change', () => {
   sessionStorage.setItem('yun-chat-provider', providerName());
   session = sessionStorage.getItem(sessionKey()) || '';
+  openingTurn = true;
   log.replaceChildren();
   welcome.hidden = false;
   saved.textContent = '';
@@ -146,10 +149,11 @@ function showReply(data) {
 }
 async function submit(action, message) {
   const response = await fetch(base + '/api/' + action, {method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({session, message, locale, ...(action === 'chat' ? {chat_provider:providerName()} : {})})});
+    body:JSON.stringify({session, message, locale, ...(action === 'chat' ? {chat_provider:providerName(), ...(pageProduct ? {page_product:pageProduct, page_opening:openingTurn} : {})} : {})})});
   if (!response.ok) throw new Error(response.status === 429 ? t('Please wait a minute and try again.', '请稍等一分钟再试。') :
     t('Could not submit. Please try again.', '提交未成功，请再试一次。'));
   const data = await response.json();
+  if (action === 'chat') openingTurn = false;
   if (data.session) {
     session = data.session;
     sessionStorage.setItem(sessionKey(), session);

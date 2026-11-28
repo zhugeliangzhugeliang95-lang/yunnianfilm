@@ -7,6 +7,8 @@
   const label = (en,zh) => chinese ? zh : globalThis.YunnianWords?.[en] ?? en;
   const chatUrl = new URL(hosted ? '/support/chat/' : endpoint + '/chat', location.href);
   chatUrl.searchParams.set('lang', lang);
+  const productPage = location.pathname.match(/^\/(?:(?:zh|fr|es|ar)\/)?products\/([a-z0-9-]+)\/?$/);
+  if (productPage) chatUrl.searchParams.set('product', productPage[1]);
 
   const host = document.createElement('div');
   host.className = 'inquiry-widget';

@@ -8,14 +8,14 @@ export default {
     const path=new URL(request.url).pathname;
     if(path.startsWith('/support/api/')) {
       let catalog;
-      const lookup=async (text,history,lang,ids) => {
+      const lookup=async (text,history,lang,ids,page) => {
         if (!catalog) {
           const [base,edits]=await Promise.all([baseCatalog(request,env),publicEdits(env.SUPPORT_DB)]);
           const products=new Map(base.bySlug);
           for(const p of edits)products.set(p.slug,{...p,tables:p.tables ?? base.bySlug.get(p.slug)?.tables ?? []});
           catalog={products:[...products.values()],words:base.words,colors:base.colors,colorFamilies:base.colorFamilies};
         }
-        return querySeries(text,history,catalog,lang,ids);
+        return querySeries(text,history,catalog,lang,ids,page);
       };
       return support.fetch(request,env,ctx,lookup);
     }
