@@ -1,4 +1,4 @@
-import {products as colors, colorName, finishLabel} from '../../../public/automotive-studio/viewer/catalog/product-catalog.js';
+import {products as colors, colorName, finishLabel, families} from '../../../public/automotive-studio/viewer/catalog/product-catalog.js';
 import {categories} from '../../data/categories';
 import {managedProducts, productWord, modelWord} from '../../data/managed-products';
 import {languages} from '../../locales/languages';
@@ -20,6 +20,7 @@ export function GET() {
   const modelWords = Object.fromEntries(languages.map(({id})=>[id,Object.fromEntries(Array.from(terms,v=>[v,modelWord(v,id)]).filter(([raw,translated])=>raw!==translated))]));
   return Response.json({
     products:managedProducts,
+    colorFamilies:families.map(([id,en,zh])=>({id,en,zh})),
     colors:colors.map(c=>({ref:c.reference, names:Object.fromEntries(languages.map(({id})=>[id,colorName(c,id)])),
       finish:finishLabel(c,'en'),finishZh:finishLabel(c,'zh'),families:c.families})), stories, words, modelWords, detailPhotos, sourceSlugs:Object.keys(details),
     categories:categories.map(c=>({key:c.key,labels:Object.fromEntries(languages.map(({id})=>[id,id==='zh'?c.zh:productWord(c.en,id)]))})),

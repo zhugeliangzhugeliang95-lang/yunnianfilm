@@ -126,6 +126,13 @@ function direct(text, products, rows, lang, explicit, prior) {
   if (answer) {
     return {answer,mode:'knowledge_direct',handoff:false,links:rows.map(r=>r.link),sources:rows.map(r=>r.name)};
   }
+  const asksCoating=/什么意思|有什么用|什么作用|是什么|解释|what does|what is|explain|how does/i.test(text);
+  if(rows.length===1 && asksCoating && /疏水|hydrophobic/i.test(text) && /疏水|hydrophobic/i.test(r.coating) &&
+     !/亲水|区别|防污|划痕|耐|寿命|油|hydrophilic|compare|scratch|durab|warranty|stain|damage|oil/i.test(text)) {
+    answer=cn?'疏水说的是水落在膜上的样子：它更容易聚成水珠。'+r.name+' 的产品页列有疏水涂层。':
+      'Hydrophobic means water tends to bead up on the surface. The product page for '+r.name+' lists a hydrophobic coating.';
+    return {answer,mode:'knowledge_direct',handoff:false,links:[r.link],sources:[r.name]};
+  }
   const compare = /区别|不同|对比|比较|有什么差别|difference|compare|versus|\bvs\b/i.test(text);
   const coatings = rows.map(row=>row.coating);
   if(rows.length===2 && rows.every(row=>row.category==='Clear PPF') && compare &&
@@ -177,6 +184,27 @@ export function querySeries(text, history, catalog, requestedLocale, selectedIds
   const colors=catalog.colors || [];
   let swatches=colorMatches(text,colors);
   const explicit=matches(text,products);
+  if(!swatches.length && !explicit.length &&
+      (/(?:改色|车衣|车膜|色卡|颜色|色系|几款.*色|有没有.*色)|\b(?:wraps?|swatches|colou?rs?|finishes)\b/i.test(text)) &&
+      !/(?:原车色|保持|不改色|不想|不要)|\b(?:original|keep|avoid|not)\b/i.test(text)) {
+    const family=(catalog.colorFamilies || []).filter(f=>{
+      const terms=[f.id,...f.zh.split(' / '),...f.en.toLowerCase().split(' / ')];
+      return terms.some(term=>find(foldName(text),term)>=0);
+    });
+    if(family.length===1) {
+      const all=colors.filter(c=>c.families.includes(family[0].id));
+      const finish=/缎面|\bsatin\b/i.test(text)?'Satin':/哑光|哑面|亚光|\bmatte?\b/i.test(text)?'Matte':/亮面|亮光|\bgloss(?:y)?\b/i.test(text)?'Gloss':'';
+      const pool=finish?all.filter(c=>c.finish===finish):all;
+      if(pool.length)swatches=pool.slice(0,4);
+      const simple=lang==='zh'?/^(?:(?:我想|我要|你们|请问|有哪几款|给我|看看|推荐|有哪些|有没有|什么|有|的|几款|色卡|色系|颜色|改色膜|车衣|贴膜|可以|吗|呢|[？?。，、\s])|(?:绿色|蓝色|红色|粉色|紫色|黄色|橙色|金色|银色|灰色|白色|黑色|棕色|铜色|米色|缎面|哑光|亮面))+$/i:
+        /^(?:(?:do|you|have|carry|show|me|some|any|which|what|are|the|available|wraps?|in|colou?rs?|swatches|options|gloss|matte|satin|green|blue|red|pink|purple|yellow|orange|gold|silver|gray|grey|white|black|brown|beige)\b|[ ?.])+$/i;
+      if(pool.length && ['zh','en'].includes(lang) && simple.test(text)) {
+        const records=swatches.map(c=>colorRecord(c,lang)), names=records.map(r=>r.name).join(lang==='zh'?'、':', ');
+        const answer=lang==='zh'?'色卡里有 '+pool.length+' 款符合，你可以先看'+names+'。':'There are '+pool.length+' matching cards. Here are a few to start with: '+names+'.';
+        return {records,index:[],needsDiscovery:false,optical:false,direct:{answer,mode:'knowledge_direct',handoff:false,sources:records.map(r=>r.name),links:records.map(r=>r.link)}};
+      }
+    }
+  }
   if(!swatches.length && !explicit.length && follow.test(text) && history.length) {
     const last=history.at(-1);
     swatches=colorMatches(last.question+' '+last.answer,colors);

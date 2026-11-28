@@ -13,7 +13,7 @@ export default {
           const [base,edits]=await Promise.all([baseCatalog(request,env),publicEdits(env.SUPPORT_DB)]);
           const products=new Map(base.bySlug);
           for(const p of edits)products.set(p.slug,{...p,tables:p.tables ?? base.bySlug.get(p.slug)?.tables ?? []});
-          catalog={products:[...products.values()],words:base.words,colors:base.colors};
+          catalog={products:[...products.values()],words:base.words,colors:base.colors,colorFamilies:base.colorFamilies};
         }
         return querySeries(text,history,catalog,lang,ids);
       };

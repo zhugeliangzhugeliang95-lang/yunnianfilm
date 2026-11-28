@@ -33,3 +33,6 @@ assert.equal(query('路博润的是现货吗？').direct,null);
 assert.equal(query('Y999SM301X').records.length,0);
 assert.match(query('VK7095HD 的透光率？').direct.answer,/VLT 65%/);
 console.log('Support catalogue verified:',catalog.products.length,'series in five languages,',catalog.colors.length,'color cards');
+const greens=query('有哪些绿色改色膜？').direct;
+assert.ok(greens?.links.length && greens.links.every(link=>link.url.includes('/color-studio/?q=YN-')));
+assert.match(query('路博润的疏水涂层有什么用？').direct.answer,/水珠/);
