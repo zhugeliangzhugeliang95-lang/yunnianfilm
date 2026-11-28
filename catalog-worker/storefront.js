@@ -1,4 +1,4 @@
-import {baseCatalog,demand} from './common.js';
+import {baseCatalog,CatalogError,demand} from './common.js';
 import {editor} from './access.js';
 import {readSEO} from './seo.js';
 import {locales,prefix,escapeHTML as e,copyFor,localeValue,galleryHTML,offerHTML} from '../public/catalog-ui/product-view.js';
@@ -9,6 +9,30 @@ import {tpuComparisonRows} from '../src/data/tpu-comparison.ts';
 import {tpuPagePath} from '../src/locales/tpu.ts';
 
 const detailPath=(id,l)=>prefix(l)+'/products/'+id+'/';
+const retiredProductSlugs = new Set([
+  'core-color-window-film',
+  'dream-series-tpu',
+  'light-cured-window-film',
+  'quick-repair-hydrophobic-ppf',
+  'thermal-repair-hydrophobic-ppf',
+  'ultra-gloss-metallic-tpu',
+  'wet-dry-install-tpu',
+]);
+
+async function retiredProductPage(req, env, locale, slug) {
+  // An editor can explicitly publish a real product at a previously retired address.
+  const live = await env.SUPPORT_DB.prepare(
+    "SELECT 1 FROM catalog_documents WHERE kind='product' AND id=? AND live IS NOT NULL"
+  ).bind(slug).first().catch(() => { throw new CatalogError(503, 'Catalogue temporarily unavailable.'); });
+  if (live) return null;
+
+  const missingPath = locale === 'en' ? '/404' : prefix(locale) + '/404/';
+  const missing = await basePage(req, env, missingPath).catch(() => null);
+  return new Response(missing?.body, {
+    status: 410,
+    headers: {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex'},
+  });
+}
 const setText=(rw,selector,value)=>rw.on(selector,{element(el){el.setInnerContent(String(value??''));}});
 const setHTML=(rw,selector,value)=>rw.on(selector,{element(el){el.setInnerContent(value,{html:true});}});
 const setAttr=(rw,selector,name,value)=>rw.on(selector,{element(el){el.setAttribute(name,value);}});
@@ -205,6 +229,10 @@ export async function storefront(req,env) {
     const previewProduct=url.searchParams.get('catalog-preview')==='1',previewSEO=url.searchParams.get('seo-preview')==='1';
     const preview=previewProduct || previewSEO;
     if(preview)demand(await editor(req,db),403,'请先登录产品后台。');
+    if (!preview && retiredProductSlugs.has(slug)) {
+      const gone = await retiredProductPage(req, env, l, slug);
+      if (gone) return gone;
+    }
     const [edited,settings]=await Promise.all([publicEdits(db),readSEO(db,slug,previewSEO)]);
     let content=edited.find(p=>p.slug===slug);
     if(!content&&!edited.length&&!settings&&!preview)return env.ASSETS.fetch(req);
