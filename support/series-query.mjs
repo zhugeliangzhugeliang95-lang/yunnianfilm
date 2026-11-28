@@ -255,6 +255,18 @@ function appearanceChoices(text, catalog, lang) {
   return {records:rows,index:[],needsDiscovery:false,optical:false,direct:catalogueReply(choice+(cn?'':' ')+description,rows)};
 }
 
+// Match the buyer's application to the storefront category before doing broad semantic discovery.
+function applicationProducts(text,products) {
+  if(!/膜|漆面|覆盖件|车身|玻璃|贴|防护|保护|\b(films?|wraps?|ppf|tints?|protect(?:ion)?|bodywork|panels?|glazing)\b/i.test(text))return [];
+  const twoWheel=/摩托车?|电动两轮车|电动车|motorcycles?|motorbikes?|e[- ]?bikes?/i.test(text);
+  const lights=/车灯|大灯|前照灯|headlights?|headlamps?/i.test(text);
+  const building=/建筑|办公室|商铺|住宅|幕墙|architectural|office|shopfront|residential|building glass/i.test(text);
+  if([twoWheel,lights,building].filter(Boolean).length!==1)return [];
+  if(twoWheel && /风挡|风镜|前挡|玻璃|头盔|windshield|visor|helmet|glass/i.test(text))return [];
+  const category=twoWheel?'Two-wheel protection':lights?'Headlight films':'Architectural film';
+  return products.filter(p=>p.category===category);
+}
+
 export function querySeries(text, history, catalog, requestedLocale, selectedIds=[], page={}) {
   const lang=localeNames.has(requestedLocale)?requestedLocale:'en';
   const products=catalog.products, words=catalog.words?.[lang] || {};
@@ -293,8 +305,10 @@ export function querySeries(text, history, catalog, requestedLocale, selectedIds
   const pageProduct=page?.slug && !otherCode && !swatches.length && !explicit.length && !number && (pointsToPage || pointsToProduct)
     && products.find(p=>p.slug===page.slug);
   const pageFirst=pageProduct && (pointsToPage || page.opening || !history.length);
-  let selected=explicit, prior=false, priorColors=[];
-  if(!pageFirst && !explicit.length && !swatches.length && (follow.test(text) || number)) {
+  const application=!explicit.length && !swatches.length && !number && !pageFirst?
+    applicationProducts(text,products):[];
+  let selected=explicit.length?explicit:application, prior=false, priorColors=[];
+  if(!pageFirst && !selected.length && !swatches.length && (follow.test(text) || number)) {
     for(const turn of [...history].reverse()) {
       const shown=colorMatches(turn.answer,colors);
       if(shown.length) {
@@ -317,6 +331,12 @@ export function querySeries(text, history, catalog, requestedLocale, selectedIds
   if(pageFocused)selected=[pageProduct];
   if(selectedIds.length)selected=products.filter(p=>selectedIds.includes('series-'+p.slug));
   const records=selected.slice(0,6).map(p=>rowFor(p,lang,words));
+  if(application.length && !selectedIds.length && ['en','zh'].includes(lang) && !business.test(text) &&
+      /哪(?:个|种|款|些)|选什么膜|有什么膜|有.{0,10}膜吗|推荐|\b(which|recommend|what (?:film|wrap)|do you (?:carry|have))\b/i.test(text) &&
+      !/多厚|卷宽|参数|数值|最|区别|如何|安全|合规|认证|年限|保修|曲面|安装|耐|防刮|多少钱|报价|翻译|解释|\b(best|specifications?|thick\w*|dimensions?|lasts?|resist\w*|legal|safe|install\w*|price|translate|explain|compare)\b/i.test(text)) {
+    const listed=records.slice(0,2), answer=listed.map(r=>r.name+(lang==='zh'?'。':'. ')+r.description).join('\n');
+    return {records:listed,index:[],needsDiscovery:false,applicationMatch:true,optical:false,direct:catalogueReply(answer,listed)};
+  }
   const index=products.map(p=>({id:'series-'+p.slug,name:copyFor(p,lang).name,category:p.category}));
   const needsDiscovery=!records.length && !swatches.length && productIntent.test(text);
   // Give the catalogue selector the use case and material; names alone omit supplier and coating details.

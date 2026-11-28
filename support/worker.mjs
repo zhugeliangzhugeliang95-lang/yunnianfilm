@@ -95,7 +95,7 @@ async function answer(text, history, env, locale, lookupSeries, page) {
   const lang=zh(text)?'zh':market?locale:locale==='zh' && !/[a-z]{3} /i.test(text)?'zh':'en';
   let series;
   try {series=await lookupSeries?.(text,history,lang,[],page);} catch {console.error('Public product catalogue unavailable');}
-  const match = series?.pageFocused ? null : queryWindowFilms(lookup, history, knowledge.models, zh(text));
+  const match = series?.pageFocused || series?.applicationMatch ? null : queryWindowFilms(lookup, history, knowledge.models, zh(text));
   // A model table on the product page can supply optical values beyond the short selection sheet.
   const opticalRequest=/透光|红外|紫外|隔热率|雾度|\b(?:VLT|IRR\w*|TSER|UV|haze|transmission|rejection)\b/i.test(lookup);
   if (match && !market && !opticalRequest) return match;

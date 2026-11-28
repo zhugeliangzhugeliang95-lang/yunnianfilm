@@ -68,3 +68,10 @@ assert.doesNotMatch(angle.answer,/\d+(?:\.\d+)?\s*°/);
 const edited=structuredClone(catalog.products.find(p=>p.slug==='lubrizol-sm301-ppf'));
 edited.specs.push(['Water contact angle','104°']);
 assert.match(querySeries('SM301 的水接触角是多少度？',[],{products:[edited]},'zh').direct.answer,/104°/);
+
+for(const [question,slug] of [
+  ['Which of your films is intended for painted motorcycle bodywork?','motorcycle-ebike-protective-film'],
+  ['办公室的玻璃应该选哪种膜？','architectural-window-film'],
+  ['What film would you recommend for headlights?','photochromic-headlight-film'],
+])assert.ok(query(question,[],/[\u4e00-\u9fff]/.test(question)?'zh':'en').direct.links[0].url.endsWith('/'+slug+'/'));
+assert.equal(query('What film would you recommend for my motorcycle helmet?',[],'en').direct,null);
