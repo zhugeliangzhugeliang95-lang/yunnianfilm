@@ -40,6 +40,12 @@ const incorrectAssignments = new Set([
 const card = (file: string) => `/automotive-studio/viewer/catalog/cards/${file}.webp`;
 const legacy = (file: string) => `/images/legacy/${file}.webp`;
 
+// The IR 5G listings include both a photographed film sample and a printed data sheet for each model.
+const ir5gDataSheets = new Set([
+  '06b15312aac63646', 'f1eec24a10fade2f', '4b5f14eeb622a2b7',
+  '43a3e55d6359469c', '4f2e6df842b0c14d', '489dbbd9ad6b6091',
+].map(legacy));
+
 // Replacement images are taken from the identified printed TPU card or another
 // owner storefront image that actually shows the named product. PET has its own range.
 const confirmedReplacements: Record<string, Record<string, string>> = {
@@ -135,8 +141,14 @@ export function productMedia(product: ProductInput): {gallery: GalleryImage[]; v
   const photos = new Map<string, {src: string; kind: MediaKind}>();
   for (const image of images) {
     if (incorrectAssignments.has(image.src.split('/').pop()!.replace('.webp', ''))) continue;
+    const isDataSheet = ir5gDataSheets.has(image.src);
+    const kind: MediaKind = isDataSheet ? 'spec' : image.variants.length > 1 ? 'series' : 'variant';
+    if (isDataSheet) addImage(image.src, image.variants[0] ?? image.caption, kind);
     for (const value of image.variants) {
-      if (!photos.has(value)) photos.set(value, {src: image.src, kind: image.variants.length > 1 ? 'series' : 'variant'});
+      const existing = photos.get(value);
+      if (!existing || (existing.kind === 'spec' && kind === 'variant')) {
+        photos.set(value, {src: image.src, kind});
+      }
     }
   }
   for (const item of olderGalleries[slug] ?? []) {
