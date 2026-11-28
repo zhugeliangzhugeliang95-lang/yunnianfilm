@@ -26,7 +26,7 @@ export function galleryHTML(p, locale) {
   if (!photos.length) return '';
   const name = copyFor(p,locale).name;
   const caption = (photo) => localeValue(photo.labels,locale) || photo.caption || l[11];
-  const thumbs = photos.map((im,i) => '<button type="button" class="sku-thumb" data-photo="'+i+'" data-src="'+esc(im.src)+'" data-caption="'+esc(caption(im))+'" aria-label="'+esc(caption(im)+' · '+(i+1))+'" aria-pressed="'+(i===0)+'"><img src="'+esc(im.src)+'" alt="" width="72" height="72" loading="'+(i < 4 ? 'eager' : 'lazy')+'"></button>').join('');
+  const thumbs = photos.map((im,i) => '<button type="button" class="sku-thumb" data-photo="'+i+'" data-src="'+esc(im.src)+'" data-caption="'+esc(caption(im))+'" data-alt="'+esc(name+' · '+caption(im))+'" aria-label="'+esc(caption(im)+' · '+(i+1))+'" aria-pressed="'+(i===0)+'"><img src="'+esc(im.src)+'" alt="" width="72" height="72" loading="'+(i < 4 ? 'eager' : 'lazy')+'"></button>').join('');
   return '<div class="sku-gallery" data-sku-gallery><div class="sku-gallery-body"><div class="sku-rail" role="group" aria-label="'+l[1]+'">'+thumbs+'</div>'+
     '<a class="sku-stage" id="gallery-enlarge" href="'+esc(photos[0].src)+'" aria-label="'+l[2]+'"><img id="gallery-image" src="'+esc(photos[0].src)+'" alt="'+esc(name+' · '+caption(photos[0]))+'" width="1000" height="1000" fetchpriority="high"><span>'+zoomIcon+'</span></a></div>'+
     '<div class="sku-caption"><span id="gallery-caption">'+esc(caption(photos[0]))+'</span><bdi data-gallery-counter>1 / '+photos.length+'</bdi></div>'+

@@ -14,6 +14,22 @@ CREATE TABLE IF NOT EXISTS catalog_documents (
   kind TEXT NOT NULL, id TEXT NOT NULL, draft TEXT NOT NULL, live TEXT,
   revision INTEGER NOT NULL, updated INTEGER NOT NULL, PRIMARY KEY(kind,id)
 );
+CREATE TABLE IF NOT EXISTS catalog_seo (
+  slug TEXT PRIMARY KEY, draft TEXT NOT NULL, live TEXT,
+  revision INTEGER NOT NULL, updated INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS traffic_days (
+  day TEXT PRIMARY KEY, salt TEXT, visitors INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS traffic_pages (
+  day TEXT NOT NULL, path TEXT NOT NULL, views INTEGER NOT NULL, PRIMARY KEY(day,path)
+);
+CREATE TABLE IF NOT EXISTS traffic_visitors (
+  day TEXT NOT NULL, fingerprint TEXT NOT NULL, PRIMARY KEY(day,fingerprint)
+);
+CREATE TRIGGER IF NOT EXISTS traffic_count_visitor AFTER INSERT ON traffic_visitors BEGIN
+  UPDATE traffic_days SET visitors=visitors+1 WHERE day=NEW.day;
+END;
 CREATE TABLE IF NOT EXISTS catalog_images (
   id TEXT PRIMARY KEY, bytes BLOB NOT NULL, created INTEGER NOT NULL
 );

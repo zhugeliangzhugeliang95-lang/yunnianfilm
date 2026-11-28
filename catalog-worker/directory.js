@@ -24,5 +24,12 @@ export async function dashboardData(db, base) {
     }
     return change;
   });
+  const defaults='{"copy":{},"images":{}}';
+  const seo=await db.prepare('SELECT slug,live IS NOT NULL AND live<>? AS customized,draft IS NOT COALESCE(live,?) AS pending FROM catalog_seo').bind(defaults,defaults).all();
+  for(const row of seo.results){
+    const item=products.get(row.slug);
+    if(!item)continue;
+    item.seoStatus=row.pending?'changed':row.customized?'live':'default';
+  }
   return {entries,categories:base.categories,products:[...products.values()].sort((a,b)=>b.updated-a.updated)};
 }

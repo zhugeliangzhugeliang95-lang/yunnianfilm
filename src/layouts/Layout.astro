@@ -15,6 +15,7 @@ import '../styles/color-catalog.css';
 import '../styles/selection-v16.css';
 import {languages, siteLanguage, pagePath, inLanguage} from '../locales/languages';
 import '../styles/languages.css';
+import '../styles/mobile.css';
 import SocialDock from '../components/SocialDock.astro';
 import CustomerService from '../components/CustomerService.astro';
 import LanguagePicker from '../components/LanguagePicker.astro';
@@ -44,6 +45,14 @@ const graph = current === '/' ? [
 <html lang={selected.tag} dir={selected.id==='ar'?'rtl':'ltr'}>
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    {indexable && <>
+      <script is:inline data-public-tag>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      </script>
+      <script is:inline data-public-tag async src="https://www.googletagmanager.com/gtm.js?id=GTM-MJKLM93V"></script>
+    </>}
     <slot name="head" />
     <title>{t(title)} | YUNNIAN</title><meta name="description" content={t(description)} />
     {indexable && <>
@@ -82,6 +91,7 @@ const graph = current === '/' ? [
         </div></details>
         <a href={path("/oem/")} aria-current={current==='/oem/'?'page':undefined}>{t("OEM & partners")}</a>
         <a href={path("/color-studio/")} aria-current={current==='/color-studio/'?'page':undefined}>{lang==='zh'?'现有颜色':'Colors'}</a>
+        <a class="mobile-contact" href={path('/contact/?intent=Sample%20request')}>{t('Request samples')} <span aria-hidden="true">↗</span></a>
       </nav>
       <LanguagePicker />
       <a class="header-cta" href={path("/contact/?intent=Sample%20request")}>{t("Request samples")} <span aria-hidden="true">↗</span></a>
@@ -96,6 +106,8 @@ const graph = current === '/' ? [
     <CustomerService />
     <script>
       import {ui} from '../../public/locales/runtime.js';
+      import {countPublicViews} from '../scripts/page-views';
+      countPublicViews();
       const chinese=document.documentElement.lang==='zh-CN';
       const menuLabel=(open:boolean)=>chinese?(open?'关闭菜单':'打开菜单'):ui(open?'Close menu':'Open menu');
       document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach(link=>{const url=new URL(link.href);if(location.search)url.search=location.search;url.hash=location.hash;link.href=url.toString();});
@@ -110,7 +122,9 @@ const graph = current === '/' ? [
       function closeMenu(){document.querySelectorAll<HTMLDetailsElement>('.nav-explore').forEach(d=>d.removeAttribute('open'));toggle?.setAttribute('aria-expanded','false');toggle?.setAttribute('aria-label',menuLabel(false));document.body.classList.remove('menu-open');}
       toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',menuLabel(open));document.body.classList.toggle('menu-open',open);});
       document.addEventListener('click',e=>{document.querySelectorAll<HTMLDetailsElement>('.nav-explore').forEach(d=>{if(!d.contains(e.target as Node))d.removeAttribute('open');});});
-      document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+      document.addEventListener('pointerdown',e=>{if(document.body.classList.contains('menu-open') && !(e.target as Element).closest('.header'))closeMenu();});
+      document.addEventListener('focusin',e=>{if(document.body.classList.contains('menu-open') && !(e.target as Element).closest('.header'))closeMenu();});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape' && document.body.classList.contains('menu-open')){closeMenu();toggle?.focus({preventScroll:true});}});
       document.querySelectorAll('#navigation a').forEach(a=>a.addEventListener('click',closeMenu));
       matchMedia('(min-width: 901px)').addEventListener('change',closeMenu);
       const progress=document.querySelector<HTMLElement>('.reading-progress');

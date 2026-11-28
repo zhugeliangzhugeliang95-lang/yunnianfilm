@@ -1,6 +1,8 @@
 import {baseCatalog,demand,json,limitedBytes,now,readJSON} from './common.js';
 import {access,digest,editor} from './access.js';
 import {dashboardData} from './directory.js';
+import {seoDocument} from './seo.js';
+import {collectView,trafficReport} from './traffic.js';
 import {cleanProduct,cleanStories,verifyImages,hasPendingChanges} from './content.js';
 
 function checkWebp(bytes) {
@@ -33,6 +35,7 @@ export async function handleCatalogAPI(req,env) {
   const db=env.SUPPORT_DB, url=new URL(req.url), action=url.pathname.slice('/catalog-api/'.length), method=req.method;
   const write=!['GET','HEAD'].includes(method);
   if(write) demand(req.headers.get('Origin')===url.origin,403,'请从本站后台操作。');
+  if(action==='view' && method==='POST')return collectView(req,env);
   if(action==='stories'&&method==='GET'){
     const story=await db.prepare("SELECT live FROM catalog_documents WHERE kind='stories' AND id='home' AND live IS NOT NULL").first();
     return json({configured:!!story,stories:story?JSON.parse(story.live):[]});
@@ -40,6 +43,7 @@ export async function handleCatalogAPI(req,env) {
   if(/^images\/[a-f0-9]{64}$/.test(action)&&!write) return servePhoto(req,db,action.slice(7));
   if((action==='session'&&method==='GET')||(['login','activate','logout','password'].includes(action)&&method==='POST'))return access(req,db,action);
   demand(await editor(req,db),401,'请登录产品后台。');
+  if(action==='traffic' && method==='GET')return trafficReport(db,url.searchParams.get('days') || '7');
   if(action==='images'&&method==='POST'){
     demand(req.headers.get('Content-Type')==='image/webp',415,'请上传 WebP 图片。');
     const bytes=await limitedBytes(req,900000);checkWebp(bytes);
@@ -51,6 +55,8 @@ export async function handleCatalogAPI(req,env) {
   if(action==='dashboard'&&method==='GET'){
     return json(await dashboardData(db,base));
   }
+  const seo=/^documents\/seo\/([a-z0-9][a-z0-9-]{0,95})$/.exec(action);
+  if(seo)return seoDocument(req,db,base,seo[1]);
   const route=/^documents\/(product|stories)\/([a-z0-9][a-z0-9-]{0,95})$/.exec(action);
   demand(route && (route[1]==='product'||route[2]==='home'),404,'找不到该内容。');
   const [,type,id]=route;

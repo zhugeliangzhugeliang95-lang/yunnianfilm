@@ -1,5 +1,6 @@
 import {baseCatalog,demand} from './common.js';
 import {editor} from './access.js';
+import {readSEO} from './seo.js';
 import {locales,prefix,escapeHTML as e,copyFor,localeValue,galleryHTML,offerHTML} from '../public/catalog-ui/product-view.js';
 import {modelTablesHTML} from '../public/catalog-ui/model-tables.js';
 import {storyViews,storyGroupHTML} from '../src/scripts/customer-stories.ts';
@@ -148,6 +149,37 @@ async function productDetail(req,env,p,l,base,preview,edited){
   if(preview)setAttr(rw,'meta[name="robots"]','content','noindex,nofollow');
   return rw.transform(fresh(original,preview));
 }
+function withSEO(response, settings, locale, cover, privatePage) {
+  if(response.status!==200 || !(response.headers.get('Content-Type') || '').includes('text/html'))return response;
+  const copy=settings?.copy[locale] || {};
+  const alts=new Map(Object.entries(settings?.images || {}).filter(([,v])=>v[locale]).map(([src,v])=>[src,v[locale]]));
+  if(!copy.title && !copy.description && !alts.size && !privatePage)return response;
+  const rw=new HTMLRewriter();
+  // The HTML rewriter quotes attributes but preserves literal ampersands.
+  const attr=value=>value.replaceAll('&','&amp;');
+  if(copy.title){
+    setText(rw,'title',copy.title);
+    setAttr(rw,'meta[property="og:title"]','content',attr(copy.title));
+  }
+  if(copy.description)setAttr(rw,'meta[name="description"],meta[property="og:description"]','content',attr(copy.description));
+  if(alts.size){
+    rw.on('.product-media-column img, [data-product-offer] img, .reference-gallery img',{element(el){
+      const alt=alts.get(el.getAttribute('src'));if(alt)el.setAttribute('alt',attr(alt));
+    }});
+    rw.on('[data-photo][data-src]',{element(el){
+      const alt=alts.get(el.getAttribute('data-src'));if(alt)el.setAttribute('data-alt',attr(alt));
+    }});
+    if(alts.has(cover)){
+      setAttr(rw,'meta[property="og:image"]','content','https://yunnianfilm.com'+cover);
+      rw.on('meta[property="og:image"]',{element(el){el.after('<meta property="og:image:alt" content="'+e(alts.get(cover))+'">',{html:true});}});
+    }
+  }
+  if(privatePage){
+    setAttr(rw,'meta[name="robots"]','content','noindex,nofollow');
+    remove(rw,'script[data-public-tag]');
+  }
+  return rw.transform(fresh(response,privatePage));
+}
 export async function storefront(req,env) {
   const db=env.SUPPORT_DB,url=new URL(req.url);
   const home=/^\/(?:(zh|fr|es|ar)\/)?$/.exec(url.pathname);
@@ -170,24 +202,27 @@ export async function storefront(req,env) {
   if(!route)return env.ASSETS.fetch(req);
   const [,locale,section,slug]=route,l=locale||'en';
   if(section==='products' && slug){
-    const preview=url.searchParams.get('catalog-preview')==='1';
+    const previewProduct=url.searchParams.get('catalog-preview')==='1',previewSEO=url.searchParams.get('seo-preview')==='1';
+    const preview=previewProduct || previewSEO;
     if(preview)demand(await editor(req,db),403,'请先登录产品后台。');
-    const edited=await publicEdits(db);
+    const [edited,settings]=await Promise.all([publicEdits(db),readSEO(db,slug,previewSEO)]);
     let content=edited.find(p=>p.slug===slug);
-    if(preview){
+    if(!content&&!edited.length&&!settings&&!preview)return env.ASSETS.fetch(req);
+    const base=await baseCatalog(req,env),seed=base.bySlug.get(slug);
+    if(previewProduct || (previewSEO && !content && !seed)){
       const draft=await db.prepare("SELECT draft FROM catalog_documents WHERE kind='product' AND id=?").bind(slug).first();
       if(draft)content=JSON.parse(draft.draft);
     }
-    if(!content&&!edited.length)return env.ASSETS.fetch(req);
-    const base=await baseCatalog(req,env);
     if(!content){
-      const seed=base.bySlug.get(slug);
-      const original=await env.ASSETS.fetch(req);
-      if(!seed||original.status!==200||!edited.some(p=>p.category===seed.category||base.bySlug.get(p.slug)?.category===seed.category))return original;
-      const rw=new HTMLRewriter();updateRelated(rw,seed,l,base,edited);return rw.transform(fresh(original,preview));
+      let response=await env.ASSETS.fetch(req);
+      if(!seed || response.status!==200)return response;
+      if(edited.some(p=>p.category===seed.category||base.bySlug.get(p.slug)?.category===seed.category)){
+        const rw=new HTMLRewriter();updateRelated(rw,seed,l,base,edited);response=rw.transform(fresh(response,preview));
+      }
+      return withSEO(response,settings,l,seed.gallery[0]?.src,preview);
     }
     if(!url.pathname.endsWith('/')){url.pathname+='/';return Response.redirect(url.href,308);}
-    return productDetail(req,env,content,l,base,preview,edited);
+    return withSEO(await productDetail(req,env,content,l,base,preview,edited),settings,l,content.gallery[0]?.src,preview);
   }
   const edited=await publicEdits(db);
   if(!edited.length)return env.ASSETS.fetch(req);

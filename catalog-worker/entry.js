@@ -14,7 +14,8 @@ export default {
     } catch(error) {
       if(error instanceof CatalogError)return json({error:error.message},error.status);
       console.error('Catalogue request failed',error?.message);
-      if(!path.startsWith('/catalog-api/') && !new URL(request.url).searchParams.has('catalog-preview'))return env.ASSETS.fetch(request);
+      const query=new URL(request.url).searchParams;
+      if(!path.startsWith('/catalog-api/') && !query.has('catalog-preview') && !query.has('seo-preview'))return env.ASSETS.fetch(request);
       return json({error:'暂时无法读取资料，请稍后重试。'},503);
     }
   },

@@ -2,7 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /manage/
 Disallow: /catalog-api/
+Allow: /catalog-api/images/
 Disallow: /automotive-studio/viewer/
+Allow: /automotive-studio/viewer/catalog/cards/
+Allow: /automotive-studio/viewer/catalog/thumbs/
 Disallow: /support/api/
 
 Sitemap: https://yunnianfilm.com/sitemap.xml

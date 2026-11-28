@@ -1,6 +1,8 @@
 import {escapeHTML as e,locales,copyFor,localeValue,imagePath} from '/catalog-ui/product-view.js';
 
 import {readSheet,tableFields} from './sheets.js';
+import {seoFields,updateSeoPreview} from './seo.js';
+import {trafficControls,trafficHTML} from './traffic.js';
 
 const $=id=>document.getElementById(id);
 const languageNames={zh:'简体中文',en:'English',es:'Español',fr:'Français',ar:'العربية'};
@@ -13,6 +15,9 @@ let search='',category='',status='',mediaFilter=false,section='basic',skuQuery='
 let published=false,pending=false,importIndex=0;
 const sections={basic:'基本资料',gallery:'主图与图册',variants:'SKU 型号',data:'规格与技术表'};
 const states={live:'已发布',changed:'有待发布修改',draft:'仅草稿'};
+const seoStates={default:'沿用产品资料',changed:'待发布',live:'已自定义'};
+let seoContext,seoPhoto=0,seoStatus='';
+let period='7';
 const tidy=value=>String(value || '').normalize('NFKC').trim().toLocaleLowerCase();
 const at=path=>path.split('.').reduce((obj,k)=>obj?.[k],doc);
 function put(path,value) {
@@ -63,24 +68,49 @@ function pageAddress(searchParams={}) {
   url.search=new URLSearchParams(searchParams).toString();url.hash='';
   history.replaceState(null,'',url);
 }
-function listView(){
-  type='product';doc=null;dirty=false;pageAddress();
-  $('product-nav').setAttribute('aria-pressed','true');$('stories-nav').setAttribute('aria-pressed','false');
+function selectNav(kind){
+  for(const name of ['product','seo','stories','traffic'])$(name+'-nav').setAttribute('aria-pressed',String(name===kind));
+}
+async function trafficView(days=period){
+  if(busy || !discardOK())return;
+  type='traffic';doc=null;dirty=false;period=days;
+  selectNav(type);pageAddress({view:type,days});
   $('editing').hidden=true;$('items').hidden=false;$('live-link').replaceChildren();
-  $('title').textContent='产品目录';$('subtitle').textContent='管理官网产品、型号图片和发布内容。';
-  $('head-actions').innerHTML=button('＋ 新增产品','new');
+  $('title').textContent='访问数据';$('subtitle').textContent='查看公开官网的浏览量、访客估算和热门页面。';
+  $('head-actions').innerHTML=trafficControls(days)+button('刷新数据','refresh-traffic');
+  $('items').textContent='正在读取访问数据…';message();setBusy(true);
+  try{
+    const data=await api('traffic?days='+days);
+    $('items').innerHTML=trafficHTML(data,days,knownProducts());
+  }catch(error){$('items').textContent='访问数据暂时无法读取，请点击刷新数据重试。';throw error;}
+  finally{setBusy(false);}
+}
+function listView(kind='product'){
+  type=kind;doc=null;dirty=false;
+  const seo=type==='seo';
+  pageAddress(seo?{view:'seo'}:{});selectNav(type);
+  $('editing').hidden=true;$('items').hidden=false;$('live-link').replaceChildren();
+  $('title').textContent=seo?'SEO 优化':'产品目录';$('subtitle').textContent=seo?'选择产品，按语言管理搜索标题、描述和每张图片的替代文本。':'管理官网产品、型号图片和发布内容。';
+  $('head-actions').innerHTML=seo?'':button('＋ 新增产品','new');
   $('items').innerHTML='<div class="filters"><label>搜索产品或型号<input type="search" id="find-product" placeholder="产品名称、SKU 或网址标识" value="'+e(search)+'"></label><label>产品分类<select id="filter-category">'+option('','全部分类',category)+dashboard.categories.map(c=>option(c.key,c.labels.zh,category)).join('')+'</select></label><label>发布状态<select id="filter-status">'+option('','全部状态',status)+Object.entries(states).map(([v,s])=>option(v,s,status)).join('')+'</select></label></div><div class="result-tools"><label class="checkbox"><input type="checkbox" id="filter-media"'+(mediaFilter?' checked':'')+'>待补 SKU 原图</label><span id="result-count" role="status"></span></div><div class="product-list" id="results"></div>';
+  if(seo){
+    const filter=$('filter-status');filter.parentNode.firstChild.textContent='SEO 状态';
+    filter.innerHTML=option('','全部状态',seoStatus)+Object.entries(seoStates).map(([v,s])=>option(v,s,seoStatus)).join('');
+    $('filter-media').closest('label').hidden=true;
+  }
   renderResults();message();
 }
 function renderResults(){
   const q=tidy(search);
-  const products=knownProducts().filter(p=>(!category||p.category===category) && (!status||p.status===status) && (!mediaFilter||p.needsPhoto) && [p.slug,...p.names,...p.models].some(v=>tidy(v).includes(q)));
+  const seo=type==='seo';
+  const products=knownProducts().filter(p=>(!category||p.category===category) && (seo?(!seoStatus||(p.seoStatus||'default')===seoStatus):((!status||p.status===status)&&(!mediaFilter||p.needsPhoto))) && [p.slug,...p.names,...p.models].some(v=>tidy(v).includes(q)));
   $('result-count').textContent='显示 '+products.length+' / '+dashboard.products.length+' 个产品系列';
   $('results').innerHTML=products.map(p=>{
     const cat=dashboard.categories.find(c=>c.key===p.category)?.labels.zh||p.category;
     const match=q?p.models.filter(v=>tidy(v).includes(q)).slice(0,3).join('、'):'';
     const meta=[cat,p.models.length+' 个 SKU',p.needsPhoto?'待补 '+p.needsPhoto+' 张型号原图':''].filter(Boolean).join(' · ');
-    return '<button type="button" class="entry" data-open="'+e(p.slug)+'"><span class="entry-photo">'+thumb(p.cover)+'</span><span class="entry-name"><b>'+e(p.zh||p.en||p.slug)+'</b><small>'+e(p.en||p.slug)+'</small><small>'+e(meta)+'</small>'+(match?'<small class="matched">'+e(match)+'</small>':'')+'</span><span class="pub-state '+p.status+'">'+states[p.status]+'</span><span class="chevron" aria-hidden="true">›</span></button>';
+    const state=seo?p.seoStatus||'default':p.status;
+    return '<button type="button" class="entry" data-open="'+e(p.slug)+'"><span class="entry-photo">'+thumb(p.cover)+'</span><span class="entry-name"><b>'+e(p.zh||p.en||p.slug)+'</b><small>'+e(p.en||p.slug)+'</small><small>'+e(seo?cat:meta)+'</small>'+(match?'<small class="matched">'+e(match)+'</small>':'')+'</span><span class="pub-state '+state+'">'+(seo?seoStates:states)[state]+'</span><span class="chevron" aria-hidden="true">›</span></button>';
   }).join('')||'<div class="empty"><h2>没有符合条件的产品</h2><p>换一个型号或清除筛选，再试一次。</p>'+button('清除筛选','reset-filters')+'</div>';
 }
 function productFields(){
@@ -124,10 +154,19 @@ function storyFields(){
 }
 function renderEditor(){
   $('items').hidden=true;$('editing').hidden=false;
-  $('product-nav').setAttribute('aria-pressed',String(type==='product'));$('stories-nav').setAttribute('aria-pressed',String(type==='stories'));
+  selectNav(type);
+  if(type==='seo'){
+    $('title').textContent=seoContext.defaults.zh.name || key;
+    $('subtitle').textContent='SEO 优化 · '+(seoContext.live?'独立发布搜索信息与图片描述。':'产品为草稿，SEO 设置会在产品上线时生效。');
+    $('head-actions').innerHTML=button('返回 SEO 目录','list');
+    $('fields').innerHTML=seoFields(doc,seoContext,locale,languageField(),key,seoPhoto);
+    updateSeoPreview(doc,seoContext,locale);
+    $('state').textContent=dirty?'有未保存的修改':pending?'SEO 草稿待发布':published?'SEO 设置已发布':'沿用产品资料';
+    return;
+  }
   $('title').textContent=type==='stories'?'客户案例与评价':fresh?'新增产品':copyFor(doc,'zh').name||key;
   $('subtitle').textContent=type==='stories'?'管理官网首页展示的案例与客户原话。':'保存草稿后可查看买家页面，发布后官网立即读取新版。';
-  $('head-actions').innerHTML=(published?button('取回线上版本','restore'):'')+button('返回目录','list');
+  $('head-actions').innerHTML=(published?button('取回线上版本','restore'):'')+(type==='product'&&!fresh?button('SEO 优化','open-seo'):'')+button('返回目录','list');
   const undo=document.querySelector('[data-action=restore]');
   if(undo)undo.hidden=!pending && !dirty;
   $('fields').innerHTML=type==='product'?productFields():storyFields();
@@ -141,8 +180,9 @@ async function openDocument(kind,id){
   try{
     const row=await api('documents/'+kind+'/'+id);
     type=kind;key=id;doc=row.content;revision=row.revision;published=row.published;pending=row.pending;fresh=false;dirty=false;
+    if(kind==='seo'){seoContext=row.context;seoPhoto=0;}
     section='basic';skuQuery='';onlyMissing=false;
-    pageAddress(kind==='product'?{product:id}:{view:'stories'});
+    pageAddress(kind==='product'?{product:id}:kind==='seo'?{view:'seo',product:id,lang:locale}:{view:'stories'});
     $('live-link').replaceChildren();renderEditor();message();window.scrollTo(0,0);
   }finally{setBusy(false);}
 }
@@ -261,14 +301,14 @@ async function save(mode){
   if(mode==='publish')readyForPublication();
   const live=(locale==='en'?'':'/'+locale)+(type==='stories'?'/#customer-stories':'/products/'+key+'/');
   // Open inside the user's click, so browsers can show the saved private preview in a new tab.
-  const tab=mode==='preview'&&type==='product'?window.open('about:blank','_blank'):null;
+  const tab=mode==='preview'&&type!=='stories'?window.open('about:blank','_blank'):null;
   if(tab)tab.opener=null;
   setBusy(true);
   try{
     const result=await api('documents/'+type+'/'+key,'PUT',{mode:mode==='publish'?'publish':'draft',revision,content:doc,new:fresh});
     revision=result.revision;fresh=false;dirty=false;
-    published=published || mode==='publish';pending=mode!=='publish';
-    pageAddress(type==='product'?{product:key}:{view:'stories'});
+    published=published || result.published;pending=result.pending ?? mode!=='publish';
+    pageAddress(type==='product'?{product:key}:type==='seo'?{view:'seo',product:key,lang:locale}:{view:'stories'});
     let refreshProblem=false;
     try{
       dashboard=await api('dashboard');
@@ -277,19 +317,22 @@ async function save(mode){
     }catch{refreshProblem=true;}
     renderEditor();
     if(mode==='preview'){
-      if(type==='stories')storyPreview();else{const url=live+'?catalog-preview=1';linkTo(url,'打开草稿预览');if(tab)tab.location.href=url;}
+      if(type==='stories')storyPreview();else{const url=live+(type==='seo'?'?seo-preview=1':'?catalog-preview=1');linkTo(url,'打开草稿预览');if(tab)tab.location.href=url;}
     }
-    if(mode==='publish')linkTo(live,'打开官网查看已发布内容');
-    $('state').textContent=mode==='publish'?'已发布到官网':'草稿已保存';message($('state').textContent+(refreshProblem?'。目录暂时无法刷新，稍后可重新打开后台。':''));
+    const staged=type==='seo'&&!seoContext.live;
+    if(mode==='publish'&&!staged)linkTo(live,'打开官网查看已发布内容');
+    $('state').textContent=mode==='publish'?(staged?'SEO 已发布，待产品上线':'已发布到官网'):'草稿已保存';message($('state').textContent+(refreshProblem?'。目录暂时无法刷新，稍后可重新打开后台。':''));
   }catch(error){tab?.close();throw error;}finally{setBusy(false);}
 }
 async function signedIn(login) {
-  const url=new URL(location.href),wanted=url.searchParams.get('product'),stories=url.searchParams.get('view')==='stories';
+  const url=new URL(location.href),wanted=url.searchParams.get('product'),view=url.searchParams.get('view');
   dashboard=await api('dashboard');
   $('account-name').textContent=login;$('account').hidden=false;$('access').hidden=true;$('workspace').hidden=false;
-  listView();setBusy(false);
-  if(stories)await openDocument('stories','home');
-  else if(wanted && knownProducts().some(product=>product.slug===wanted))await openDocument('product',wanted);
+  if(view==='seo' && locales.includes(url.searchParams.get('lang')))locale=url.searchParams.get('lang');
+  listView(view==='seo'?'seo':'product');setBusy(false);
+  if(view==='traffic')await trafficView(['1','7','30'].includes(url.searchParams.get('days'))?url.searchParams.get('days'):'7');
+  else if(view==='stories')await openDocument('stories','home');
+  else if(wanted && knownProducts().some(product=>product.slug===wanted))await openDocument(view==='seo'?'seo':'product',wanted);
 }
 function accessMode(activate){
   enabling=activate;
@@ -337,11 +380,22 @@ $('login-form').addEventListener('submit',async event=>{
 });
 $('logout').onclick=async()=>{if(!discardOK())return;try{await api('logout','POST',{});dirty=false;location.replace('/manage/');}catch(err){report(err);}};
 $('product-nav').onclick=()=>{if(discardOK())listView();};
+$('seo-nav').onclick=()=>{if(discardOK())listView('seo');};
+$('traffic-nav').onclick=()=>trafficView().catch(report);
 $('stories-nav').onclick=()=>openDocument('stories','home').catch(report);
 $('items').addEventListener('input',event=>{if(event.target.id==='find-product'){search=event.target.value;renderResults();}});
 $('editing').addEventListener('submit',e=>e.preventDefault());
 $('fields').addEventListener('input',event=>{
   const el=event.target;
+  if(type==='seo' && ['seo-title','seo-description','seo-alt'].includes(el.id)){
+    if(el.id==='seo-alt'){
+      const src=seoContext.photos[seoPhoto].src;
+      (doc.images[src] ||= {})[locale]=el.value;
+    }else{
+      (doc.copy[locale] ||= {})[el.id==='seo-title'?'title':'description']=el.value;
+    }
+    mark();updateSeoPreview(doc,seoContext,locale);return;
+  }
   if(el.id==='find-sku'){skuQuery=el.value;filterSKUs();return;}
   if(el.id==='slug'){key=el.value;doc.slug=key;mark();}
   if(el.hasAttribute('data-bind')){
@@ -356,7 +410,11 @@ $('fields').addEventListener('change',event=>{
   const el=event.target;
   if(el.id==='sku-missing'){onlyMissing=el.checked;filterSKUs();return;}
   if(el.hasAttribute('data-upload')){images(el).catch(report);return;}
-  if(el.hasAttribute('data-language')){locale=el.value;renderEditor();return;}
+  if(el.hasAttribute('data-language')){
+    locale=el.value;if(type==='seo')pageAddress({view:'seo',product:key,lang:locale});
+    renderEditor();document.querySelector('[data-language]').focus({preventScroll:true});return;
+  }
+  if(el.id==='seo-photo-select'){selectSeoPhoto(Number(el.value),false);return;}
   if(el.hasAttribute('data-sample')){doc[Number(el.dataset.sample)].sample=el.value==='yes';mark();}
   if(el.tagName==='SELECT'&&el.hasAttribute('data-bind')){put(el.dataset.bind,el.value);mark();
     if(el.dataset.bind.startsWith('variants.') && el.dataset.bind.endsWith('.src')){
@@ -365,17 +423,28 @@ $('fields').addEventListener('change',event=>{
       renderEditor();
     }else if(el.dataset.bind.endsWith('.kind') && onlyMissing)filterSKUs();}
 });
+function selectSeoPhoto(index,fromThumb){
+  seoPhoto=index;renderEditor();
+  const thumb=document.querySelector('[data-seo-photo="'+index+'"]');
+  const rail=thumb.parentElement;
+  const tile=thumb.getBoundingClientRect(),strip=rail.getBoundingClientRect();
+  rail.scrollBy({left:tile.left-strip.left+(tile.width-strip.width)/2,behavior:'instant'});
+  (fromThumb?thumb:$('seo-photo-select')).focus({preventScroll:true});
+}
 document.addEventListener('click',async event=>{
   const b=event.target.closest('button');if(!b||busy)return;
   try{
-    if(b.dataset.open){await openDocument('product',b.dataset.open);return;}
+    if(b.dataset.period || b.dataset.action==='refresh-traffic'){await trafficView(b.dataset.period || period);return;}
+    if(b.dataset.open){await openDocument(type==='seo'?'seo':'product',b.dataset.open);return;}
+    if(b.hasAttribute('data-seo-photo')){selectSeoPhoto(Number(b.dataset.seoPhoto),true);return;}
     if(b.dataset.section){section=b.dataset.section;showSection(true);return;}
     if(b.dataset.sheet){editSheet(b);return;}
     const action=b.dataset.action;if(!action)return;
-    if(action==='reset-filters'){search='';category='';status='';mediaFilter=false;listView();$('find-product').focus();}
+    if(action==='reset-filters'){search='';category='';status='';seoStatus='';mediaFilter=false;listView(type);$('find-product').focus();}
     else if(action==='restore')await restoreLive();
     else if(action==='new')newProduct();
-    else if(action==='list'){if(discardOK())listView();}
+    else if(action==='list'){if(discardOK())listView(type==='seo'?'seo':'product');}
+    else if(action==='open-seo')await openDocument('seo',key);
     else if(['save','preview','publish'].includes(action))await save(action);
     else editAction(action,Number(b.dataset.index));
   }catch(error){report(error);}
@@ -389,7 +458,7 @@ $('show-password').onclick=()=>{
 $('items').addEventListener('change',event=>{
   const el=event.target;
   if(el.id==='filter-category')category=el.value;
-  else if(el.id==='filter-status')status=el.value;
+  else if(el.id==='filter-status'){if(type==='seo')seoStatus=el.value;else status=el.value;}
   else if(el.id==='filter-media')mediaFilter=el.checked;
   else return;
   renderResults();

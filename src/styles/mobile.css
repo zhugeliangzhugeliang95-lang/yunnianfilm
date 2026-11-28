@@ -1,0 +1,63 @@
+/* Layout for touch navigation and narrow editorial pages. */
+.header .mobile-contact { display:none; }
+@media (max-width:900px) {
+  .header { --menu-header-height:76px; }
+  .header .menu-toggle { flex:0 0 44px; width:44px; height:44px; padding:10px; }
+  .header .logo { min-width:0; }
+  .header .locale-trigger { min-height:44px; }
+  body .header nav {
+    top:100%; max-height:calc(100dvh - var(--menu-header-height));
+    overflow-y:auto; overscroll-behavior:contain; align-items:stretch; gap:0;
+    padding-block:.55rem max(1rem,env(safe-area-inset-bottom));
+  }
+  body .header nav :is(a,summary) { display:flex; justify-content:space-between; align-items:center; min-height:44px; gap:.75rem; padding-block:.5rem; }
+  body .header nav > :is(a,details) { border-block-end:1px solid #ffffff27; }
+  body .header nav .nav-explore-panel { position:static; max-width:100%; }
+  html:has(.menu-open) { overflow:hidden; }
+  .journal-grid article { min-width:0; grid-template-columns:minmax(0,135px) minmax(0,1fr); }
+  .journal-grid .journal-image { width:100%; min-width:0; height:auto; }
+  .journal-grid :is(h3,p) { overflow-wrap:break-word; }
+  .footer-top > div { min-width:0; overflow-wrap:anywhere; }
+}
+@media (max-width:760px) {
+  .product-detail:has(.sku-gallery) { display:grid; grid-template-columns:minmax(0,1fr); gap:1.25rem; }
+  .product-detail:has(.sku-gallery) .product-media-column { display:contents; }
+  .product-detail [data-product-gallery] { order:0; min-width:0; }
+  .product-detail .detail-copy { order:1; }
+  .product-detail [data-product-detail-images] { order:2; min-width:0; }
+  .product-detail [data-product-detail-images]:empty { display:none; }
+  .model-table-block .source-table { overscroll-behavior-x:contain; }
+  .model-table-block :is(tbody th,thead th:first-child) {
+    position:sticky; inset-inline-start:0; z-index:1; background:#f7f8f6;
+    text-align:start; min-width:5rem; max-width:min(37vw,11rem); overflow-wrap:anywhere;
+  }
+  .model-table-block thead th:first-child { background:#edf1ec; }
+  :is(.catalog-toolbar,.color-catalog-tools,.inquiry-form) :is(input,select,textarea) { font-size:16px; max-width:100%; }
+  .catalog-toolbar .filters button, .lab-tabs button, .lab-view-controls button { min-height:44px; }
+}
+@media (max-width:640px) {
+  .header { --menu-header-height:64px; }
+  body .header { height:var(--menu-header-height); padding-inline:clamp(12px,4vw,22px); gap:8px; }
+  body .header .logo .brand-always-white { width:clamp(94px,28vw,136px); max-width:100%; height:auto; }
+  .header .site-languages { flex:none; }
+  .inquiry-widget > button[slot="launch"] {
+    width:max-content; min-width:0; min-height:44px; max-width:100%; padding:.55rem .8rem; gap:.5rem;
+    font-size:.85rem; line-height:1.25; justify-content:center;
+  }
+  body .header nav .mobile-contact { display:flex; }
+  .journal-grid,.journal-grid-all { grid-template-columns:minmax(0,1fr); }
+  .journal-grid article { display:block; }
+  .journal-grid .journal-image { aspect-ratio:16/9; min-height:0; }
+  .journal-grid .journal-meta { margin:.85rem 0 .45rem; gap:1rem; font-size:.7rem; }
+  .journal-grid article > p { font-size:.9rem; line-height:1.55; margin-top:.5rem; }
+  .journal-grid h3 { font-size:clamp(1.16rem,5.3vw,1.6rem); }
+  .lab-tabs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .lab-tabs button { white-space:normal; text-align:start; }
+  .sku-rail { scroll-padding-inline:4px; }
+  .color-catalog-tools :is(select,button), .inquiry-form :is(input:not([type=checkbox]),select) { min-height:44px; }
+}
+@media (max-height:500px) and (max-width:900px) {
+  .header { --menu-header-height:56px; }
+  body .header { height:var(--menu-header-height); }
+  .locale-dialog { max-height:calc(100dvh - 12px); overflow-y:auto; }
+}

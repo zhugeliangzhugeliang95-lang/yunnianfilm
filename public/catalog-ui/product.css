@@ -37,7 +37,7 @@ html:has(.sku-zoom[open]){overflow:hidden}
 @media (hover:hover){.sku-tile:hover,.sku-thumb:hover{border-color:#7c807d}}
 @media(max-width:760px){
   .sku-gallery-body{display:flex;flex-direction:column;gap:8px}
-  .sku-stage{order:-1;width:100%;max-height:65svh}
+  .sku-stage{order:-1;width:100%;max-height:65svh;touch-action:pan-y pinch-zoom}
   .sku-rail{width:100%;flex-direction:row;max-height:none;overflow-x:auto;overscroll-behavior-x:contain}
   .sku-thumb{width:52px;height:52px}
   .sku-tile{flex-direction:column;align-items:stretch;gap:.3rem;padding:4px 4px .4rem}
