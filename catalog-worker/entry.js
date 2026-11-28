@@ -1,11 +1,24 @@
 import support from 'existing-support-worker';
 import {handleCatalogAPI} from './api.js';
-import {CatalogError,json} from './common.js';
-import {storefront} from './storefront.js';
+import {baseCatalog,CatalogError,json} from './common.js';
+import {querySeries} from '../support/series-query.mjs';
+import {publicEdits,storefront} from './storefront.js';
 export default {
   async fetch(request,env,ctx) {
     const path=new URL(request.url).pathname;
-    if(path.startsWith('/support/api/'))return support.fetch(request,env,ctx);
+    if(path.startsWith('/support/api/')) {
+      let catalog;
+      const lookup=async (text,history,lang,ids) => {
+        if (!catalog) {
+          const [base,edits]=await Promise.all([baseCatalog(request,env),publicEdits(env.SUPPORT_DB)]);
+          const products=new Map(base.bySlug);
+          for(const p of edits)products.set(p.slug,{...p,tables:p.tables ?? base.bySlug.get(p.slug)?.tables ?? []});
+          catalog={products:[...products.values()],words:base.words,colors:base.colors};
+        }
+        return querySeries(text,history,catalog,lang,ids);
+      };
+      return support.fetch(request,env,ctx,lookup);
+    }
     try {
       if(path.startsWith('/catalog-api/'))return await handleCatalogAPI(request,env);
       if(!['GET','HEAD'].includes(request.method))return new Response(null,{status:405});

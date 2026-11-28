@@ -92,3 +92,10 @@ textarea { display: block; width: 100%; color: var(--ink); font-size: 16px; line
 html[dir=rtl] :is(.chat,h2,button,textarea){letter-spacing:normal;font-family:Arial,Tahoma,sans-serif}
 html[dir=rtl] .masthead{padding-inline:3.5rem 1rem}
 html[dir=rtl] :is(textarea,.message){text-align:start}
+
+.sales-links { display: grid; gap: 0; margin-bottom: 12px; border-top: 1px solid var(--line); }
+.sales-links a { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; min-height: 44px; padding: 7px 3px; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 13px; text-decoration: none; }
+.sales-links a span { font-weight: 600; }
+.sales-links bdi { flex: 1; overflow-wrap: anywhere; }
+.sales-links a::after { content: '↗'; }
+.sales-links a:hover bdi, .sales-links a:focus-visible bdi { text-decoration: underline; }

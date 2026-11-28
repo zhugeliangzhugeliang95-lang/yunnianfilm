@@ -58,6 +58,8 @@ function actionLabel(button, label) {
 }
 actionLabel(send, sendLabel);
 $('#contact-panel summary').textContent = t('Contact the team', '联系销售团队');
+$('#sales-email-label').textContent = t('Email', '发邮件');
+$('#sales-phone-label').textContent = ({zh:'打电话',fr:'Appeler',es:'Llamar',ar:'اتصل'})[document.documentElement.lang.split('-')[0]] || 'Call';
 $('#contact-label').textContent = t('Your email and enquiry', '联系邮箱和采购需求');
 actionLabel(contactButton, contactLabel);
 
@@ -107,7 +109,9 @@ function showReply(data) {
   for (const item of data.links || []) {
     let target;
     try { target = new URL(item.url); } catch { continue; }
-    if (target.origin !== 'https://yunnianfilm.com' || !/^\/(?:(?:zh|es|fr|ar)\/)?products\/[a-z0-9-]+\/$/.test(target.pathname)) continue;
+    const product = /^\/(?:(?:zh|es|fr|ar)\/)?products\/[a-z0-9-]+\/$/.test(target.pathname);
+    const swatch = /^\/(?:(?:zh|es|fr|ar)\/)?color-studio\/$/.test(target.pathname) && /^\?q=YN-\d{4}$/.test(target.search);
+    if (target.origin !== 'https://yunnianfilm.com' || !(product || swatch)) continue;
     const link = document.createElement('a');
     link.className = 'model-link';
     link.href = target.href;

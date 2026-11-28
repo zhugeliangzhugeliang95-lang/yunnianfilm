@@ -41,6 +41,7 @@ def package_worker():
     worker = render_worker(support, knowledge)
     subprocess.run(['node', '--input-type=module', '--check'], input=worker, text=True, check=True)
     (OUTPUT / '_worker.js').write_text(worker, encoding='utf-8')
+    subprocess.run(['node','scripts/check-support-catalog.mjs'],cwd=ROOT,check=True)
     subprocess.run(['node','scripts/bundle-catalog-worker.mjs'],cwd=ROOT,check=True)
     localized = [prefix + section + '*' for prefix in ('','/zh','/fr','/es','/ar')
                  for section in ('/products','/contact')]

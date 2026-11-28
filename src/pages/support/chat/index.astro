@@ -1,3 +1,6 @@
+---
+import {company} from '../../../data/products';
+---
 <!doctype html>
 <html lang="en" data-hosted="true">
 <head>
@@ -30,6 +33,11 @@
       </form>
       <details id="contact-panel">
         <summary>Contact the team</summary>
+        <div class="sales-links">
+          <a href={`mailto:${company.email}`} target="_blank" rel="noopener noreferrer"><span id="sales-email-label">Email</span><bdi>{company.email}</bdi></a>
+          <a href={`https://wa.me/${company.whatsapp}`} target="_blank" rel="noopener noreferrer"><span>WhatsApp</span><bdi>{company.phone}</bdi></a>
+          <a href={`tel:+${company.whatsapp}`} target="_blank" rel="noopener noreferrer"><span id="sales-phone-label">Phone</span><bdi>{company.phone}</bdi></a>
+        </div>
         <form id="contact-form">
           <label for="contact" id="contact-label">Your email and enquiry</label>
           <textarea id="contact" rows="2" maxlength="1000" required></textarea>
@@ -40,6 +48,6 @@
       <div id="notice"><span id="privacy-note">Groq processes this chat. Messages are saved for support.</span> <a id="privacy-link" href="/privacy/" target="_blank" rel="noopener">Privacy</a></div>
     </div>
   </main>
-  <script src="/support/chat.js"></script>
+  <script is:inline src="/support/chat.js"></script>
 </body>
 </html>

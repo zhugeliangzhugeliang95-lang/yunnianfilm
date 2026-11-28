@@ -38,7 +38,7 @@ function fresh(response,privatePage=false) {
   return new Response(response.body,{status:response.status,headers});
 }
 const basePage=(req,env,path)=>env.ASSETS.fetch(new URL(path,req.url).href);
-async function publicEdits(db){
+export async function publicEdits(db){
   const result=await db.prepare("SELECT live FROM catalog_documents WHERE kind='product' AND live IS NOT NULL ORDER BY updated DESC").all();
   return result.results.map(row=>JSON.parse(row.live));
 }
